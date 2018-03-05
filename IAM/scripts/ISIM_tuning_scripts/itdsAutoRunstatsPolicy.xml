@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<DB2AutoRunstatsPolicy 
+xmlns="http://www.ibm.com/xmlns/prod/db2/autonomic/config" >
+ <RunstatsTableScope>
+  <FilterCondition>tabname not in ('LDAP_ENTRY','LDAP_DESC','ERPARENT')</FilterCondition>
+ </RunstatsTableScope>
+</DB2AutoRunstatsPolicy>
+

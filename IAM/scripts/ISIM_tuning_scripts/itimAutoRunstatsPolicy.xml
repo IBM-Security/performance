@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<DB2AutoRunstatsPolicy 
+xmlns="http://www.ibm.com/xmlns/prod/db2/autonomic/config" >
+ <RunstatsTableScope>
+  <FilterCondition>tabname not in ('SIBOWNER','SCHEDULED_MESSAGE','PROCESSDATA', 'PROCESS', 'ACTIVITY')</FilterCondition>
+ </RunstatsTableScope>
+</DB2AutoRunstatsPolicy>
+

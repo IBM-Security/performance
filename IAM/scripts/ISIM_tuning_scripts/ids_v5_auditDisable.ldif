@@ -1,0 +1,43 @@
+#
+# ids_v5_auditDisable.ldif
+#
+# This file will disable search auditing for ITDS 5.x servers.
+# You can disable specific operations only my adjusting the appropriate
+# stanza below.
+#
+# Usage:
+#   ldapmodify -D cn=root -w <password> -f ids_v5_auditDisable.ldif
+#
+# set the appropriate attribute to TRUE to enable or FALSE to disable
+dn: cn=audit, cn=localhost
+changetype: modify
+replace: ibm-audit
+ibm-audit: FALSE
+-
+replace: ibm-auditBind
+ibm-auditBind: FALSE
+-
+replace: ibm-auditUnBind
+ibm-auditUnBind: FALSE
+-
+replace: ibm-auditAdd
+ibm-auditAdd: FALSE
+-
+replace: ibm-auditModify
+ibm-auditModify: FALSE
+-
+replace: ibm-auditModifyDN
+ibm-auditModifyDN: FALSE
+-
+replace: ibm-auditDelete
+ibm-auditDelete: FALSE
+-
+replace: ibm-auditSearch
+ibm-auditSearch: FALSE
+-
+replace: ibm-auditExtOpEvent
+ibm-auditExtOpEvent: FALSE
+-
+replace: ibm-auditFailedOpOnly
+ibm-auditFailedOpOnly: FALSE
+

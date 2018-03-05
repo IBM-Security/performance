@@ -1,0 +1,13 @@
+#
+# sunone_accessDisable.ldif
+#
+# This file will disable the access log for SunONE Directory Server
+#
+# Usage:
+#   ldapmodify -D cn=Directory Manager -w <password> -f sunone_accessDisable.ldif
+#
+dn: cn=config
+changetype: modify
+replace: nsslapd-accesslog-level
+nsslapd-accesslog-level: 0
+

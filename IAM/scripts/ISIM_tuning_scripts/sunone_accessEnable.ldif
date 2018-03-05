@@ -1,0 +1,14 @@
+#
+# sunone_accessEnable.ldif
+#
+# This file will enable base access logging
+# for SunONE Directory Server
+#
+# Usage:
+#   ldapmodify -D cn=Directory Manager -w <password> -f sunone_accessEnable.ldif
+#
+dn: cn=config
+changetype: modify
+replace: nsslapd-accesslog-level
+nsslapd-accesslog-level: 256
+
