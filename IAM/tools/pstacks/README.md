@@ -18,3 +18,5 @@ pstacksum.awk takes the thread stacks in the specified file and flattens them wi
 For each XXpstackYY file in the directory, a corresponding file named XXthreadstacksYY with all the flattened stacks from the pstack is produced, sorted to group common stacks together.
 
 These files are most usefully viewed using a text editor with word wrap turned off.
+
+Once you find interesting patterns in the stacks, you can use grep -c to count occurrences of the patterns, or grep and grep -v to split the stacks into subsets.

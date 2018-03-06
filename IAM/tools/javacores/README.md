@@ -19,3 +19,5 @@ For each javacoreXXX file in the directory, a corresponding file named threadsta
 There is also a file named all_longstacks.txt created with all the long stacks from the longstacks files, sorted to group common stacks together.
 
 These files are most usefully viewed using a text editor with word wrap turned off.
+
+Once you find interesting patterns in the stacks, you can use grep -c to count occurrences of the patterns, or grep and grep -v to split the stacks into subsets.
