@@ -1,0 +1,21 @@
+# IBM Security Performance
+
+## Identity and Access Management
+
+### Useful tools
+
+#### Javacore analysis tools
+
+This directory contains scripts for analyzing javacores from recent versions of the jvm.
+Different versions my require slight changes to j9dumpsummary.pl
+
+process_javacores.sh will look for all files named javacore* in the specified directory and process them with gen_threadstacks.sh
+
+gen_threadstacks.sh will process the specified javacore using the j9dumpsummary.pl script
+
+j9dumpsummary.pl takes the thread stacks in the specified javacore and flattens them with each thread on its own line.
+
+For each javacoreXXX file in the directory, a corresponding file named threadstacksXXX with all the flattened stacks from the javacore, and a file named longstacksXXX with only the flattened stacks that are longer than 1000 characters long.
+There is also a file named all_longstacks.txt created with all the long stacks from the longstacks files, sorted to group common stacks together.
+
+These files are most usefully viewed using a text editor with word wrap turned off.
