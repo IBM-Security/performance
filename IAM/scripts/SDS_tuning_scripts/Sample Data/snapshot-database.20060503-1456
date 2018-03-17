@@ -1,0 +1,225 @@
+
+              Database Snapshot
+
+Database name                              = LDAPDB2
+Database path                              = /opt/export/home/ldapdb2/ldapdb2/NODE0000/SQL00001/
+Input database alias                       = LDAPDB2
+Database status                            = Active
+Catalog database partition number          = 0
+Catalog network node name                  =
+Operating system running at database server= SUN
+Location of the database                   = Local
+First database connect timestamp           = 05/02/2006 13:35:29.418903
+Last reset timestamp                       =
+Last backup timestamp                      = 04/26/2006 15:08:37.000000
+Snapshot timestamp                         = 05/03/2006 14:56:45.602867
+
+Number of automatic storage paths          = 0
+
+High water mark for connections            = 34
+Application connects                       = 1238
+Secondary connects total                   = 0
+Applications connected currently           = 33
+Appls. executing in db manager currently   = 0
+Agents associated with applications        = 33
+Maximum agents associated with applications= 34
+Maximum coordinating agents                = 34
+
+Locks held currently                       = 1
+Lock waits                                 = 0
+Time database waited on locks (ms)         = 0
+Lock list memory in use (Bytes)            = 3640
+Deadlocks detected                         = 0
+Lock escalations                           = 0
+Exclusive lock escalations                 = 0
+Agents currently waiting on locks          = 0
+Lock Timeouts                              = 0
+Number of indoubt transactions             = 0
+
+Total Private Sort heap allocated          = 0
+Total Shared Sort heap allocated           = 0
+Shared Sort heap high water mark           = 0
+Total sorts                                = 186
+Total sort time (ms)                       = 26
+Sort overflows                             = 0
+Active sorts                               = 0
+
+Buffer pool data logical reads             = 157219
+Buffer pool data physical reads            = 499
+Buffer pool temporary data logical reads   = 0
+Buffer pool temporary data physical reads  = 0
+Asynchronous pool data page reads          = 53
+Buffer pool data writes                    = 3
+Asynchronous pool data page writes         = 0
+Buffer pool index logical reads            = 70905
+Buffer pool index physical reads           = 1394
+Buffer pool temporary index logical reads  = 0
+Buffer pool temporary index physical reads = 0
+Asynchronous pool index page reads         = 60
+Buffer pool index writes                   = 18
+Asynchronous pool index page writes        = 0
+Total buffer pool read time (milliseconds) = 949
+Total buffer pool write time (milliseconds)= 567
+Total elapsed asynchronous read time       = 45
+Total elapsed asynchronous write time      = 0
+Asynchronous data read requests            = 2
+Asynchronous index read requests           = 13
+No victim buffers available                = 0
+LSN Gap cleaner triggers                   = 0
+Dirty page steal cleaner triggers          = 0
+Dirty page threshold cleaner triggers      = 0
+Time waited for prefetch (ms)              = 9
+Unread prefetch pages                      = 0
+Direct reads                               = 1224
+Direct writes                              = 20
+Direct read requests                       = 131
+Direct write requests                      = 5
+Direct reads elapsed time (ms)             = 10
+Direct write elapsed time (ms)             = 36
+Database files closed                      = 0
+Data pages copied to extended storage      = 0
+Index pages copied to extended storage     = 0
+Data pages copied from extended storage    = 0
+Index pages copied from extended storage   = 0
+
+Host execution elapsed time                = 0.069557
+
+Commit statements attempted                = 7553
+Rollback statements attempted              = 26
+Dynamic statements attempted               = 23089
+Static statements attempted                = 8863
+Failed statement operations                = 0
+Select SQL statements executed             = 3951
+Update/Insert/Delete statements executed   = 5171
+DDL statements executed                    = 4
+Inactive stmt history memory usage (bytes) = 0
+
+Internal automatic rebinds                 = 0
+Internal rows deleted                      = 0
+Internal rows inserted                     = 0
+Internal rows updated                      = 0
+Internal commits                           = 1238
+Internal rollbacks                         = 0
+Internal rollbacks due to deadlock         = 0
+
+Rows deleted                               = 325
+Rows inserted                              = 326
+Rows updated                               = 10939
+Rows selected                              = 11040
+Rows read                                  = 666276
+Binds/precompiles attempted                = 0
+
+Log space available to the database (Bytes)= 1324811747
+Log space used by the database (Bytes)     = 1188253
+Maximum secondary log space used (Bytes)   = 0
+Maximum total log space used (Bytes)       = 1188608
+Secondary logs allocated currently         = 0
+Log pages read                             = 0
+Log read time (sec.ns)                     = 0.000000004
+Log pages written                          = 3396
+Log write time (sec.ns)                    = 20.000000004
+Number write log IOs                       = 3394
+Number read log IOs                        = 0
+Number partial page log IOs                = 2962
+Number log buffer full                     = 0
+Log data found in buffer                   = 0
+Appl id holding the oldest transaction     = 13
+Log to be redone for recovery (Bytes)      = 1192909
+Log accounted for by dirty pages (Bytes)   = 1192909
+
+File number of first active log            = 0
+File number of last active log             = 4
+File number of current active log          = 0
+File number of log being archived          = Not applicable
+
+Package cache lookups                      = 11565
+Package cache inserts                      = 336
+Package cache overflows                    = 0
+Package cache high water mark (Bytes)      = 1740477
+Application section lookups                = 23155
+Application section inserts                = 692
+
+Catalog cache lookups                      = 6018
+Catalog cache inserts                      = 83
+Catalog cache overflows                    = 0
+Catalog cache high water mark              = 0
+
+Workspace Information
+
+ Shared high water mark                    = 0
+ Corresponding shared overflows            = 0
+ Total shared section inserts              = 0
+ Total shared section lookups              = 0
+ Private high water mark                   = 2196252
+ Corresponding private overflows           = 0
+ Total private section inserts             = 692
+ Total private section lookups             = 9215
+
+Number of hash joins                       = 21
+Number of hash loops                       = 0
+Number of hash join overflows              = 0
+Number of small hash join overflows        = 0
+
+
+Memory usage for database:
+
+    Memory Pool Type                           = Backup/Restore/Util Heap
+       Current size (bytes)                    = 16384
+       High water mark (bytes)                 = 16384
+       Configured size (bytes)                 = 20496384
+
+    Memory Pool Type                           = Package Cache Heap
+       Current size (bytes)                    = 1851392
+       High water mark (bytes)                 = 1851392
+       Configured size (bytes)                 = 3221225472
+
+    Memory Pool Type                           = Catalog Cache Heap
+       Current size (bytes)                    = 327680
+       High water mark (bytes)                 = 327680
+       Configured size (bytes)                 = 3221225472
+
+    Memory Pool Type                           = Buffer Pool Heap
+       Current size (bytes)                    = 404324352
+       High water mark (bytes)                 = 404324352
+       Configured size (bytes)                 = 3221225472
+
+    Memory Pool Type                           = Buffer Pool Heap
+       Current size (bytes)                    = 1245331456
+       High water mark (bytes)                 = 1245331456
+       Configured size (bytes)                 = 3221225472
+
+    Memory Pool Type                           = Buffer Pool Heap
+       Current size (bytes)                    = 606208
+       High water mark (bytes)                 = 606208
+       Configured size (bytes)                 = 3221225472
+
+    Memory Pool Type                           = Buffer Pool Heap
+       Current size (bytes)                    = 344064
+       High water mark (bytes)                 = 344064
+       Configured size (bytes)                 = 3221225472
+
+    Memory Pool Type                           = Buffer Pool Heap
+       Current size (bytes)                    = 212992
+       High water mark (bytes)                 = 212992
+       Configured size (bytes)                 = 3221225472
+
+    Memory Pool Type                           = Buffer Pool Heap
+       Current size (bytes)                    = 147456
+       High water mark (bytes)                 = 147456
+       Configured size (bytes)                 = 3221225472
+
+    Memory Pool Type                           = Lock Manager Heap
+       Current size (bytes)                    = 1720320
+       High water mark (bytes)                 = 1720320
+       Configured size (bytes)                 = 1736704
+
+    Memory Pool Type                           = Database Heap
+       Current size (bytes)                    = 4079616
+       High water mark (bytes)                 = 4079616
+       Configured size (bytes)                 = 16367616
+
+    Memory Pool Type                           = Other Memory
+       Current size (bytes)                    = 0
+       High water mark (bytes)                 = 0
+       Configured size (bytes)                 = 12353536
+

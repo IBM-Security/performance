@@ -1,0 +1,8 @@
+dn: cn=Master Server, cn=configuration
+cn: Master Server
+ibm-slapdMasterDN: cn=peermaster
+ibm-slapdMasterPW: ibm4tam
+ibm-slapdMasterReferral: ldap://ibmserv02:389/ 
+objectclass: ibm-slapdConfigEntry
+objectclass: ibm-slapdReplication
+objectclass: top

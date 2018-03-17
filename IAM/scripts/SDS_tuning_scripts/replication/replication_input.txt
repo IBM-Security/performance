@@ -1,0 +1,158 @@
+# setting up container for the bind credentials
+dn: cn=replication,cn=IBMpolicies 
+objectclass: container 
+
+#base suffix (may or may not be in the database yet)
+dn: c=us
+objectclass: top 
+objectclass: organization 
+objectclass: ibm-replicationContext 
+
+#server replica group entry for the base suffix
+dn: ibm-replicaGroup=default, c=us 
+objectclass: top 
+objectclass: ibm-replicaGroup 
+ibm-replicaGroup: default 
+
+#Bind Credentials/method to peer forwarder to replica servers - replication agreement
+#All suffix sections points to this for their credentials.
+dn: cn=ibmtivoli,cn=replication,cn=IBMpolicies
+objectclass:ibm-replicationCredentialsSimple
+cn: ibmtivoli
+replicaBindDN:cn=peermaster
+replicaCredentials:ibm4tam
+description: Bindmethod of ibmserv02 (the master) to ibmserv05 (forwarder) to ibmserv17 (replica)
+
+#ibmserv02 master subentry
+#true if master, false if forwarder
+dn: ibm-replicaServerId=ibmserv02-uid,ibm-replicaGroup=default,c=us 
+objectclass: top 
+objectclass: ibm-replicaSubentry 
+ibm-replicaServerId: ibmserv02-uid  
+ibm-replicationServerIsMaster: true
+cn: ibmserv02 
+description: master ibm-replicaSubentry 
+
+#ibmserv05 forwarder subentry
+#true if master, false if forwarder
+dn: ibm-replicaServerId=ibmserv05-uid,ibm-replicaGroup=default,c=us 
+objectclass: top 
+objectclass: ibm-replicaSubentry 
+ibm-replicaServerId: ibmserv05-uid
+ibm-replicationServerIsMaster: false 
+cn: ibmserv05 
+description: forwarder ibm-replicaSubentry
+
+#ibmserv02 master to ibmserv05 forwarder agreement
+dn: cn=ibmserv05,ibm-replicaServerId=ibmserv02-uid, ibm-replicaGroup=default,c=us 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: ibmserv05 
+ibm-replicaConsumerId: ibmserv05-uid 
+ibm-replicaUrl: ldap://ibmserv05:389 
+ibm-replicaCredentialsDN: cn=ibmtivoli,cn=replication, cn=IBMpolicies 
+description: ibmserv02 (the master) to ibmserv05 (the forwarder) agreement 
+
+#ibmserv05 forwarder to ibmserv17 replica agreement
+dn: cn=ibmserv17,ibm-replicaServerId=ibmserv05-uid, ibm-replicaGroup=default,c=us 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: ibmserv17 
+ibm-replicaConsumerId: ibmserv17-uid
+ibm-replicaUrl: ldap://ibmserv17:389
+ibm-replicaCredentialsDN: cn=ibmtivoli,cn=replication, cn=IBMpolicies 
+description: ibmserv05 (the forwarder) to ibmserv17 (the replica) agreement
+
+#server replica group entry for cn=ibmpolicies suffix (may allready be there)
+dn: ibm-replicaGroup=default, cn=ibmpolicies 
+objectclass: top 
+objectclass: ibm-replicaGroup 
+ibm-replicaGroup: default 
+
+#ibmserv02 master subentry for cn=ibmpolicies suffix
+#true if master, false if forwarder
+dn: ibm-replicaServerId=ibmserv02-uid,ibm-replicaGroup=default,cn=ibmpolicies 
+objectclass: top 
+objectclass: ibm-replicaSubentry 
+ibm-replicaServerId: ibmserv02-uid  
+ibm-replicationServerIsMaster: true
+cn: ibmserv02 
+description: master ibm-replicaSubentry 
+
+#ibmserv05 forwarder subentry for cn=ibmpolicies suffix
+#true if master, false if forwarder
+dn: ibm-replicaServerId=ibmserv05-uid,ibm-replicaGroup=default,cn=ibmpolicies 
+objectclass: top 
+objectclass: ibm-replicaSubentry 
+ibm-replicaServerId: ibmserv05-uid
+ibm-replicationServerIsMaster: false 
+cn: ibmserv05 
+description: forwarder ibm-replicaSubentry
+
+#ibmserv02 master to ibmserv05 forwarder agreement for cn=ibmpolicies suffix
+dn: cn=ibmserv05,ibm-replicaServerId=ibmserv02-uid, ibm-replicaGroup=default,cn=ibmpolicies 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: ibmserv05 
+ibm-replicaConsumerId: ibmserv05-uid 
+ibm-replicaUrl: ldap://ibmserv05:389 
+ibm-replicaCredentialsDN: cn=ibmtivoli,cn=replication, cn=IBMpolicies 
+description: ibmserv02 (the master) to ibmserv05 (the forwarder) agreement 
+
+#ibmserv05 forwarder to ibmserv17 replica agreement for cn=ibmpolicies suffix
+dn: cn=ibmserv17,ibm-replicaServerId=ibmserv05-uid, ibm-replicaGroup=default,cn=ibmpolicies 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: ibmserv17 
+ibm-replicaConsumerId: ibmserv17-uid 
+ibm-replicaUrl: ldap://ibmserv17:389 
+ibm-replicaCredentialsDN: cn=ibmtivoli,cn=replication, cn=IBMpolicies 
+description: ibmserv05 (the forwarder) to ibmserv17 (the replica) agreement
+
+#server replica group entry for secauthority=default suffix 
+dn: ibm-replicaGroup=default,secauthority=default 
+objectclass: top 
+objectclass: ibm-replicaGroup 
+ibm-replicaGroup: default 
+
+#ibmserv02 master subentry for secauthority=default suffix
+#true if master, false if forwarder
+dn: ibm-replicaServerId=ibmserv02-uid,ibm-replicaGroup=default,secauthority=default 
+objectclass: top 
+objectclass: ibm-replicaSubentry 
+ibm-replicaServerId: ibmserv02-uid  
+ibm-replicationServerIsMaster: true
+cn: ibmserv02 
+description: master ibm-replicaSubentry 
+
+#ibmserv05 forwarder subentry for secauthority=default suffix
+#true if master, false if forwarder
+dn: ibm-replicaServerId=ibmserv05-uid,ibm-replicaGroup=default,secauthority=default 
+objectclass: top 
+objectclass: ibm-replicaSubentry 
+ibm-replicaServerId: ibmserv05-uid
+ibm-replicationServerIsMaster: false 
+cn: ibmserv05 
+description: forwarder ibm-replicaSubentry
+
+#ibmserv02 master to ibmserv05 forwarder agreement for secauthority=default suffix
+dn: cn=ibmserv05,ibm-replicaServerId=ibmserv02-uid, ibm-replicaGroup=default,secauthority=default 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: ibmserv05 
+ibm-replicaConsumerId: ibmserv05-uid 
+ibm-replicaUrl: ldap://ibmserv05:389 
+ibm-replicaCredentialsDN: cn=ibmtivoli,cn=replication, cn=IBMpolicies 
+description: ibmserv02 (the master) to ibmserv05 (the forwarder) agreement 
+
+#ibmserv05 forwarder to ibmserv17 replica agreement for secauthority=default suffix
+dn: cn=ibmserv17,ibm-replicaServerId=ibmserv05-uid, ibm-replicaGroup=default,secauthority=default 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: ibmserv17 
+ibm-replicaConsumerId: ibmserv17-uid 
+ibm-replicaUrl: ldap://ibmserv17:389 
+ibm-replicaCredentialsDN: cn=ibmtivoli,cn=replication, cn=IBMpolicies 
+description: ibmserv05 (the forwarder) to ibmserv17 (the replica) agreement
+
+

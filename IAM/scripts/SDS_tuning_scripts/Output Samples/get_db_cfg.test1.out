@@ -1,0 +1,141 @@
+
+       Database Configuration for Database ldapdb2
+
+ Database configuration release level                    = 0x0a00
+ Database release level                                  = 0x0a00
+
+ Database territory                                      = US
+ Database code page                                      = 1208
+ Database code set                                       = UTF-8
+ Database country/region code                            = 1
+ Database collating sequence                             = BINARY
+ Alternate collating sequence              (ALT_COLLATE) = 
+ Database page size                                      = 4096
+
+ Dynamic SQL Query management           (DYN_QUERY_MGMT) = DISABLE
+
+ Discovery support for this database       (DISCOVER_DB) = ENABLE
+
+ Default query optimization class         (DFT_QUERYOPT) = 5
+ Degree of parallelism                      (DFT_DEGREE) = 1
+ Continue upon arithmetic exceptions   (DFT_SQLMATHWARN) = NO
+ Default refresh age                   (DFT_REFRESH_AGE) = 0
+ Default maintained table types for opt (DFT_MTTB_TYPES) = SYSTEM
+ Number of frequent values retained     (NUM_FREQVALUES) = 10
+ Number of quantiles retained            (NUM_QUANTILES) = 20
+
+ Backup pending                                          = NO
+
+ Database is consistent                                  = NO
+ Rollforward pending                                     = NO
+ Restore pending                                         = NO
+
+ Multi-page file allocation enabled                      = YES
+
+ Log retain for recovery status                          = NO
+ User exit for logging status                            = NO
+
+ Data Links Token Expiry Interval (sec)      (DL_EXPINT) = 60
+ Data Links Write Token Init Expiry Intvl(DL_WT_IEXPINT) = 60
+ Data Links Number of Copies             (DL_NUM_COPIES) = 1
+ Data Links Time after Drop (days)        (DL_TIME_DROP) = 1
+ Data Links Token in Uppercase                (DL_UPPER) = NO
+ Data Links Token Algorithm                   (DL_TOKEN) = MAC0
+
+ Database heap (4KB)                            (DBHEAP) = 3000
+ Size of database shared memory (4KB)  (DATABASE_MEMORY) = AUTOMATIC
+ Catalog cache size (4KB)              (CATALOGCACHE_SZ) = 64
+ Log buffer size (4KB)                        (LOGBUFSZ) = 8
+ Utilities heap size (4KB)                (UTIL_HEAP_SZ) = 5000
+ Buffer pool size (pages)                     (BUFFPAGE) = 1000
+ Extended storage segments size (4KB)    (ESTORE_SEG_SZ) = 16000
+ Number of extended storage segments   (NUM_ESTORE_SEGS) = 0
+ Max storage for lock list (4KB)              (LOCKLIST) = 400
+
+ Max size of appl. group mem set (4KB) (APPGROUP_MEM_SZ) = 30000
+ Percent of mem for appl. group heap   (GROUPHEAP_RATIO) = 70
+ Max appl. control heap size (4KB)     (APP_CTL_HEAP_SZ) = 128
+
+ Sort heap thres for shared sorts (4KB) (SHEAPTHRES_SHR) = (SHEAPTHRES)
+ Sort list heap (4KB)                         (SORTHEAP) = 7138
+ SQL statement heap (4KB)                     (STMTHEAP) = 2048
+ Default application heap (4KB)             (APPLHEAPSZ) = 2048
+ Package cache size (4KB)                   (PCKCACHESZ) = 1440
+ Statistics heap size (4KB)               (STAT_HEAP_SZ) = 5120
+
+ Interval for checking deadlock (ms)         (DLCHKTIME) = 10000
+ Percent. of lock lists per application       (MAXLOCKS) = 80
+ Lock timeout (sec)                        (LOCKTIMEOUT) = 120
+
+ Changed pages threshold                (CHNGPGS_THRESH) = 60
+ Number of asynchronous page cleaners   (NUM_IOCLEANERS) = 12
+ Number of I/O servers                   (NUM_IOSERVERS) = 8
+ Index sort flag                             (INDEXSORT) = YES
+ Sequential detect flag                      (SEQDETECT) = YES
+ Default prefetch size (pages)         (DFT_PREFETCH_SZ) = 32
+
+ Track modified pages                         (TRACKMOD) = OFF
+
+ Default number of containers                            = 1
+ Default tablespace extentsize (pages)   (DFT_EXTENT_SZ) = 32
+
+ Max number of active applications            (MAXAPPLS) = 100
+ Average number of active applications       (AVG_APPLS) = 1
+ Max DB files open per application            (MAXFILOP) = 448
+
+ Log file size (4KB)                         (LOGFILSIZ) = 5000
+ Number of primary log files                (LOGPRIMARY) = 5
+ Number of secondary log files               (LOGSECOND) = 60
+ Changed path to log files                  (NEWLOGPATH) = 
+ Path to log files                                       = /home/ldapdb2/ldapdb2/NODE0000/SQL00001/SQLOGDIR/
+ Overflow log path                     (OVERFLOWLOGPATH) = 
+ Mirror log path                         (MIRRORLOGPATH) = 
+ First active log file                                   = 
+ Block log on disk full                (BLK_LOG_DSK_FUL) = NO
+ Percent of max active log space by transaction(MAX_LOG) = 0
+ Num. of active log files for 1 active UOW(NUM_LOG_SPAN) = 0
+
+ Group commit count                          (MINCOMMIT) = 1
+ Percent log file reclaimed before soft chckpt (SOFTMAX) = 100
+ Log retain for recovery enabled             (LOGRETAIN) = OFF
+ User exit for logging enabled                (USEREXIT) = OFF
+
+ HADR database role                                      = STANDARD
+ HADR local host name                  (HADR_LOCAL_HOST) = 
+ HADR local service name                (HADR_LOCAL_SVC) = 
+ HADR remote host name                (HADR_REMOTE_HOST) = 
+ HADR remote service name              (HADR_REMOTE_SVC) = 
+ HADR instance name of remote server  (HADR_REMOTE_INST) = 
+ HADR timeout value                       (HADR_TIMEOUT) = 120
+ HADR log write synchronization mode     (HADR_SYNCMODE) = NEARSYNC
+
+ First log archive method                 (LOGARCHMETH1) = OFF
+ Options for logarchmeth1                  (LOGARCHOPT1) = 
+ Second log archive method                (LOGARCHMETH2) = OFF
+ Options for logarchmeth2                  (LOGARCHOPT2) = 
+ Failover log archive path                (FAILARCHPATH) = 
+ Number of log archive retries on error   (NUMARCHRETRY) = 5
+ Log archive retry Delay (secs)         (ARCHRETRYDELAY) = 20
+ Vendor options                              (VENDOROPT) = 
+
+ Auto restart enabled                      (AUTORESTART) = ON
+ Index re-creation time and redo index build  (INDEXREC) = SYSTEM (RESTART)
+ Log pages during index build            (LOGINDEXBUILD) = OFF
+ Default number of loadrec sessions    (DFT_LOADREC_SES) = 1
+ Number of database backups to retain   (NUM_DB_BACKUPS) = 12
+ Recovery history retention (days)     (REC_HIS_RETENTN) = 366
+
+ TSM management class                    (TSM_MGMTCLASS) = 
+ TSM node name                            (TSM_NODENAME) = 
+ TSM owner                                   (TSM_OWNER) = 
+ TSM password                             (TSM_PASSWORD) = 
+
+ Automatic maintenance                      (AUTO_MAINT) = OFF
+   Automatic database backup            (AUTO_DB_BACKUP) = OFF
+   Automatic table maintenance          (AUTO_TBL_MAINT) = OFF
+     Automatic runstats                  (AUTO_RUNSTATS) = OFF
+     Automatic statistics profiling    (AUTO_STATS_PROF) = OFF
+       Automatic profile updates         (AUTO_PROF_UPD) = OFF
+     Automatic reorganization               (AUTO_REORG) = OFF
+
+

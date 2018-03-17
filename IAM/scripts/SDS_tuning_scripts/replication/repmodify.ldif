@@ -1,0 +1,16 @@
+dn: c=us
+changetype: modify
+add: objectclass
+objectclass: ibm-replicationContext
+
+dn: cn=ibmpolicies
+changetype: modify
+add: objectclass
+objectclass: ibm-replicationContext
+
+dn: secauthority=default
+changetype: modify
+add: objectclass
+objectclass: ibm-replicationContext
+
+

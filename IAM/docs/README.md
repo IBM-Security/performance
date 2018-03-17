@@ -8,6 +8,10 @@
 
 [IBM Security Access Manager 9.0 Performance Tuning Guide](ISAM_PerfTuning_guide_90_v1.pdf) is also published at http://www-01.ibm.com/support/docview.wss?uid=swg27044054
 
+#### IBM Security Directory Server
+
+[Performance Tuning for IBM Security Directory Server Redpaper](redp4258.pdf) is also published at http://www.redbooks.ibm.com/redpieces/abstracts/redp4258.html
+
 #### IBM Security Identity Governance and Intelligence
 
 [IBM Security Identity Governance and Intelligence v5.2.3 Performance Tuning Guide](IGIv523FP1PTG_2017-11-01.pdf) is also published at http://www-01.ibm.com/support/docview.wss?uid=swg27050278

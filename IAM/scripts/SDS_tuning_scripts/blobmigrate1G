@@ -1,0 +1,339 @@
+#!/usr/bin/ksh
+########################################################### 
+# blobmigrate1G
+#
+# This script is provided as an example approach of how to
+# "optionally" migrate existing 5.2 tables for all entries
+# which are <= 1GB.  
+#
+# This script must be run AFTER V6.0 migration has been 
+# successfully completed. 
+#
+# This migration is being done optionally because there is
+# no easy way to drop a column or reduce the size, so the 
+# data will need to be exported out of the old tables and 
+# reloaded into the new tables.
+#
+# A full backup of the database(s) will be made as an error
+# recovery strategy
+#
+# This script should be used by an experience database 
+# administrator running as the ldapdb2 instance owner.
+# It may need to be modified for different environments.
+# 
+# This script is NOT an officially supported script by IBM
+# or the ITDS team.
+########################################################### 
+
+# Modify variables below for your enviroment
+########################################################### 
+# Define Instance, Directory, and Change Log Database 
+ldapinst=ldapdb2
+ldapdb2=LDAPDB2
+ldapclog=XXXXXXX
+#ldapclog=LDAPCLOG
+#
+# Define Config and schema file location - Make backup copy?
+# V6.0 
+#LDAPconfig=/home/$ldapinst/idsslapd-ldapdb2/etc/ibmslapd.conf
+#LDAPschemaloc=/home/ldapdb2/idsslapd-ldapdb2/etc
+# V5.2 - only here for testing w/ 5.2 - remove later
+LDAPconfig=/etc/ibmslapd.conf 
+LDAPschemaloc=/etc/ldapschema
+#
+# Directory to use to store backups and working space  
+# The ldapinst must have write permission to this directory
+outdir=$1
+########################################################### 
+
+numparam=$#
+if [ $numparam -ne 1 ]
+then
+   print "usage: blobmigrate1G <output directory>"
+   print "NOTES: 1) Script must be run as ldap instance owner"
+   print "       2) ITDS V6.0 Migration must by DONE"
+   print "       3) ibmslapd must NOT be running"
+   print "       4) logretain should be turned OFF"
+   print "       5) blobs > 1G can NOT be migrated"
+   print "       6) databases ldapdb2 and ldapclog must NOT be in use"
+   print ""
+   print " The summary report is <output directory> blobmigrate1G.rpt"
+   exit
+fi
+########################################################### 
+. /home/$ldapinst/sqllib/db2profile
+########################################################### 
+#
+#1 - This script must be run as the ldap instance owner
+amildapdb2inst=`whoami | grep $ldapinst`
+if [ "X$amildapdb2inst" = "X" ]
+then
+   print "blobmigrate1G needs to be run as the ldapdb2 instance owner"
+   print "which is currently defined to be $ldapinst"
+   exit
+fi
+
+########################################################### 
+#2 - Need to exit if ITDS V6.0 Migration is NOT Done
+# itdsrdbmhistory table does not exist prior to ITDS V6.0
+#v6migdone=`db2 connect to $ldapdb2 >/dev/null;db2 "select count(*) from itdsrdbmhistory where (release='6.0' and feature='MIGRATION_DONE')" | awk '{if (NR == 4) print $1}';db2 disconnect $ldapdb2 >/dev/null` 
+#if [ $v6migdone != "0" ]
+#then
+#   print "ITDS V6.0 Migration must be DONE prior to doing blobmigrate1G."
+#   print "Make sure the ITDS server starts successfully prior to doing blobmigrate."
+#   exit
+#fi
+
+########################################################### 
+#3 - Need to exit if ibmslapd is running
+ibmslapdup=`ps -ef | grep -i ibmslapd | grep -v grep`
+if [ "X$ibmslapdup" != "X" ]
+then 
+   echo "ibmslapd must NOT be running for blobmigrate1G to work"
+   exit
+fi
+
+########################################################### 
+#4 - Need to exit if logretain is ON for either database 
+logretainon=`db2 connect to $ldapdb2 >/dev/null;db2 "get db cfg for $ldapdb2" | grep LOGRETAIN | egrep "ON|RECOVERY";db2 disconnect $ldapdb2 >/dev/null` 
+clogretainon=`db2 connect to $ldapclog >/dev/null;db2 "get db cfg for $ldapclog" | grep LOGRETAIN | egrep "ON|RECOVERY";db2 disconnect $ldapclog >/dev/null` 
+if [ "X$logretainon" != "X" ] || [ "X$clogretainon" != "X" ]
+then
+   print "LOGRETAIN should NOT be ON when doing blobmigrate1G"
+   print "Need to do: db2 update db cfg for $ldapdb2 using logretain off "
+   exit
+fi
+
+########################################################### 
+#5 - Need to exit if blobs > 1G exist 
+numbigblobs=`db2 connect to $ldapdb2 >/dev/null;db2 "select count(*) as entryblob_greater_1G from ldap_entry where (entrysize>1073741824)" | awk '{if (NR == 4) print $1}';db2 disconnect $ldapdb2 >/dev/null` 
+if [ $numbigblobs != "0" ] 
+then
+   print "blobmigrate1G CAN NOT migrate blobs greater than 1G"
+   print "Use blobinfo to identify the entries which are > 1G"
+   print "Modify or delete them so they will fit in a reduced 1G column"
+   exit
+fi
+ 
+########################################################### 
+#6 - If ldapdb2 or ldapclog are in use - force will disconnect
+db2 force applications all >/dev/null
+ 
+########################################################### 
+# May want to Backup Config and Schema Files
+# Need to have permission to copy files
+#cp $LDAPconfig $outdir
+#cp -r $LDAPschemaloc/* $outdir
+########################################################### 
+
+# blobmigrate1G output files in $outdir 
+#
+# Summary Report:
+#     blobmigrate1G.rpt
+#
+# Servicability and Debug Files: 
+#     
+#   ldapdb2
+#     ldapdb2.before.describe & ldapdb2.after.describe
+#     ldapdb2.before.counts   & ldapdb2.after.counts
+#     newLDAPentry - exported data for new ldapdb2 ldap_entry table 
+#     LDAPDB2.load.msg - db2 load messages
+#     LDAPDB2.reorgchk.done - reorgchk after successful completion    
+#
+#   ldapclog 
+#     ldapclog.before.describe & ldapclog.after.describe
+#     ldapclog.before.counts   & ldapclog.after.counts
+#     newldapclogLDAPentry - exported data for new ldapclog ldap_entry table 
+#     LDAPCLOG.load.msg - db2 load messages
+#     LDAPCLOG.reorgchk.done - reorgchk after successful completion    
+# 
+#   overall
+#     blobmigrate1G.sql - sql command output
+#     blobmigrate1G.diff - diff command output
+#     
+
+########################################################################### 
+
+# Backup ldapdb2 database
+print "********************************" > $outdir/blobmigrate1G.rpt
+print "$outdir/blobmigrate1G.rpt" >> $outdir/blobmigrate1G.rpt
+print "\nBegin backup database $ldapdb2 to $outdir at: " >> $outdir/blobmigrate1G.rpt
+date >> $outdir/blobmigrate1G.rpt
+db2 backup database $ldapdb2 to $outdir >> $outdir/blobmigrate1G.rpt
+print "End backup database $ldapdb2 to $outdir at: " >> $outdir/blobmigrate1G.rpt
+date >> $outdir/blobmigrate1G.rpt
+
+# Collect ldapdb2 BEFORE info
+db2 connect to $ldapdb2  > $outdir/blobmigrate1G.sql
+db2 "describe table ldap_entry show detail" > $outdir/$ldapdb2.ldapentry.beforedescribe
+db2 "select count(eid) as total_entries, count(entrydata) as varchar_24004 from ldap_entry" > $outdir/$ldapdb2.ldapentry.beforecounts
+db2 "select count(*) as entryblob_less_1G from ldap_entry where (entrysize<1073741824 and entrysize>24004)" >> $outdir/$ldapdb2.ldapentry.beforecounts
+db2 "select count(*) as entryblob_greater_1G from ldap_entry where (entrysize>1073741824)" >> $outdir/$ldapdb2.ldapentry.beforecounts
+# Export ldapdb2 data for ldap_entry table
+db2 "export to $outdir/newLDAPentry of del lobs to $outdir/ modified by lobsinfile messages $outdir/$ldapdb2.export.msg select eid, peid, dn_trunc, dn, creator, modifier, modify_timestamp, create_timestamp, entrydata, entryblob, entrysize from ldap_entry" >> $outdir/blobmigrate1G.sql
+# Rename table and indexes
+db2 "rename table ldap_entry to ldap_entry_old" >> $outdir/blobmigrate1G.sql
+db2 "rename index ldap_entry_peid to ldap_entry_peido" >> $outdir/blobmigrate1G.sql
+db2 "rename index ldap_entry_peid2 to ldap_entry_peid2o" >> $outdir/blobmigrate1G.sql
+db2 "rename index ldap_entry_trunc to ldap_entry_trunco" >> $outdir/blobmigrate1G.sql
+# Create new table and indexes
+db2 "create table ldap_entry(eid integer not null,peid integer,dn_trunc varchar(240),dn varchar(1000),creator varchar(1000),modifier varchar(1000),modify_timestamp timestamp,create_timestamp timestamp,entrydata varchar(24004),entryblob blob(1g) logged not compact,entrysize integer) in ldapspace" >> $outdir/blobmigrate1G.sql
+db2 "create index ldap_entry_peid on $ldapdb2.ldap_entry (eid asc, peid asc)"  >> $outdir/blobmigrate1G.sql
+db2 "create index ldap_entry_peid2 on $ldapdb2.ldap_entry (peid asc)" >> $outdir/blobmigrate1G.sql
+db2 "create index ldap_entry_trunc on $ldapdb2.ldap_entry (dn_trunc asc)" >> $outdir/blobmigrate1G.sql
+db2 "alter table ldap_entry add primary key (eid)" >> $outdir/blobmigrate1G.sql
+# Load Data from exported file
+db2 "load from $outdir/newLDAPentry of del lobs from $outdir/ modified by lobsinfile delprioritychar fastparse savecount 100000 warningcount 1 messages $outdir/$ldapdb2.load.msg insert into $ldapdb2.ldap_entry(eid, peid, dn_trunc, dn, creator, modifier, modify_timestamp, create_timestamp, entrydata, entryblob, entrysize)" >> $outdir/blobmigrate1G.sql
+# Collect ldapdb2 AFTER info
+db2 "describe table ldap_entry show detail" > $outdir/$ldapdb2.ldapentry.afterdescribe
+db2 "select count(eid) as total_entries, count(entrydata) as varchar_24004 from ldap_entry" > $outdir/$ldapdb2.ldapentry.aftercounts
+db2 "select count(*) as entryblob_less_1G from ldap_entry where (entrysize<1073741824 and entrysize>24004)" >> $outdir/$ldapdb2.ldapentry.aftercounts
+db2 "select count(*) as entryblob_greater_1G from ldap_entry where (entrysize>1073741824)" >> $outdir/$ldapdb2.ldapentry.aftercounts
+# Summary 
+print "\nStatistics for blobmigrate1G from OLD to NEW:" >> $outdir/blobmigrate1G.rpt
+print "\n$ldapdb2 Database\n" >> $outdir/blobmigrate1G.rpt
+print "State\tTable\t\tTotal#\tTotal#\tBlob\tTotal#\tTotal#" >> $outdir/blobmigrate1G.rpt
+print "     \t     \t\tEntries\tVarChar\tDefn\tBLOB<1G\tBLOB>1G" >> $outdir/blobmigrate1G.rpt
+print "     \t     \t\t_______\t_______\t____\t_______\t_______" >> $outdir/blobmigrate1G.rpt
+#
+lbeforedesc=`cat $outdir/$ldapdb2.ldapentry.beforedescribe | grep ENTRYBLOB | awk '{print $4}' | awk '{if ($1==2147483647) {print "2G"} else if ($1==1073741824) {print "1G"}}'`
+totcount=`cat $outdir/$ldapdb2.ldapentry.beforecounts | awk '{if (NR==4) print $1}'`
+totvarchar=`cat $outdir/$ldapdb2.ldapentry.beforecounts | awk '{if (NR==4) print $2}'`
+totblobsmall=`cat $outdir/$ldapdb2.ldapentry.beforecounts | awk '{if (NR==11) print $1}'`
+totblobbig=`cat $outdir/$ldapdb2.ldapentry.beforecounts | awk '{if (NR==18) print $1}'`
+print "OLD\tLDAP_ENTRY\t"$totcount"\t"$totvarchar"\t"$lbeforedesc"\t"$totblobsmall"\t"$totblobbig >> $outdir/blobmigrate1G.rpt
+lafterdesc=`cat $outdir/$ldapdb2.ldapentry.afterdescribe | grep ENTRYBLOB | awk '{print $4}' | awk '{if ($1==2147483647) {print "2G"} else if ($1==1073741824) {print "1G"}}'`
+totcount=`cat $outdir/$ldapdb2.ldapentry.aftercounts | awk '{if (NR==4) print $1}'`
+totvarchar=`cat $outdir/$ldapdb2.ldapentry.aftercounts | awk '{if (NR==4) print $2}'`
+totblobsmall=`cat $outdir/$ldapdb2.ldapentry.aftercounts | awk '{if (NR==11) print $1}'`
+totblobbig=`cat $outdir/$ldapdb2.ldapentry.aftercounts | awk '{if (NR==18) print $1}'`
+print "NEW\tLDAP_ENTRY\t"$totcount"\t"$totvarchar"\t"$lafterdesc"\t"$totblobsmall"\t"$totblobbig >> $outdir/blobmigrate1G.rpt
+db2 disconnect $ldapdb2 >> $outdir/blobmigrate1G.sql
+########################################################### 
+# The following section is for the Change Log IF it is configured.
+chglog=`db2 list db directory | grep $ldapclog`
+if [ "X$chglog" != "X" ]
+then 
+   # Backup ldapclog database
+   print "\nBegin backup database $ldapclog to $outdir at " >> $outdir/blobmigrate1G.rpt
+   date >> $outdir/blobmigrate1G.rpt
+   db2 backup database $ldapclog to $outdir >> $outdir/blobmigrate1G.rpt
+   print "End backup database $ldapclog to $outdir at " >> $outdir/blobmigrate1G.rpt
+   date >> $outdir/blobmigrate1G.rpt
+
+   # Collect ldapclog BEFORE info
+   db2 connect to $ldapclog >> $outdir/blobmigrate1G.sql
+   db2 "describe table ldap_entry show detail" > $outdir/$ldapclog.ldapentry.beforedescribe
+   db2 "select count(eid) as total_entries, count(entrydata) as varchar_24004 from ldap_entry" > $outdir/$ldapclog.ldapentry.beforecounts
+   db2 "select count(*) as entryblob_less_1G from ldap_entry where (entrysize<1073741824 and entrysize>24004)" >> $outdir/$ldapclog.ldapentry.beforecounts
+   db2 "select count(*) as entryblob_greater_1G from ldap_entry where (entrysize>1073741824)" >> $outdir/$ldapclog.ldapentry.beforecounts
+   # Export ldapclog data for ldap_entry table
+   db2 "export to $outdir/newldapclogLDAPentry of del lobs to $outdir/ modified by lobsinfile messages $outdir/$ldapclog.export.msg select eid, peid, dn_trunc, dn, creator, modifier, modify_timestamp, create_timestamp, entrydata, entryblob, entrysize from ldap_entry" >> $outdir/blobmigrate1G.sql
+  # Rename tables and indexes
+   db2 "rename table ldap_entry to ldap_entry_old" >> $outdir/blobmigrate1G.sql
+   db2 "rename index ldap_entry_peid to ldap_entry_peido" >> $outdir/blobmigrate1G.sql
+   db2 "rename index ldap_entry_peid2 to ldap_entry_peid2o" >> $outdir/blobmigrate1G.sql
+   db2 "rename index ldap_entry_trunc to ldap_entry_trunco" >> $outdir/blobmigrate1G.sql
+   # Create new table and indexes
+   db2 "create table ldap_entry(eid integer not null,peid integer,dn_trunc varchar(240),dn varchar(1000),creator varchar(1000),modifier varchar(1000),modify_timestamp timestamp,create_timestamp timestamp,entrydata varchar(24004),entryblob blob(1g) logged not compact,entrysize integer) in ldapspace" >> $outdir/blobmigrate1G.sql
+   db2 "create index ldap_entry_peid on $ldapdb2.ldap_entry (eid asc, peid asc)" >> $outdir/blobmigrate1G.sql
+   db2 "create index ldap_entry_peid2 on $ldapdb2.ldap_entry (peid asc)" >> $outdir/blobmigrate1G.sql
+   db2 "create index ldap_entry_trunc on $ldapdb2.ldap_entry (dn_trunc asc)" >> $outdir/blobmigrate1G.sql
+   db2 "alter table ldap_entry add primary key (eid)" >> $outdir/blobmigrate1G.sql
+   # Load data from exported file  
+   db2 "load from $outdir/newldapclogLDAPentry of del lobs from $outdir/ modified by lobsinfile delprioritychar fastparse savecount 100000 warningcount 1 messages $outdir/$ldapclog.load.msg insert into $ldapdb2.ldap_entry(eid, peid, dn_trunc, dn, creator, modifier, modify_timestamp, create_timestamp, entrydata, entryblob, entrysize)" >> $outdir/blobmigrate1G.sql
+   db2 "describe table ldap_entry show detail" > $outdir/$ldapclog.ldapentry.afterdescribe
+   # Collect ldapclog AFTER info
+   db2 "select count(eid) as total_entries, count(entrydata) as varchar_24004 from ldap_entry" > $outdir/$ldapclog.ldapentry.aftercounts
+   db2 "select count(*) as entryblob_less_1G from ldap_entry where (entrysize<1073741824 and entrysize>24004)" >> $outdir/$ldapclog.ldapentry.aftercounts
+   db2 "select count(*) as entryblob_greater_1G from ldap_entry where (entrysize>1073741824)" >> $outdir/$ldapclog.ldapentry.aftercounts
+   db2 disconnect $ldapclog >> $outdir/blobmigrate1G.sql
+   # Summary 
+   print "\n$ldapclog Database" >> $outdir/blobmigrate1G.rpt
+   print "State\tTable\t\tTotal#\tTotal#\tBlob\tTotal#\tTotal#" >> $outdir/blobmigrate1G.rpt
+   print "     \t     \t\tEntries\tVarChar\tDefn\tBLOB<1G\tBLOB>1G" >> $outdir/blobmigrate1G.rpt
+   print "     \t     \t\t_______\t_______\t____\t_______\t_______" >> $outdir/blobmigrate1G.rpt
+   cbeforedesc=`cat $outdir/$ldapclog.ldapentry.beforedescribe | grep ENTRYBLOB | awk '{print $4}' | awk '{if ($1==2147483647) {print "2G"} else if ($1==1073741824) {print "1G"}}'`
+   totcount=`cat $outdir/$ldapclog.ldapentry.beforecounts | awk '{if (NR==4) print $1}'`
+   totvarchar=`cat $outdir/$ldapclog.ldapentry.beforecounts | awk '{if (NR==4) print $2}'`
+   totblobsmall=`cat $outdir/$ldapclog.ldapentry.beforecounts | awk '{if (NR==11) print $1}'`
+   totblobbig=`cat $outdir/$ldapclog.ldapentry.beforecounts | awk '{if (NR==18) print $1}'`
+   print "OLD\tLDAP_ENTRY\t"$totcount"\t"$totvarchar"\t"$cbeforedesc"\t"$totblobsmall"\t"$totblobbig >> $outdir/blobmigrate1G.rpt
+   cafterdesc=`cat $outdir/$ldapclog.ldapentry.afterdescribe | grep ENTRYBLOB | awk '{print $4}' | awk '{if ($1==2147483647) {print "2G"} else if ($1==1073741824) {print "1G"}}'`
+   totcount=`cat $outdir/$ldapclog.ldapentry.aftercounts | awk '{if (NR==4) print $1}'`
+   totvarchar=`cat $outdir/$ldapclog.ldapentry.aftercounts | awk '{if (NR==4) print $2}'`
+   totblobsmall=`cat $outdir/$ldapclog.ldapentry.aftercounts | awk '{if (NR==11) print $1}'`
+   totblobbig=`cat $outdir/$ldapclog.ldapentry.aftercounts | awk '{if (NR==18) print $1}'`
+   print "NEW\tLDAP_ENTRY\t"$totcount"\t"$totvarchar"\t"$cafterdesc"\t"$totblobsmall"\t"$totblobbig >> $outdir/blobmigrate1G.rpt
+fi 
+print "\nNote:" >> $outdir/blobmigrate1G.rpt
+print "LDAP_ENTRY has 1 BLOB column which is used if entry > 24004\t" >> $outdir/blobmigrate1G.rpt
+#########################################################################
+# Determine if successful by looking at difference between output files. 
+# Only differences should be 2G vs 1G column size from describe files.
+# Both ldapdb2 and ldapclog (if configured) entry counts must be the same 
+# before and after to be successful.  See blobmigrate1G.diff for differences.
+# If NOT successful, "db2 restore db $ldapdb2 from $outdir" and/or
+#                    "db2 restore db $ldapclog from $outdir"
+print "\n\n****************************"  >> $outdir/blobmigrate1G.rpt
+print "*** Overall results are: ***"  >> $outdir/blobmigrate1G.rpt
+print "****************************"  >> $outdir/blobmigrate1G.rpt
+# ldapdb2
+print "Diff between $ldapdb2.ldapentry.beforedescribe and $ldapdb2.ldapentry.afterdescribe\n" > $outdir/blobmigrate1G.diff
+diff $outdir/$ldapdb2.ldapentry.beforedescribe $outdir/$ldapdb2.ldapentry.afterdescribe >> $outdir/blobmigrate1G.diff
+print "$ldapdb2 LDAP_ENTRY - ENTRYBLOB changed from $lbeforedesc to $lafterdesc" >> $outdir/blobmigrate1G.rpt
+print "Diff between $ldapdb2.ldapentry.beforecounts and $ldapdb2.ldapentry.aftercounts\n"  >> $outdir/blobmigrate1G.diff
+diffentry=`diff $outdir/$ldapdb2.ldapentry.beforecounts $outdir/$ldapdb2.ldapentry.aftercounts`
+if [ "X$diffentry" != "X" ]
+then 
+   print "**Differences found for $ldapdb2 ldapentry counts" >> $outdir/blobmigrate1G.rpt
+   print "**blobmigrate1G was NOT successful\n\n" >> $outdir/blobmigrate1G.rpt
+   exit
+else
+   print "$ldapdb2 LDAP_ENTRY - All Entry Counts OK \n" >> $outdir/blobmigrate1G.rpt
+fi
+diffclog=""
+if [ "X$chglog" != "X" ]
+then
+   print "Diff between $ldapclog.ldapentry.beforedescribe and $ldapclog.ldapentry.afterdescribe" >> $outdir/blobmigrate1G.diff
+   diff $outdir/$ldapclog.ldapentry.beforedescribe $outdir/$ldapclog.ldapentry.afterdescribe >> $outdir/blobmigrate1G.diff
+   print "$ldapclog LDAP_ENTRY - ENTRYBLOB changed from $lbeforedesc to $lafterdesc" >> $outdir/blobmigrate1G.rpt
+   print "Diff between $ldapclog.ldapentry.beforecounts and $ldapclog.ldapentry.aftercounts"  >> $outdir/blobmigrate1G.diff
+   diffclog=`diff $outdir/$ldapclog.ldapentry.beforecounts $outdir/$ldapclog.ldapentry.aftercounts`
+   if [ "X$diffclog" != "X" ]
+   then 
+   print "**Differences found for $ldapclog ldapentry counts" >> $outdir/blobmigrate1G.rpt
+   print "**blobmigrate1G was NOT successful\n\n" >> $outdir/blobmigrate1G.rpt
+   exit
+else
+   print "$ldapclog LDAP_ENTRY - All Entry Counts OK \n" >> $outdir/blobmigrate1G.rpt
+   fi
+else
+   print "$ldapclog is NOT configured" >> $outdir/blobmigrate1G.rpt
+fi
+# IF everything goes successfully, need to update itdsrdbmhistory table
+# and drop renamed old tables
+if [ "X$diffentry" = "X" ] && [ "X$diffclog" = "X" ]
+then
+   db2 connect to $ldapdb2 >> $outdir/blobmigrate1G.sql
+   # The following table is new for ITDS V6.0
+   db2 "insert into itdsrdbmhistory values ('6.0','BLOBMIGRATE1G_DONE','')" >> $outdir/blobmigrate1G.sql
+   db2 drop table ldap_entry_old >> $outdir/blobmigrate1G.sql
+   db2 reorgchk update statistics on table all > $outdir/$ldapdb2.reorgchk.done
+   db2 disconnect $ldapdb2
+   if [ "X$chglog" != "X" ]
+   then
+      db2 connect to $ldapclog >> $outdir/blobmigrate1G.sql
+      db2 drop table ldap_entry_old >> $outdir/blobmigrate1G.sql
+      db2 reorgchk update statistics on table all > $outdir/$ldapdb2.reorgchk.done
+      db2 disconnect $ldapclog >> $outdir/blobmigrate1G.sql
+   fi
+   print "\n*** blobmigrate1G was SUCCESSFUL! ***" >> $outdir/blobmigrate1G.rpt
+   print "*** After verifying everything works correctly with ITDS" >> $outdir/blobmigrate1G.rpt
+   print "*** you may remove the directory $outdir\n" >> $outdir/blobmigrate1G.rpt
+else
+   print "\n*** blobmigrate1G was NOT successful. ***\n" >> $outdir/blobmigrate1G.rpt
+   print "*** Everything has been saved in directory $outdir\n" >> $outdir/blobmigrate1G.rpt
+   print "*** including database backups and informational files.\n" >> $outdir/blobmigrate1G.rpt
+fi
+cat $outdir/blobmigrate1G.rpt

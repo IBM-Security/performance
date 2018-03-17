@@ -1,0 +1,158 @@
+# setting up container for the bind credentials
+dn: cn=replication,cn=IBMpolicies
+objectclass: container
+
+#base suffix (may or may not be in the database yet)
+dn: c=us
+objectclass: top
+objectclass: organization
+objectclass: ibm-replicationContext
+
+#server replica group entry for the base suffix
+dn: ibm-replicaGroup=default, c=us
+objectclass: top
+objectclass: ibm-replicaGroup
+ibm-replicaGroup: default
+
+#Bind Credentials/method to peer forwarder to replica servers - replication agreement
+#All suffix sections points to this for their credentials
+#make sure you put in the password you are going to use for example: core1234
+dn: cn=ibmcred,cn=replication,cn=IBMpolicies
+objectclass:ibm-replicationCredentialsSimple
+cn: ibmcred
+replicaBindDN:cn=peermaster
+replicaCredentials:core1234
+description: Bindmethod of hostname1 (peer master 1) to hostname2 (peer master 2)
+
+#hostname1 peer master 1 subentry
+#true if master, false if forwarder
+dn: ibm-replicaServerId=hostname1-uid,ibm-replicaGroup=default,c=us
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: hostname1-uid
+ibm-replicationServerIsMaster: true
+cn: hostname1
+description: peer master 1 ibm-replicaSubentry
+
+#hostname2 peer master 2 subentry
+#true if master, false if forwarder
+dn: ibm-replicaServerId=hostname2-uid,ibm-replicaGroup=default,c=us
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: hostname2-uid
+ibm-replicationServerIsMaster: true
+cn: hostname2
+description: peer master 2 ibm-replicaSubentry
+
+#hostname1 peer master 1 to hostname2 peer master 2 agreement
+dn: cn=hostname2,ibm-replicaServerId=hostname1-uid, ibm-replicaGroup=default,c=us
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: hostname2
+ibm-replicaConsumerId: hostname2-uid
+ibm-replicaUrl: ldap://hostname2:389
+ibm-replicaCredentialsDN: cn=ibmcred,cn=replication, cn=IBMpolicies
+description: hostname1 (peer master 1) to hostname2 (peer master 2) agreement
+
+#hostname2 peer master 2 to hostname1 peer master 1 agreement
+dn: cn=hostname1,ibm-replicaServerId=hostname2-uid, ibm-replicaGroup=default,c=us
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: hostname1
+ibm-replicaConsumerId: hostname1-uid
+ibm-replicaUrl: ldap://hostname1:389
+ibm-replicaCredentialsDN: cn=ibmcred,cn=replication, cn=IBMpolicies
+description: hostname2  (peer master 2) to hostname1 (peer master 1) agreement
+
+#server replica group entry for cn=ibmpolicies suffix (may already be there)
+dn: ibm-replicaGroup=default, cn=ibmpolicies
+objectclass: top
+objectclass: ibm-replicaGroup
+ibm-replicaGroup: default
+
+#hostname1 peer master 1 subentry for cn=ibmpolicies suffix
+#true if master, false if forwarder
+dn: ibm-replicaServerId=hostname1-uid,ibm-replicaGroup=default,cn=ibmpolicies
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: hostname1-uid
+ibm-replicationServerIsMaster: true
+cn: hostname1
+description: peer master 1 ibm-replicaSubentry
+
+#hostname2 peer master 2 subentry for cn=ibmpolicies suffix
+#true if master, false if forwarder
+dn: ibm-replicaServerId=hostname2-uid,ibm-replicaGroup=default,cn=ibmpolicies
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: hostname2-uid
+ibm-replicationServerIsMaster: true
+cn: hostname2
+description: forwarder ibm-replicaSubentry
+
+#hostname1 peer master 1 to hostname2 peer master 2 agreement
+dn: cn=hostname2,ibm-replicaServerId=hostname1-uid, ibm-replicaGroup=default,cn=ibmpolicies
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: hostname2
+ibm-replicaConsumerId: hostname2-uid
+ibm-replicaUrl: ldap://hostname2:389
+ibm-replicaCredentialsDN: cn=ibmcred,cn=replication, cn=IBMpolicies
+description: hostname1 (peer master 1) to hostname2 (peer master 2) agreement
+
+#hostname2 peer master 2 to hostname1 peer master 1 agreement
+dn: cn=hostname1,ibm-replicaServerId=hostname2-uid, ibm-replicaGroup=default,cn=ibmpolicies
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: hostname1
+ibm-replicaConsumerId: hostname1-uid
+ibm-replicaUrl: ldap://hostname1:389
+ibm-replicaCredentialsDN: cn=ibmcred,cn=replication, cn=IBMpolicies
+description: hostname2  (peer master 2) to hostname1 (peer master 1) agreement
+
+#server replica group entry for secauthority=default suffix
+dn: ibm-replicaGroup=default,secauthority=default
+objectclass: top
+objectclass: ibm-replicaGroup
+ibm-replicaGroup: default
+
+#hostname1 peer master 1 subentry for cn=ibmpolicies suffix
+#true if master, false if forwarder
+dn: ibm-replicaServerId=hostname1-uid,ibm-replicaGroup=default,secauthority=default
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: hostname1-uid
+ibm-replicationServerIsMaster: true
+cn: hostname1
+description: peer master 1 ibm-replicaSubentry
+
+#hostname2 peer master 2 subentry for cn=ibmpolicies suffix
+#true if master, false if forwarder
+dn: ibm-replicaServerId=hostname2-uid,ibm-replicaGroup=default,secauthority=default
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: hostname2-uid
+ibm-replicationServerIsMaster: true
+cn: hostname2
+description: forwarder ibm-replicaSubentry 
+
+#hostname1 peer master 1 to hostname2 peer master 2 agreement
+dn: cn=hostname2,ibm-replicaServerId=hostname1-uid, ibm-replicaGroup=default,secauthority=default
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: hostname2
+ibm-replicaConsumerId: hostname2-uid
+ibm-replicaUrl: ldap://hostname2:389
+ibm-replicaCredentialsDN: cn=ibmcred,cn=replication, cn=IBMpolicies
+description: hostname1 (peer master 1) to hostname2 (peer master 2) agreement
+
+#hostname2 peer master 2 to hostname1 peer master 1 agreement
+dn: cn=hostname1,ibm-replicaServerId=hostname2-uid, ibm-replicaGroup=default,secauthority=default
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: hostname1
+ibm-replicaConsumerId: hostname1-uid
+ibm-replicaUrl: ldap://hostname1:389
+ibm-replicaCredentialsDN: cn=ibmcred,cn=replication, cn=IBMpolicies
+description: hostname2  (peer master 2) to hostname1 (peer master 1) agreement
+

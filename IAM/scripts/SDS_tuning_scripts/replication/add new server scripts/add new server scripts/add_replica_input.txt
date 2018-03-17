@@ -1,0 +1,29 @@
+#forwarder1 mont forwarder to replica3 mont replica agreement
+dn: cn=replica3,ibm-replicaServerId=forwarder1-uid, ibm-replicaGroup=default,c=us 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: replica3 
+ibm-replicaConsumerId: replica3-uid
+ibm-replicaUrl: ldap://replica3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: forwarder1 (the mont forwarder) to replica3 (the mont replica 3) agreement
+
+#forwarder1 mont forwarder to replica3 mont replica agreement
+dn: cn=replica3,ibm-replicaServerId=forwarder1-uid, ibm-replicaGroup=default,cn=ibmpolicies 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: replica3 
+ibm-replicaConsumerId: replica3-uid
+ibm-replicaUrl: ldap://replica3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: forwarder1 (the mont forwarder) to replica3 (the mont replica 3) agreement
+
+#forwarder1 mont forwarder to replica3 mont replica agreement
+dn: cn=replica3,ibm-replicaServerId=forwarder1-uid, ibm-replicaGroup=default,secauthority=default 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: replica3 
+ibm-replicaConsumerId: replica3-uid
+ibm-replicaUrl: ldap://replica3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: forwarder1 (the mont forwarder) to replica3 (the mont replica 3) agreement

@@ -1,0 +1,150 @@
+#peer3 mont peer master 3 subentry
+#true if master, false if mont forwarder
+dn: ibm-replicaServerId=peer3-uid,ibm-replicaGroup=default,c=us
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: peer3-uid
+ibm-replicationServerIsMaster: true
+cn: peer3
+description: mont peer master 3 ibm-replicaSubentry
+
+#peer3 mont peer master to forwarder1 mont forwarder agreement
+dn: cn=forwarder1,ibm-replicaServerId=peer3-uid, ibm-replicaGroup=default,c=us 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: forwarder1 
+ibm-replicaConsumerId: forwarder1-uid 
+ibm-replicaUrl: ldap://forwarder1:389 
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: peer3 (mont peer master 3) to forwarder1 (the mont forwarder) agreement 
+
+#peer3 mont peer master 3 to forwarder2 dayton forwarder agreement
+dn: cn=forwarder2,ibm-replicaServerId=peer3-uid, ibm-replicaGroup=default,c=us 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: forwarder2 
+ibm-replicaConsumerId: forwarder2-uid 
+ibm-replicaUrl: ldap://forwarder2:389 
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: peer3 (mont peer master 3) to forwarder2 (the dayton forwarder) agreement 
+
+#peer1 mont peer master 1 to peer3 mont peer master 3 agreement
+dn: cn=peer3,ibm-replicaServerId=peer1-uid, ibm-replicaGroup=default,c=us
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: peer3
+ibm-replicaConsumerId: peer3-uid
+ibm-replicaUrl: ldap://peer3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies
+description: peer1 (mont peer master 1) to peer3 (mont peer master 3) agreement
+
+#peer2 dayton peer master 2 to peer3 mont peer master 1 agreement
+dn: cn=peer3,ibm-replicaServerId=peer2-uid, ibm-replicaGroup=default,c=us
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: peer3
+ibm-replicaConsumerId: peer3-uid
+ibm-replicaUrl: ldap://peer3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies
+description: peer2  (dayton peer master 2) to peer3 (mont peer master 3) agreement
+
+#peer3 mont peer master 3 subentry
+#true if master, false if mont forwarder
+dn: ibm-replicaServerId=peer3-uid,ibm-replicaGroup=default,cn=ibmpolicies
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: peer3-uid
+ibm-replicationServerIsMaster: true
+cn: peer3
+description: mont peer master 3 ibm-replicaSubentry
+
+#peer3 mont peer master to forwarder1 mont forwarder agreement
+dn: cn=forwarder1,ibm-replicaServerId=peer3-uid, ibm-replicaGroup=default,cn=ibmpolicies 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: forwarder1 
+ibm-replicaConsumerId: forwarder1-uid 
+ibm-replicaUrl: ldap://forwarder1:389 
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: peer3 (mont peer master 3) to forwarder1 (the mont forwarder) agreement 
+
+#peer3 mont peer master 3 to forwarder2 dayton forwarder agreement
+dn: cn=forwarder2,ibm-replicaServerId=peer3-uid, ibm-replicaGroup=default,cn=ibmpolicies 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: forwarder2 
+ibm-replicaConsumerId: forwarder2-uid 
+ibm-replicaUrl: ldap://forwarder2:389 
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: peer3 (mont peer master 3) to forwarder2 (the dayton forwarder) agreement 
+
+#peer1 mont peer master 1 to peer3 mont peer master 3 agreement
+dn: cn=peer3,ibm-replicaServerId=peer1-uid, ibm-replicaGroup=default,cn=ibmpolicies
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: peer3
+ibm-replicaConsumerId: peer3-uid
+ibm-replicaUrl: ldap://peer3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies
+description: peer1 (mont peer master 1) to peer3 (mont peer master 3) agreement
+
+#peer2 dayton peer master 2 to peer3 mont peer master 1 agreement
+dn: cn=peer3,ibm-replicaServerId=peer2-uid, ibm-replicaGroup=default,cn=ibmpolicies
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: peer3
+ibm-replicaConsumerId: peer3-uid
+ibm-replicaUrl: ldap://peer3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies
+description: peer2  (dayton peer master 2) to peer3 (mont peer master 3) agreement
+
+#peer3 mont peer master 3 subentry
+#true if master, false if mont forwarder
+dn: ibm-replicaServerId=peer3-uid,ibm-replicaGroup=default,secauthority=default
+objectclass: top
+objectclass: ibm-replicaSubentry
+ibm-replicaServerId: peer3-uid
+ibm-replicationServerIsMaster: true
+cn: peer3
+description: mont peer master 3 ibm-replicaSubentry
+
+#peer3 mont peer master to forwarder1 mont forwarder agreement
+dn: cn=forwarder1,ibm-replicaServerId=peer3-uid, ibm-replicaGroup=default,secauthority=default 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: forwarder1 
+ibm-replicaConsumerId: forwarder1-uid 
+ibm-replicaUrl: ldap://forwarder1:389 
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: peer3 (mont peer master 3) to forwarder1 (the mont forwarder) agreement 
+
+#peer3 mont peer master 3 to forwarder2 dayton forwarder agreement
+dn: cn=forwarder2,ibm-replicaServerId=peer3-uid, ibm-replicaGroup=default,secauthority=default 
+objectclass: top 
+objectclass: ibm-replicationAgreement 
+cn: forwarder2 
+ibm-replicaConsumerId: forwarder2-uid 
+ibm-replicaUrl: ldap://forwarder2:389 
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies 
+description: peer3 (mont peer master 3) to forwarder2 (the dayton forwarder) agreement 
+
+#peer1 mont peer master 1 to peer3 mont peer master 3 agreement
+dn: cn=peer3,ibm-replicaServerId=peer1-uid, ibm-replicaGroup=default,secauthority=default
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: peer3
+ibm-replicaConsumerId: peer3-uid
+ibm-replicaUrl: ldap://peer3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies
+description: peer1 (mont peer master 1) to peer3 (mont peer master 3) agreement
+
+#peer2 dayton peer master 2 to peer3 mont peer master 1 agreement
+dn: cn=peer3,ibm-replicaServerId=peer2-uid, ibm-replicaGroup=default,secauthority=default
+objectclass: top
+objectclass: ibm-replicationAgreement
+cn: peer3
+ibm-replicaConsumerId: peer3-uid
+ibm-replicaUrl: ldap://peer3:389
+ibm-replicaCredentialsDN: cn=lmgcss,cn=replication, cn=IBMpolicies
+description: peer2  (dayton peer master 2) to peer3 (mont peer master 3) agreement
+
