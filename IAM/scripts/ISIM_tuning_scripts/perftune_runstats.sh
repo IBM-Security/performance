@@ -42,6 +42,9 @@
 # Date 2017/04/04 By: Nnaemeka Emejulu (eemejulu@us.ibm.com)
 # added modification to runstats options for ISDS versions 6.3.1 and later.
 # removed references to RAPM DB
+# Date 2018/06/18 By: Nnaemeka Emejulu (eemejulu@us.ibm.com)
+#Updated do_card_tunings_for_table function
+
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
 SCRIPTDIR=`dirname $0`
@@ -305,7 +308,12 @@ do_card_tunings_for_table() {
       CUSTOM_CARD=50000
    fi
 
+if [ "x$CUSTOM_CARD" != "x" ]; then
+      echo "   updating cardinality if it is < $CUSTOM_CARD (SQL0100Ws can be safely ignored)"
+      db2 "update SYSSTAT.TABLES SET CARD = $CUSTOM_CARD where TABNAME = '$TABLE' AND CARD < $CUSTOM_CARD"
+   fi
 }
+
 
 # print out some useful header information
 echo
