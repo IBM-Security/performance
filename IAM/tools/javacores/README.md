@@ -24,10 +24,6 @@ Once you find interesting patterns in the stacks, you can use grep -c to count o
 
 The scripts also generate [Flame Graphs](http://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) of each of the threadstacks as well as 
 each of the longstacks file and one of the all_longstacks file.  Flame Graphs are a very useful way of getting the big picture first so you know
-where your threads are spending most of the time and thus what to focus your investigations on.  You should update the copy of [[flamegraph.pl]] 
+where your threads are spending most of the time and thus what to focus your investigations on.  You should update the copy of *flamegraph.pl* 
 here with the latest from [the FlameGraph github repository](https://github.com/brendangregg/FlameGraph) before running these scripts.
 
-An example Flame Graph can be seen below - click on one of the higher boxes to zoom in and click on one of the lower boxes
-to zoom out.  See the [Flame Graphs](http://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) page for more details on using Flame Graphs.
-
-![all_longstacks_rsa.txt.svg](https://github.com/IBM-Security/performance/blob/master/IAM/tools/javacores/examples/all_longstacks_rsa.txt.svg]
