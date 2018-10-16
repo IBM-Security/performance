@@ -11,4 +11,5 @@ do
    ${PROG_DIR}/gen_threadstacks.sh $sourcefile
 done
 
-awk '{print $NF}' longstack* | sort > all_longstacks.txt
+awk '{print $NF}' $1/longstack*.txt | sort > $1/all_longstacks.txt
+${PROG_DIR}/stackcollapse-threadstack.sh $1/all_longstacks.txt | ${PROG_DIR}/flamegraph.pl > $1/all_longstacks.txt.svg
