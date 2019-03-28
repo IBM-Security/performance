@@ -1,0 +1,16 @@
+This is the usage information for the performance graphing tool.
+There are three ways to use the tool: using the static driver, the individual batch files,
+and the multiple graph driver. Whichever method is used, the commands must be run from the
+directory where the drivers are located.
+
+To use the static driver, all of the log files must be renamed stat.log (e.g. the pdweb.authn log
+must be named authn.log vhj_1.log). All of these log files must be put into the logs folder in the directory
+where the tool resides. If these guidelines are followed, then just run static_graph_driver.bat and it will
+graph every available log file, putting the output into the current_output_graphs directory. The
+downside of this option is that you cannot name the output folder and all of the log files must be
+named correctly.
+
+In summary, put log files -> rename the log files -> run perl_driver.bat -> output graphs in
+		into logs folder				            current_output_graphs
+
+To use the individual .bat files like plot_authn.bat, put the input log file as the first argument

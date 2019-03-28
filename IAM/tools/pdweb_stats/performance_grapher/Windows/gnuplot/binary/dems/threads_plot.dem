@@ -1,0 +1,28 @@
+#Author. Connor R. Pokorny and Denis Sokolov 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of threads.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set mxtics
+set mytics
+set grid
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Threads"
+set title "Thread Performance"
+set key rmargin
+
+#plots the data (using 0 gives an index that increases per line)
+plot 'gnudata' using 0:3 with lines linewidth 2 title "Total", 'gnudata' using 0:2 with lines linewidth 2 title "active", 'gnudata' using 0:4 with lines linewidth 2 title "default active", 'gnudata' using 0:5 with lines linewidth 2 title "default total"
+
+#outputs gnuplot to png file
+set terminal png enhanced size 1280,1024
+set output "threads_plot.png"
+replot

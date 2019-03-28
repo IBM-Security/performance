@@ -1,0 +1,44 @@
+#Author. Denis K. Sokolov and Connor R. Pokorny 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of certcallbackcache.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set mxtics
+set mytics
+set grid
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Certcallbackcache Stats"
+set title "Certcallbackcache Performance"
+set key rmargin
+
+#sets output files and plots respective data to them
+set terminal png enhanced size 1280,1024
+set output "certcallbackcache_plot_miss.png"
+plot 'plot_files/pdweb.certcallbackcache/gnudata' index 0 every ::2 using 1:3 with lines linewidth 2 linetype rgb "blue" title "Miss"
+
+set output "certcallbackcache_plot_hit.png"
+plot 'plot_files/pdweb.certcallbackcache/gnudata' index 0 every ::2 using 1:2 with lines linewidth 2 linetype rgb "blue" title "Hit"
+
+set output "certcallbackcache_plot_add.png"
+plot 'plot_files/pdweb.certcallbackcache/gnudata' index 0 every ::2 using 1:4 with lines linewidth 2 linetype rgb "blue" title "Add"
+
+set output "certcallbackcache_plot_del.png"
+plot 'plot_files/pdweb.certcallbackcache/gnudata' index 0 every ::2 using 1:5 with lines linewidth 2 linetype rgb "blue" title "Del"
+
+set output "certcallbackcache_plot_inactive.png"
+plot 'plot_files/pdweb.certcallbackcache/gnudata' index 0 every ::2 using 1:6 with lines linewidth 2 linetype rgb "blue" title "Inactive"
+
+set output "certcallbackcache_plot_lifetime.png"
+plot 'plot_files/pdweb.certcallbackcache/gnudata' index 0 every ::2 using 1:7 with lines linewidth 2 linetype rgb "blue" title "Lifetime"
+
+set output "certcallbackcache_plot_LRU_expired.png"
+plot 'plot_files/pdweb.certcallbackcache/gnudata' index 0 every ::2 using 1:8 with lines linewidth 2 linetype rgb "blue" title "LRU expired"
+ 

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Graphs of pdweb statistics</title>
+    <link rel="stylesheet" type="text/css" href="graphs.css">
+  </head>
+  <body>
+    
+    <header>
+      <h1>Graphs of pdweb statistics</h1>
+    </header>
+
+    <nav class=topnav id=mainnav>
+      <a href="#authn">Authentication</a>
+      <a href="#authz">Authorization</a>
+      <a href="#certcallbackcache">Certificate callback cache</a>
+      <a href="#doccache">Document cache</a>
+      <a href="#drains">Drains</a>
+      <a href="#http">HTTP requests</a>
+      <a href="#https">HTTPS requests</a>
+      <a href="#jct">Junction requests</a>
+      <a href="#jmt">Junction mapping table</a>
+      <a href="#sescache">Session cache</a>
+      <a href="#threads">Threads</a>
+      <a href="#usersessidcache">User ID session cache</a>
+      <a href="#vhj">Virtual host junctions</a>
+    </nav>
+    
+    <section id="main">
+    
+      <div id="authn" class="stats">
+	<div><h2>Authentication </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authn_plot_avg_time.png">
+	    <img src="graphs/authn_plot_avg_time.png" alt="avg time" width="640" height="480">
+	  </a>
+	  <div class="desc">avg time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authn_plot_fail.png">
+	    <img src="graphs/authn_plot_fail.png" alt="fail" width="640" height="480">
+	  </a>
+	  <div class="desc">fail</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authn_plot_max_time.png">
+	    <img src="graphs/authn_plot_max_time.png" alt="max time" width="640" height="480">
+	  </a>
+	  <div class="desc">max time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authn_plot_pass.png">
+	    <img src="graphs/authn_plot_pass.png" alt="pass" width="640" height="480">
+	  </a>
+	  <div class="desc">pass</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authn_plot_pwd_exp.png">
+	    <img src="graphs/authn_plot_pwd_exp.png" alt="pwd exp" width="640" height="480">
+	  </a>
+	  <div class="desc">pwd exp</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authn_plot_resp.png">
+	    <img src="graphs/authn_plot_resp.png" alt="resp" width="640" height="480">
+	  </a>
+	  <div class="desc">resp</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authn_plot_total_time.png">
+	    <img src="graphs/authn_plot_total_time.png" alt="total time" width="640" height="480">
+	  </a>
+	  <div class="desc">total time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authn_plot_tput.png">
+	    <img src="graphs/authn_plot_tput.png" alt="tput" width="640" height="480">
+	  </a>
+	  <div class="desc">tput</div>
+	</div>
+      </div>
+      
+      <div id="authz" class="stats">
+	<div><h2>Authorization </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authz_plot_fail.png">
+	    <img src="graphs/authz_plot_fail.png" alt="fail" width="640" height="480">
+	  </a>
+	  <div class="desc">fail</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/authz_plot_pass.png">
+	    <img src="graphs/authz_plot_pass.png" alt="pass" width="640" height="480">
+	  </a>
+	  <div class="desc">pass</div>
+	</div>
+      </div>
+      
+      <div id="certcallbackcache" class="stats">
+	<div><h2>Certificate callback cache </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/certcallbackcache_plot_add.png">
+	    <img src="graphs/certcallbackcache_plot_add.png" alt="add" width="640" height="480">
+	  </a>
+	  <div class="desc">add</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/certcallbackcache_plot_del.png">
+	    <img src="graphs/certcallbackcache_plot_del.png" alt="del" width="640" height="480">
+	  </a>
+	  <div class="desc">del</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/certcallbackcache_plot_hit.png">
+	    <img src="graphs/certcallbackcache_plot_hit.png" alt="hit" width="640" height="480">
+	  </a>
+	  <div class="desc">hit</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/certcallbackcache_plot_inactive.png">
+	    <img src="graphs/certcallbackcache_plot_inactive.png" alt="inactive" width="640" height="480">
+	  </a>
+	  <div class="desc">inactive</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/certcallbackcache_plot_lifetime.png">
+	    <img src="graphs/certcallbackcache_plot_lifetime.png" alt="lifetime" width="640" height="480">
+	  </a>
+	  <div class="desc">lifetime</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/certcallbackcache_plot_LRU_expired.png">
+	    <img src="graphs/certcallbackcache_plot_LRU_expired.png" alt="LRU expired" width="640" height="480">
+	  </a>
+	  <div class="desc">LRU expired</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/certcallbackcache_plot_miss.png">
+	    <img src="graphs/certcallbackcache_plot_miss.png" alt="miss" width="640" height="480">
+	  </a>
+	  <div class="desc">miss</div>
+	</div>
+      </div>
+      
+      <div id="doccache" class="stats">
+	<div><h2>Document cache </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_aborts.png">
+	    <img src="graphs/doccache_plot_aborts.png" alt="aborts" width="640" height="480">
+	  </a>
+	  <div class="desc">aborts</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_additions.png">
+	    <img src="graphs/doccache_plot_additions.png" alt="additions" width="640" height="480">
+	  </a>
+	  <div class="desc">additions</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_cache_no_room.png">
+	    <img src="graphs/doccache_plot_cache_no_room.png" alt="cache no room" width="640" height="480">
+	  </a>
+	  <div class="desc">cache no room</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_count.png">
+	    <img src="graphs/doccache_plot_count.png" alt="count" width="640" height="480">
+	  </a>
+	  <div class="desc">count</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_create_waits.png">
+	    <img src="graphs/doccache_plot_create_waits.png" alt="create waits" width="640" height="480">
+	  </a>
+	  <div class="desc">create waits</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_deletes.png">
+	    <img src="graphs/doccache_plot_deletes.png" alt="deletes" width="640" height="480">
+	  </a>
+	  <div class="desc">deletes</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_general_errors.png">
+	    <img src="graphs/doccache_plot_general_errors.png" alt="general errors" width="640" height="480">
+	  </a>
+	  <div class="desc">general errors</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_hits.png">
+	    <img src="graphs/doccache_plot_hits.png" alt="hits" width="640" height="480">
+	  </a>
+	  <div class="desc">hits</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_misses.png">
+	    <img src="graphs/doccache_plot_misses.png" alt="misses" width="640" height="480">
+	  </a>
+	  <div class="desc">misses</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_MT_errors.png">
+	    <img src="graphs/doccache_plot_MT_errors.png" alt="MT errors" width="640" height="480">
+	  </a>
+	  <div class="desc">MT errors</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_pending_deletes.png">
+	    <img src="graphs/doccache_plot_pending_deletes.png" alt="pending deletes" width="640" height="480">
+	  </a>
+	  <div class="desc">pending deletes</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_pending_size.png">
+	    <img src="graphs/doccache_plot_pending_size.png" alt="pending size" width="640" height="480">
+	  </a>
+	  <div class="desc">pending size</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_size.png">
+	    <img src="graphs/doccache_plot_size.png" alt="size" width="640" height="480">
+	  </a>
+	  <div class="desc">size</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_stale_hits.png">
+	    <img src="graphs/doccache_plot_stale_hits.png" alt="stale hits" width="640" height="480">
+	  </a>
+	  <div class="desc">stale hits</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_too_big_errors.png">
+	    <img src="graphs/doccache_plot_too_big_errors.png" alt="too big errors" width="640" height="480">
+	  </a>
+	  <div class="desc">too big errors</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_uncachable.png">
+	    <img src="graphs/doccache_plot_uncachable.png" alt="uncachable" width="640" height="480">
+	  </a>
+	  <div class="desc">uncachable</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/doccache_plot_updates.png">
+	    <img src="graphs/doccache_plot_updates.png" alt="updates" width="640" height="480">
+	  </a>
+	  <div class="desc">updates</div>
+	</div>
+      </div>
+      
+      <div id="drains" class="stats">
+	<div><h2>Drains </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_average_bytes_drained.png">
+	    <img src="graphs/drains_plot_average_bytes_drained.png" alt="average bytes drained" width="640" height="480">
+	  </a>
+	  <div class="desc">average bytes drained</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_bytes_drained.png">
+	    <img src="graphs/drains_plot_bytes_drained.png" alt="bytes drained" width="640" height="480">
+	  </a>
+	  <div class="desc">bytes drained</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_drained_FDs.png">
+	    <img src="graphs/drains_plot_drained_FDs.png" alt="drained FDs" width="640" height="480">
+	  </a>
+	  <div class="desc">drained FDs</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_failed_closes.png">
+	    <img src="graphs/drains_plot_failed_closes.png" alt="failed closes" width="640" height="480">
+	  </a>
+	  <div class="desc">failed closes</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_failed_selects.png">
+	    <img src="graphs/drains_plot_failed_selects.png" alt="failed selects" width="640" height="480">
+	  </a>
+	  <div class="desc">failed selects</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_FDs_closed_FLOOD.png">
+	    <img src="graphs/drains_plot_FDs_closed_FLOOD.png" alt="FDs closed FLOOD" width="640" height="480">
+	  </a>
+	  <div class="desc">FDs closed FLOOD</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_FDs_closed_HIWAT.png">
+	    <img src="graphs/drains_plot_FDs_closed_HIWAT.png" alt="FDs closed HIWAT" width="640" height="480">
+	  </a>
+	  <div class="desc">FDs closed HIWAT</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_idle_awakenings.png">
+	    <img src="graphs/drains_plot_idle_awakenings.png" alt="idle awakenings" width="640" height="480">
+	  </a>
+	  <div class="desc">idle awakenings</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_max_draining_FDs.png">
+	    <img src="graphs/drains_plot_max_draining_FDs.png" alt="max draining FDs" width="640" height="480">
+	  </a>
+	  <div class="desc">max draining FDs</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/drains_plot_timed_out_FDs.png">
+	    <img src="graphs/drains_plot_timed_out_FDs.png" alt="timed out FDs" width="640" height="480">
+	  </a>
+	  <div class="desc">timed out FDs</div>
+	</div>
+      </div>
+      
+      <div id="http" class="stats">
+	<div><h2>HTTP requests </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_average_webseal_time.png">
+	    <img src="graphs/http_plot_average_webseal_time.png" alt="average webseal time" width="640" height="480">
+	  </a>
+	  <div class="desc">average webseal time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_average_worker_time.png">
+	    <img src="graphs/http_plot_average_worker_time.png" alt="average worker time" width="640" height="480">
+	  </a>
+	  <div class="desc">average worker time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_max_webseal_time.png">
+	    <img src="graphs/http_plot_max_webseal_time.png" alt="max webseal time" width="640" height="480">
+	  </a>
+	  <div class="desc">max webseal time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_max_worker_time.png">
+	    <img src="graphs/http_plot_max_worker_time.png" alt="max worker time" width="640" height="480">
+	  </a>
+	  <div class="desc">max worker time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_reqs.png">
+	    <img src="graphs/http_plot_reqs.png" alt="reqs" width="640" height="480">
+	  </a>
+	  <div class="desc">reqs</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_resp_webseal.png">
+	    <img src="graphs/http_plot_resp_webseal.png" alt="resp webseal" width="640" height="480">
+	  </a>
+	  <div class="desc">resp webseal</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_resp_worker.png">
+	    <img src="graphs/http_plot_resp_worker.png" alt="resp worker" width="640" height="480">
+	  </a>
+	  <div class="desc">resp worker</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_total_webseal_time.png">
+	    <img src="graphs/http_plot_total_webseal_time.png" alt="total webseal time" width="640" height="480">
+	  </a>
+	  <div class="desc">total webseal time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_total_worker_time.png">
+	    <img src="graphs/http_plot_total_worker_time.png" alt="total worker time" width="640" height="480">
+	  </a>
+	  <div class="desc">total worker time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/http_plot_tput.png">
+	    <img src="graphs/http_plot_tput.png" alt="tput" width="640" height="480">
+	  </a>
+	  <div class="desc">tput</div>
+	</div>
+      </div>
+      
+      <div id="https" class="stats">
+	<div><h2>HTTPS requests </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_average_webseal_time.png">
+	    <img src="graphs/https_plot_average_webseal_time.png" alt="average webseal time" width="640" height="480">
+	  </a>
+	  <div class="desc">average webseal time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_average_worker_time.png">
+	    <img src="graphs/https_plot_average_worker_time.png" alt="average worker time" width="640" height="480">
+	  </a>
+	  <div class="desc">average worker time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_max_webseal_time.png">
+	    <img src="graphs/https_plot_max_webseal_time.png" alt="max webseal time" width="640" height="480">
+	  </a>
+	  <div class="desc">max webseal time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_max_worker_time.png">
+	    <img src="graphs/https_plot_max_worker_time.png" alt="max worker time" width="640" height="480">
+	  </a>
+	  <div class="desc">max worker time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_reqs.png">
+	    <img src="graphs/https_plot_reqs.png" alt="reqs" width="640" height="480">
+	  </a>
+	  <div class="desc">reqs</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_resp_webseal.png">
+	    <img src="graphs/https_plot_resp_webseal.png" alt="resp webseal" width="640" height="480">
+	  </a>
+	  <div class="desc">resp webseal</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_resp_worker.png">
+	    <img src="graphs/https_plot_resp_worker.png" alt="resp worker" width="640" height="480">
+	  </a>
+	  <div class="desc">resp worker</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_total_webseal_time.png">
+	    <img src="graphs/https_plot_total_webseal_time.png" alt="total webseal time" width="640" height="480">
+	  </a>
+	  <div class="desc">total webseal time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_total_worker_time.png">
+	    <img src="graphs/https_plot_total_worker_time.png" alt="total worker time" width="640" height="480">
+	  </a>
+	  <div class="desc">total worker time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/https_plot_tput.png">
+	    <img src="graphs/https_plot_tput.png" alt="tput" width="640" height="480">
+	  </a>
+	  <div class="desc">tput</div>
+	</div>
+      </div>
+      
+      <div id="jct" class="stats">
+	<div><h2>Junction requests </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct1_plot_average_time.png">
+	    <img src="graphs/jct1_plot_average_time.png" alt="jct1 average time" width="640" height="480">
+	  </a>
+	  <div class="desc">jct1 average time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct1_plot_max_time.png">
+	    <img src="graphs/jct1_plot_max_time.png" alt="jct1 max time" width="640" height="480">
+	  </a>
+	  <div class="desc">jct1 max time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct1_plot_reqs.png">
+	    <img src="graphs/jct1_plot_reqs.png" alt="jct1 reqs" width="640" height="480">
+	  </a>
+	  <div class="desc">jct1 reqs</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct1_plot_resp.png">
+	    <img src="graphs/jct1_plot_resp.png" alt="jct1 resp" width="640" height="480">
+	  </a>
+	  <div class="desc">jct1 resp</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct1_plot_total_time.png">
+	    <img src="graphs/jct1_plot_total_time.png" alt="jct1 total time" width="640" height="480">
+	  </a>
+	  <div class="desc">jct1 total time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct1_plot_tput.png">
+	    <img src="graphs/jct1_plot_tput.png" alt="jct1 tput" width="640" height="480">
+	  </a>
+	  <div class="desc">jct1 tput</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct2_plot_average_time.png">
+	    <img src="graphs/jct2_plot_average_time.png" alt="jct2 average time" width="640" height="480">
+	  </a>
+	  <div class="desc">jct2 average time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct2_plot_max_time.png">
+	    <img src="graphs/jct2_plot_max_time.png" alt="jct2 max time" width="640" height="480">
+	  </a>
+	  <div class="desc">jct2 max time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct2_plot_reqs.png">
+	    <img src="graphs/jct2_plot_reqs.png" alt="jct2 reqs" width="640" height="480">
+	  </a>
+	  <div class="desc">jct2 reqs</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct2_plot_resp.png">
+	    <img src="graphs/jct2_plot_resp.png" alt="jct2 resp" width="640" height="480">
+	  </a>
+	  <div class="desc">jct2 resp</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct2_plot_total_time.png">
+	    <img src="graphs/jct2_plot_total_time.png" alt="jct2 total time" width="640" height="480">
+	  </a>
+	  <div class="desc">jct2 total time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jct2_plot_tput.png">
+	    <img src="graphs/jct2_plot_tput.png" alt="jct2 tput" width="640" height="480">
+	  </a>
+	  <div class="desc">jct2 tput</div>
+	</div>
+      </div>
+      
+      <div id="jmt" class="stats">
+	<div><h2>Junction mapping table </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/jmt_plot.png">
+	    <img src="graphs/jmt_plot.png" alt="jmt" width="640" height="480">
+	  </a>
+	  <div class="desc">jmt</div>
+	</div>
+      </div>
+      
+      <div id="sescache" class="stats">
+	<div><h2>Session cache </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/sescache_plot_add.png">
+	    <img src="graphs/sescache_plot_add.png" alt="add" width="640" height="480">
+	  </a>
+	  <div class="desc">add</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/sescache_plot_del.png">
+	    <img src="graphs/sescache_plot_del.png" alt="del" width="640" height="480">
+	  </a>
+	  <div class="desc">del</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/sescache_plot_hit.png">
+	    <img src="graphs/sescache_plot_hit.png" alt="hit" width="640" height="480">
+	  </a>
+	  <div class="desc">hit</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/sescache_plot_inactive.png">
+	    <img src="graphs/sescache_plot_inactive.png" alt="inactive" width="640" height="480">
+	  </a>
+	  <div class="desc">inactive</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/sescache_plot_lifetime.png">
+	    <img src="graphs/sescache_plot_lifetime.png" alt="lifetime" width="640" height="480">
+	  </a>
+	  <div class="desc">lifetime</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/sescache_plot_LRU_expired.png">
+	    <img src="graphs/sescache_plot_LRU_expired.png" alt="LRU expired" width="640" height="480">
+	  </a>
+	  <div class="desc">LRU expired</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/sescache_plot_miss.png">
+	    <img src="graphs/sescache_plot_miss.png" alt="miss" width="640" height="480">
+	  </a>
+	  <div class="desc">miss</div>
+	</div>
+      </div>
+      
+      <div id="threads" class="stats">
+	<div><h2>Threads </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/threads_plot_default.png">
+	    <img src="graphs/threads_plot_default.png" alt="default" width="640" height="480">
+	  </a>
+	  <div class="desc">default</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/threads_plot.png">
+	    <img src="graphs/threads_plot.png" alt="threads" width="640" height="480">
+	  </a>
+	  <div class="desc">threads</div>
+	</div>
+      </div>
+      
+      <div id="usersessidcache" class="stats">
+	<div><h2>User ID session cache </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/usersessidcache_plot_add.png">
+	    <img src="graphs/usersessidcache_plot_add.png" alt="add" width="640" height="480">
+	  </a>
+	  <div class="desc">add</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/usersessidcache_plot_del.png">
+	    <img src="graphs/usersessidcache_plot_del.png" alt="del" width="640" height="480">
+	  </a>
+	  <div class="desc">del</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/usersessidcache_plot_hit.png">
+	    <img src="graphs/usersessidcache_plot_hit.png" alt="hit" width="640" height="480">
+	  </a>
+	  <div class="desc">hit</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/usersessidcache_plot_inactive.png">
+	    <img src="graphs/usersessidcache_plot_inactive.png" alt="inactive" width="640" height="480">
+	  </a>
+	  <div class="desc">inactive</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/usersessidcache_plot_lifetime.png">
+	    <img src="graphs/usersessidcache_plot_lifetime.png" alt="lifetime" width="640" height="480">
+	  </a>
+	  <div class="desc">lifetime</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/usersessidcache_plot_LRU_expired.png">
+	    <img src="graphs/usersessidcache_plot_LRU_expired.png" alt="LRU expired" width="640" height="480">
+	  </a>
+	  <div class="desc">LRU expired</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/usersessidcache_plot_miss.png">
+	    <img src="graphs/usersessidcache_plot_miss.png" alt="miss" width="640" height="480">
+	  </a>
+	  <div class="desc">miss</div>
+	</div>
+      </div>
+      
+      <div id="vhj" class="stats">
+	<div><h2>Virtual host junctions </h2></div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj1_plot_average_time.png">
+	    <img src="graphs/vhj1_plot_average_time.png" alt="vhj1 average time" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj1 average time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj1_plot_max_time.png">
+	    <img src="graphs/vhj1_plot_max_time.png" alt="vhj1 max time" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj1 max time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj1_plot_reqs.png">
+	    <img src="graphs/vhj1_plot_reqs.png" alt="vhj1 reqs" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj1 reqs</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj1_plot_resp.png">
+	    <img src="graphs/vhj1_plot_resp.png" alt="vhj1 resp" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj1 resp</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj1_plot_total_time.png">
+	    <img src="graphs/vhj1_plot_total_time.png" alt="vhj1 total time" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj1 total time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj1_plot_tput.png">
+	    <img src="graphs/vhj1_plot_tput.png" alt="vhj1 tput" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj1 tput</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj2_plot_average_time.png">
+	    <img src="graphs/vhj2_plot_average_time.png" alt="vhj2 average time" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj2 average time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj2_plot_max_time.png">
+	    <img src="graphs/vhj2_plot_max_time.png" alt="vhj2 max time" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj2 max time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj2_plot_reqs.png">
+	    <img src="graphs/vhj2_plot_reqs.png" alt="vhj2 reqs" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj2 reqs</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj2_plot_resp.png">
+	    <img src="graphs/vhj2_plot_resp.png" alt="vhj2 resp" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj2 resp</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj2_plot_total_time.png">
+	    <img src="graphs/vhj2_plot_total_time.png" alt="vhj2 total time" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj2 total time</div>
+	</div>
+	<div class="gallery">
+	  <a target="_blank" href="graphs/vhj2_plot_tput.png">
+	    <img src="graphs/vhj2_plot_tput.png" alt="vhj2 tput" width="640" height="480">
+	  </a>
+	  <div class="desc">vhj2 tput</div>
+	</div>
+
+      </div>
+      
+    </section>
+    
+    <footer>
+      Generated 2019-03-10 Using IBM Performance Stats Grapher v1.0
+    </footer>
+  </body>
+</html>

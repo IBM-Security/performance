@@ -1,0 +1,52 @@
+#Author. Denis K. Sokolov and Connor R. Pokorny 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of authn.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling and format
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set mxtics
+set mytics
+set grid
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Authentications"
+set title "Authentication Performance"
+set key rmargin
+
+#sets output files and plots data to them respectively
+set terminal png enhanced size 1280,1024
+set output outputfile."_plot_fail.png"
+plot datafile index 0 every ::2 using 1:3 with lines linewidth 2 linetype rgb "blue" title "Fail"
+
+set output outputfile."_plot_pass.png"
+plot datafile index 0 every ::2 using 1:2 with lines linewidth 2 linetype rgb "blue" title "Pass"
+
+set output outputfile."_plot_pwd_exp.png"
+plot datafile index 0 every ::2 using 1:4 with lines linewidth 2 linetype rgb "blue" title "Pwd Exp"
+
+#change ylabel to seconds to account for time data
+set ylabel "Performance (seconds)"
+
+#outputs time statistics authn plots to respective files
+set output outputfile."_plot_max_time.png"
+plot datafile index 0 every ::2 using 1:5 with lines linewidth 2 linetype rgb "blue" title "Max"
+
+set output outputfile."_plot_avg_time.png"
+plot datafile index 0 every ::2 using 1:6 with lines linewidth 2 linetype rgb "blue" title "Avg"
+
+set output outputfile."_plot_total_time.png"
+plot datafile index 0 every ::2 using 1:7 with lines linewidth 2 linetype rgb "blue" title "Total"
+
+set ylabel "Authentications/second"
+set output outputfile."_plot_tput.png"
+plot datafile index 0 every ::2 using 1:8 with lines linewidth 2 linetype rgb "blue" title "Throughput"
+
+set ylabel "Response time (seconds)"
+set output outputfile."_plot_resp.png"
+plot datafile index 0 every ::2 using 1:9 with lines linewidth 2 linetype rgb "blue" title "Response Time"

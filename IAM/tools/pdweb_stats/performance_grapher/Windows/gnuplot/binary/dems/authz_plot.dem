@@ -1,0 +1,27 @@
+#Author. Connor R. Pokorny and Denis Sokolov 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of authz.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set nomxtics
+set nomytics
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Authorizations"
+set title "Authorization Performance"
+set key left
+
+#plots the data (using 0 gives an index that increases per line)
+plot 'gnudata' using 0:3 with lines linewidth 2 title "Fail", 'gnudata' using 0:2 with lines linewidth 2 title "Pass"
+
+#outputs gnuplot to png file
+set terminal png enhanced size 1280,1024
+set output "authz_plot.png"
+replot

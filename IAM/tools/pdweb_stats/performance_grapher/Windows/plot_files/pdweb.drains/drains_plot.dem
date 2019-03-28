@@ -1,0 +1,52 @@
+#Author. Denis K. Sokolov and Connor R. Pokorny 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of drains.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set mxtics
+set mytics
+set grid
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Drains Stats"
+set title "Drains Performance"
+set key rmargin
+
+#sets output files and plots respective data to them
+set terminal png enhanced size 1280,1024
+set output "drains_plot_failed_closes.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:3 with lines linewidth 2 linetype rgb "blue" title "Failed closes"
+
+set output "drains_plot_max_draining_FDs.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:2 with lines linewidth 2 linetype rgb "blue" title "Max draining FDs"
+
+set output "drains_plot_failed_selects.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:4 with lines linewidth 2 linetype rgb "blue" title "failed selects"
+
+set output "drains_plot_FDs_closed_HIWAT.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:5 with lines linewidth 2 linetype rgb "blue" title "FDs closed HIWAT"
+
+set output "drains_plot_FDs_closed_FLOOD.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:6 with lines linewidth 2 linetype rgb "blue" title "FDs closed FLOOD"
+
+set output "drains_plot_timed_out_FDs.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:7 with lines linewidth 2 linetype rgb "blue" title "timed-out FDs"
+
+set output "drains_plot_idle_awakenings.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:8 with lines linewidth 2 linetype rgb "blue" title "idle awakenings"
+
+set output "drains_plot_bytes_drained.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:9 with lines linewidth 2 linetype rgb "blue" title "bytes drained"
+
+set output "drains_plot_drained_FDs.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:10 with lines linewidth 2 linetype rgb "blue" title "drained FDs"
+
+set output "drains_plot_average_bytes_drained.png"
+plot 'plot_files/pdweb.drains/gnudata' index 0 every ::2 using 1:11 with lines linewidth 2 linetype rgb "blue" title "avg bytes drained"

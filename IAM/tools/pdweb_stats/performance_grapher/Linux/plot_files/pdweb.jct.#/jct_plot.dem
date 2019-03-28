@@ -1,0 +1,59 @@
+#Author. Denis K. Sokolov and Connor R. Pokorny 7/2010 Dave Bachmann 3/2019 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of jct.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set mxtics
+set mytics
+set grid
+
+# get list of junctions from datafile
+junction_list=system("awk '/:/{print $2 \":\" $3}' ".datafile." | sort -u")
+
+do for [i=1:words(junction_list)] {
+
+  needle = ":"
+  S = strstrt(word(junction_list,i),needle)
+  junction_num = word(junction_list,i)[1:S-1]
+  junction_name = word(junction_list,i)[S+1:]
+
+  #label axes, title, and legend
+  set xlabel "Time"  
+  set ylabel "Reqs"
+  set title "Junction Performance: ".junction_name
+  set key rmargin
+
+  #sets reqs output file and plots reqs data to it
+  set terminal png enhanced size 1280,1024
+  set output outputfile.junction_num[5:]."_plot_reqs.png"
+  plot "< grep ".junction_num." ".datafile using 1:4 index 0 with lines linewidth 2 linetype rgb "blue" title "reqs"
+
+  #change ylabel for seconds data
+  set ylabel "Performance (seconds)"
+
+  #plots max and average data on respective graphs
+  set output outputfile.junction_num[5:]."_plot_max_time.png"
+  plot "< grep ".junction_num." ".datafile using 1:5 index 0 with lines linewidth 2 linetype rgb "blue" title "max"
+
+  set output outputfile.junction_num[5:]."_plot_average_time.png"
+  plot "< grep ".junction_num." ".datafile using 1:6 index 0 with lines linewidth 2 linetype rgb "blue" title "average"
+
+  #plots total time data
+  set output outputfile.junction_num[5:]."_plot_total_time.png"
+  plot "< grep ".junction_num." ".datafile using 1:7 index 0 with lines linewidth 2 linetype rgb "blue" title "total"
+
+  set ylabel "Requests/second"
+  set output outputfile.junction_num[5:]."_plot_tput.png"
+  plot "< grep ".junction_num." ".datafile using 1:8 index 0 with lines linewidth 2 linetype rgb "blue" title "throughput"
+
+  set ylabel "Response time (seconds)"
+  set output outputfile.junction_num[5:]."_plot_resp.png"
+  plot "< grep ".junction_num." ".datafile using 1:9 index 0 with lines linewidth 2 linetype rgb "blue" title "response Time"
+
+}

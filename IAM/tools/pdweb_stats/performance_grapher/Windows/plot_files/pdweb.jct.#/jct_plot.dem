@@ -1,0 +1,39 @@
+#Author. Denis K. Sokolov and Connor R. Pokorny 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of jct.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set mxtics
+set mytics
+set grid
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Reqs"
+set title "Junction Performance: superHOUSE610"
+set key rmargin
+
+#sets reqs output file and plots reqs data to it
+set terminal png enhanced size 1280,1024
+set output "output_Wed_Dec-8-2010_0H56M32S_graphs/pdweb_jct/superHOUSE610/superHOUSE610_jct_plot_reqs.png"
+plot 'plot_files/pdweb.jct.#/gnudata' every ::2 using 1:2 index 0 with lines linewidth 2 linetype rgb "blue" title "reqs"
+
+#change ylabel for seconds data
+set ylabel "Performance (seconds)"
+
+#plots max and average data on respective graphs
+set output "output_Wed_Dec-8-2010_0H56M32S_graphs/pdweb_jct/superHOUSE610/superHOUSE610_jct_plot_max_time.png"
+plot 'plot_files/pdweb.jct.#/gnudata' every ::2 using 1:3 index 0 with lines linewidth 2 linetype rgb "blue" title "max"
+
+set output "output_Wed_Dec-8-2010_0H56M32S_graphs/pdweb_jct/superHOUSE610/superHOUSE610_jct_plot_average_time.png"
+plot 'plot_files/pdweb.jct.#/gnudata' every ::2 using 1:4 index 0 with lines linewidth 2 linetype rgb "blue" title "average"
+
+#plots total time data
+set output "output_Wed_Dec-8-2010_0H56M32S_graphs/pdweb_jct/superHOUSE610/superHOUSE610_jct_plot_total_time.png"
+plot 'plot_files/pdweb.jct.#/gnudata' every ::2 using 1:5 index 0 with lines linewidth 2 linetype rgb "blue" title "total"

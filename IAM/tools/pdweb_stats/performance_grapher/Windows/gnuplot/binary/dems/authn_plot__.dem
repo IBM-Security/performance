@@ -1,0 +1,28 @@
+#Author. Connor R. Pokorny and Denis Sokolov 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of authn.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set mxtics
+set mytics
+set grid
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Authentications"
+set title "Authentication Performance"
+set key left
+
+#plots the data (using 0 gives an index that increases per line)
+plot 'gnudata' every ::2 index 0 using 1:3 with lines title "Fail", 'gnudata' every ::2 index 0 using 1:2 with lines title "Pass", 'gnudata' every ::2 index 0 using 1:4 with lines title "Pwd Exp", 'gnudata' every ::2 index 0 using 1:5 with lines title "Max", 'gnudata' every ::2 index 0 using 1:6 with lines title "Avg"
+
+#outputs gnuplot to jpeg file
+set terminal png enhanced size 1280,1024
+set output "authn_plot.png"
+replot 

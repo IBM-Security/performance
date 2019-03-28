@@ -1,0 +1,27 @@
+#Author. Connor R. Pokorny and Denis Sokolov 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of certcallbackcache.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set nomxtics
+set nomytics
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Certcallbackcache Stats"
+set title "Certcallbackcache Performance"
+set key rmargin
+
+#plots the data (using 0 gives an index that increases per line)
+plot 'gnudata' every ::2 index 0 using 1:3 with lines title "Miss", 'gnudata' every ::2 index 0 using 1:2 with lines title "Hit", 'gnudata' every ::2 index 0 using 1:4 with lines title "Add", 'gnudata' every ::2 index 0 using 1:5 with lines title "Del", 'gnudata' every ::2 index 0 using 1:6 with lines title "Inactive", 'gnudata' every ::2 index 0 using 1:7 with lines title "Lifetime", 'gnudata' every ::2 index 0 using 1:8 with lines title "LRU expired"
+
+#outputs gnuplot to png file
+set terminal png enhanced size 1280,1024
+set output "certcallbackcache_plot.png"
+replot 

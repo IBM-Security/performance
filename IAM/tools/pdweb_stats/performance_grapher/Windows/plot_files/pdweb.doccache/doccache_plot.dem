@@ -1,0 +1,73 @@
+#Author. Denis K. Sokolov and Connor R. Pokorny 7/2010 IBM
+#This is a gnu script that will plot the performance stats on gnuplot
+#using the output of doccache.pl (a perl script) as input (i.e. gnudata)
+
+#set scaling
+set autoscale
+set xtic rotate by -90
+set xdata time
+set timefmt "%m-%d-%H:%M:%S"
+set format x "%m-%d-%H:%M:%S"
+set ytic auto
+set mxtics
+set mytics
+set grid
+
+#label axes, title, and legend
+set xlabel "Time"  
+set ylabel "Doccache Stats"
+set title "Doccache Performance"
+set key rmargin
+
+#sets output files and plots respective data to them
+set terminal png enhanced size 1280,1024
+set output "doccache_plot_general_errors.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:2 index 0 with lines linewidth 2 linetype rgb "blue" title "General Errors"
+
+set output "doccache_plot_uncachable.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:3 index 0 with lines linewidth 2 linetype rgb "blue" title "Uncachable"
+
+set output "doccache_plot_pending_deletes.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:4 index 0 with lines linewidth 2 linetype rgb "blue" title "Pending Deletes"
+
+set output "doccache_plot_pending_size.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:5 index 0 with lines linewidth 2 linetype rgb "blue" title "Pending Size"
+
+set output "doccache_plot_misses.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:6 index 0 with lines linewidth 2 linetype rgb "blue" title "Misses"
+
+set output "doccache_plot_size.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:11 index 0 with lines linewidth 2 linetype rgb "blue" title "Size"
+
+set output "doccache_plot_count.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:12 index 0 with lines linewidth 2 linetype rgb "blue" title "Count"
+
+set output "doccache_plot_hits.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:13 index 0 with lines linewidth 2 linetype rgb "blue"title "Hits"
+
+set output "doccache_plot_stale_hits.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:14 index 0 with lines linewidth 2 linetype rgb "blue"title "Stale Hits"
+
+set output "doccache_plot_create_waits.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:15 index 0 with lines linewidth 2 linetype rgb "blue"title "Create Waits"
+
+set output "doccache_plot_cache_no_room.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:16 index 0 with lines linewidth 2 linetype rgb "blue" title "Cache no room"
+
+set output "doccache_plot_additions.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:17 with lines linewidth 2 linetype rgb "blue"title "Additions"
+
+set output "doccache_plot_aborts.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:18 index 0 with lines linewidth 2 linetype rgb "blue" title "Aborts"
+
+set output "doccache_plot_deletes.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:19 index 0 with lines linewidth 2 linetype rgb "blue" title "Deletes"
+
+set output "doccache_plot_updates.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:20 with lines linewidth 2 linetype rgb "blue" title "Updates"
+
+set output "doccache_plot_too_big_errors.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:21 with lines linewidth 2 linetype rgb "blue" title "Too big errors"
+
+set output "doccache_plot_MT_errors.png"
+plot 'plot_files/pdweb.doccache/gnudata' every ::2 using 1:22 with lines linewidth 2 linetype rgb "blue" title "MT errors"

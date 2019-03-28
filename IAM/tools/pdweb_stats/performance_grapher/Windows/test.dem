@@ -1,0 +1,8 @@
+set y2tics 0, 0.3
+set ytics nomirror
+
+#sets output files and plots respective data to them
+set terminal png enhanced size 1280,1024
+set output "test_plot.png"
+plot x**2 axis x1y1, \
+sin(x) axis x1y2
