@@ -9,3 +9,5 @@ This directory contains various useful tools for analyzing data such as javacore
 #### [Javacore analysis tools](javacores)
 
 #### [pstack analysis tools](pstacks)
+
+#### [pdweb statistics analysis tools](pdweb_stats)
