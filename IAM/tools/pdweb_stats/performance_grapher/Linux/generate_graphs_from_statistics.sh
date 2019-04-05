@@ -79,7 +79,7 @@ summary=${output_dir}/graphs.html
 cp report_generator/report_head.html ${summary}
 ls ${output_dir}/graphs | awk -f report_generator/gen_topnav.awk >> ${summary}
 ls ${output_dir}/graphs | awk -f report_generator/gen_sections.awk >> ${summary}
-cat report_generator/report_footer.html >> ${summary}
+date +%Y-%m-%d| awk -f report_generator/gen_footer.awk >> ${summary}
 
 # if exists logs/jct_1.log perl plot_files/pdweb.jct.#/jct.pl
 # if exists logs/vhj_1.log perl plot_files/pdweb.vhj.#/vhj.pl
