@@ -20,8 +20,11 @@
 
 $stat_num = 0;		#keeps track of which stat is being parsed
 @prev_nums = (0, 0);	#keeps previous stat values so that the difference can be calculated
+@deltas = (0, 0);	#save calculated differences
+$prev_time = 0;
+$prev_interval = 0;
 
-$file = "Time\tPass\tFail"; 				#organize gnudata columns
+$file = "Time\tPass\tFail\tTput"; 				#organize gnudata columns
 open (MYFILE, $ARGV[0]) || die("Cannot Open File");	#open input file
 
 while (<MYFILE>) 			#while file is non-empty
@@ -33,6 +36,7 @@ while (<MYFILE>) 			#while file is non-empty
  		$temp = $data;
 		$data = $data - $prev_nums[$stat_num];	#get difference
 		$prev_nums[$stat_num] = $temp;		#hold previous data
+		$deltas[$stat_num] = $data;		#remember difference
 		$file=$file."\t".$data;			#add relevant data to file
 		$stat_num = ($stat_num + 1) % 2;	#update to next stat
  	}
@@ -41,7 +45,32 @@ while (<MYFILE>) 			#while file is non-empty
  		if(/.*(..-..-..:..:..).*pdweb.authz.*/)
  		{
  			$time = $1;			#take down the time of next data set
+ 			$time =~ /..-..-(..):(..):(..)/;
+ 			# calculate deltas, throughput, response time for interval
+ 			$hours = $1;
+ 			$minutes = $2;
+ 			$seconds = $3;
+ 			$since_midnight = 3600 * $hours + 60 * $minutes + $seconds;	#add seconds from hours, mins, and secs
+ 			if ($prev_interval > 0) {
+ 				if (($deltas[0] + $deltas[1]) > 0) {
+ 					$tput = sprintf("%.3f", ($deltas[0] + $deltas[1]) / $prev_interval);
+ 					$file = $file."\t".$tput;
+ 				} else {
+ 					$file = $file."\t0";
+ 				}
+ 			}
+ 			if ($prev_time > 0) {
+ 				if ($prev_interval == 0) {
+  					$file = $file."\t0";
+				}
+ 				$prev_interval = $since_midnight - $prev_time;
+ 				if ($prev_interval < 0) {
+ 					$prev_interval += 3600 * 24;
+ 				}
+ 			}
+ 			$prev_time = $since_midnight;
  			$file = $file."\n".$time;	#add the time to the output file
+ 			$stat_num = 0;			#protects against bad index caclulation when new stats appear
  		}
  		elsif(/.*pdweb.(.*) stat.*/)
  		{
