@@ -14,6 +14,7 @@
 
 #### IBM Security Identity Governance and Intelligence
 
+[IBM Security Identity Governance and Intelligence v5.2.5 Performance Tuning Guide](IGIv525PTG_2019-04-08.pdf) is also published at http://www-01.ibm.com/support/docview.wss?uid=ibm10880283
 [IBM Security Identity Governance and Intelligence v5.2.3 Performance Tuning Guide](IGIv523FP1PTG_2017-11-01.pdf) is also published at http://www-01.ibm.com/support/docview.wss?uid=swg27050278
 
 #### IBM Security Identity Manager
