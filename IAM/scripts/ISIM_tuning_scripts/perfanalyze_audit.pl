@@ -2,7 +2,9 @@
 
 # perfanalyze_audit.pl
 # Author: Casey Peel (cpeel@us.ibm.com)
-# Last Updated: 2015/05/03 2117 CDT
+# CoAuthor: Dave Bachmann (bachmann@us.ibm.com)
+# CoAuthor: Nnaemeka Emejulu (eemejulu@us.ibm.com)
+# Last Updated: 2019/05/024 1634 CDT
 # Summary:
 #    Analyzes IBM Tivoli Directory Server audit logs and SunONE access logs
 # Description:
@@ -376,14 +378,19 @@ sub processITDSStanza {
    if($stanza=~/$timeRegex631/) {
       if($baseTimeString ne $5) {
          $baseTimeString=$5;
-         my($year,$month,$day,$hour)=split("-", $baseTimeString);
+        
+         my($year,$month,$dayThour)=split("-", $baseTimeString);
+         my($day,$hour)=split("T", $dayThour);
          $baseTime=mktime(0,0,$hour,$day,$month,$year-1900);
       }
       $startTime=$baseTime+($6*60)+$7+$8;
 
       if($baseTimeString ne $1) {
          $baseTimeString=$1;
-         my($year,$month,$day,$hour)=split("-", $baseTimeString);
+         #my($year,$month,$day,$hour)=split("-", $baseTimeString);
+         #$baseTime=mktime(0,0,$hour,$day,$month,$year-1900);
+         my($year,$month,$dayThour)=split("-", $baseTimeString);
+         my($day,$hour)=split("T", $dayThour);
          $baseTime=mktime(0,0,$hour,$day,$month,$year-1900);
       }
       $time=($baseTime+($2*60)+$3+$4) - $startTime;
