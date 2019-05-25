@@ -6,7 +6,7 @@
 #         Ray Pekowski (pekowski@us.ibm.com)
 #         Emeka Emejulu (eemejulu@us.ibm.com)
 #         Lidor Goren (lidor@us.ibm.com)
-# Last Updated: 2015/2/4
+# Last Updated: 2019/05/24
 # Desription:
 #   Shell script to run the db2 runstats command on one or more tables
 #   for a given database and schema. It autodetects the db2 version using
@@ -39,12 +39,8 @@
 # Date: 2015/2/4  By: Lidor Goren (lidor@us.ibm.com)
 # restored code to Bourne-shell compatibility (to insure /bin/sh will always work, even on Solaris)
 #######
-# Date 2017/04/04 By: Nnaemeka Emejulu (eemejulu@us.ibm.com)
-# added modification to runstats options for ISDS versions 6.3.1 and later.
-# removed references to RAPM DB
-# Date 2018/06/18 By: Nnaemeka Emejulu (eemejulu@us.ibm.com)
-#Updated do_card_tunings_for_table function
-
+# Date 2019/04/30
+#Removed DB Auth so that the user can specify table
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
 SCRIPTDIR=`dirname $0`
@@ -53,7 +49,8 @@ SCRIPTPATH=`cd $SCRIPTDIR;pwd`
 # If the database requires authentication passed into the
 # "db2 connect to DB" command, set it here
 #DBAUTH="USER username USING password"
-DBAUTH=
+#If authentication is needed, then one can set DBAUTH using environment variable.
+#DBAUTH=
 
 # Limit runstats to only run on tables with fewer than a specific number
 # of rows. To run on all tables, set TABLE_SIZE_LIMIT to 0
@@ -98,9 +95,11 @@ else
 fi
 
 # See if someone passed in DBAUTH as well
-if [ $# -gt 0 ]; then
-  DBAUTH=$*
-fi
+#if [ $# -gt 0 ]; then
+ # DBAUTH=$*
+#fi
+#If authentication is needed, then one can set DBAUTH using environment variable.
+
 
 # ensure that the schema is uppercase
 SCHEMA=`echo $SCHEMA | tr '[:lower:]' '[:upper:]'`
@@ -135,14 +134,14 @@ db2 connect to $DATABASE $DBAUTH
 # if we failed to connect to the database, bail
 if [ $? -ne 0 ]; then
    echo
-   echo "ERROR:"
-   echo "Unable to connect to database" $DATABASE "the following databases are"
-   echo "in the database directory for this system"
+   echo ERROR:
+   echo Unable to connect to database $DATABASE the following databases are
+   echo in the database directory for this system
    db2 list database directory | grep "Database name" | sort -u
    exit
 fi
 
-#Identify any special-case databases
+# Identify any special-case databases
 ## IBM Tivoli Directory Server
 IS_ITDS=`db2 connect to $DATABASE $DBAUTH > /dev/null;
    db2 -x "select count(*) from SYSSTAT.TABLES where TABSCHEMA = '$SCHEMA' and TABNAME='LDAP_ENTRY'"`
@@ -188,16 +187,10 @@ if [ $IS_ITDS -eq 1 ]; then
        echo "Will NOT inflate LDAP_DESC and LDAP_ENTRY cardinality.."
    fi
 
-   # Database Runstats Tuning Options
-   # For ISDS versions 6.3 and earlier, there is no need for "on all columns" or "detailed" indexes as ISDS uses
+   # change the database tuning options
+   # Note: no need for "on all columns" or "detailed" indexes as ITDS uses
    # parameterized query markers.
-   # For ISDS versions 6.3.1 and later, query markers are no longer used in descendant table, literal values are used
-   # if compare eq 0 (false) use trimmed options
-   if [ `$SCRIPTPATH/compare_versions.pl $ITDS_VERSION 6.3.1` -eq 1 ]; then
-      OPTIONS="on all columns with distribution and detailed indexes all"
-   elif [ `$SCRIPTPATH/compare_versions.pl $ITDS_VERSION 6.3.1` -eq 0 ]; then
-      OPTIONS="and indexes all"
-   fi
+   OPTIONS="and indexes all"
 
    ## IBM Tivoli Access Manager
    # TAM services within ITIM make use of the secAuthority attribute so we
@@ -215,12 +208,20 @@ if [ $IS_ITDS -eq 1 ]; then
       fi
    fi
 fi
-## IBM Security Identity Manager
+## Tivoli Identity Manager
 IS_ITIM=`db2 connect to $DATABASE $DBAUTH > /dev/null;
    db2 -x "select count(*) from SYSSTAT.TABLES where TABSCHEMA = '$SCHEMA' and (TABNAME='ERPARENT' or TABNAME='PROCESSLOG')"`
 if [ $IS_ITIM -eq 1 ]; then
-   echo Detected IBM Security Identity Manager product
+   echo Detected IBM Tivoli Identity Manager product
    PRODUCT="ITIM"
+fi
+
+## Role and Policy Modeler
+IS_RAPM=`db2 connect to $DATABASE $DBAUTH > /dev/null;
+   db2 -x "select count(*) from SYSSTAT.TABLES where TABSCHEMA = '$SCHEMA' and (TABNAME='ROLE_HIERARCHY' or TABNAME='IMPORT_MESSAGES')"`
+if [ $IS_RAPM -eq 1 ]; then
+   echo Detected IBM Security Role and Policy Modeler product
+   PRODUCT="RAPM"
 fi
 
 export OPTIONS PRODUCT
@@ -308,19 +309,23 @@ do_card_tunings_for_table() {
       CUSTOM_CARD=50000
    fi
 
-if [ "x$CUSTOM_CARD" != "x" ]; then
+# RAPM DB tables
+   if [ $TABLE = 'IMPORT_MESSAGES' ]; then
+      CUSTOM_CARD=50000
+   fi
+
+   if [ "x$CUSTOM_CARD" != "x" ]; then
       echo "   updating cardinality if it is < $CUSTOM_CARD (SQL0100Ws can be safely ignored)"
       db2 "update SYSSTAT.TABLES SET CARD = $CUSTOM_CARD where TABNAME = '$TABLE' AND CARD < $CUSTOM_CARD"
    fi
 }
 
-
 # print out some useful header information
 echo
 if [ "x$TABLES" = "x" ]; then
-   echo "Performing runstats on all tables for schema" $SCHEMA
+   echo Performing runstats on all tables for schema $SCHEMA
 else
-   echo "Performing runstats on tables:" $TABLES "for schema" $SCHEMA
+   echo Performing runstats on tables: $TABLES for schema $SCHEMA
 fi
 echo "   with options: $OPTIONS $ACCESS"
 if [ $TABLE_SIZE_LIMIT -gt 0 ]; then
