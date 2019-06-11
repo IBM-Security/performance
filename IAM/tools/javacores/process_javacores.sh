@@ -4,6 +4,11 @@ if [ $# -lt 1 ]; then
    exit
 fi
 
+if [ ! -f $1/javacore*.txt ]; then
+   echo no javacores found in $1
+   exit
+fi
+
 PROG_DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
 for sourcefile in `ls $1/javacore*.txt`
