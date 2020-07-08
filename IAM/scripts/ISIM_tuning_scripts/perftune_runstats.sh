@@ -6,7 +6,7 @@
 #         Ray Pekowski (pekowski@us.ibm.com)
 #         Emeka Emejulu (eemejulu@us.ibm.com)
 #         Lidor Goren (lidor@us.ibm.com)
-# Last Updated: 2019/05/24
+# Last Updated: 2020/01/07
 # Desription:
 #   Shell script to run the db2 runstats command on one or more tables
 #   for a given database and schema. It autodetects the db2 version using
@@ -17,8 +17,8 @@
 #   has connect and runstats abilities and permissions).
 #
 # ./perftune_runstats.sh [DATABASE [SCHEMA [TABLES]]]
-#    DATABASE = database to run against (optional - default ldapdb2)
-#      SCHEMA = schema to run against (optional - default LDAPDB2)
+#    DATABASE = database to run against 
+#      SCHEMA = schema to run against 
 #      TABLES = list of tables to run against, if none are given, all
 #               tables are processed
 #
@@ -39,18 +39,22 @@
 # Date: 2015/2/4  By: Lidor Goren (lidor@us.ibm.com)
 # restored code to Bourne-shell compatibility (to insure /bin/sh will always work, even on Solaris)
 #######
-# Date 2019/04/30
+# Date: 2019/04/30
 #Removed DB Auth so that the user can specify table
+#######
+# Date: 2019/11/04
+# Added support for latest DB2 versions
+#######
+# Date: 2020/01/06
+# Updated usage statement, removed default values for DB and SCHEMA, removed DBAUTH references 
+#######
+# Date 2020/07/08
+# Updated OPTIONS for SDS to always use "on all columns with distribution and detailed indexes all"
+######
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
 SCRIPTDIR=`dirname $0`
 SCRIPTPATH=`cd $SCRIPTDIR;pwd`
-
-# If the database requires authentication passed into the
-# "db2 connect to DB" command, set it here
-#DBAUTH="USER username USING password"
-#If authentication is needed, then one can set DBAUTH using environment variable.
-#DBAUTH=
 
 # Limit runstats to only run on tables with fewer than a specific number
 # of rows. To run on all tables, set TABLE_SIZE_LIMIT to 0
@@ -80,26 +84,26 @@ shift `expr $OPTIND - 1`
 
 [ "$1" = "--" ] && shift
 
+func_usage ()
+{
+echo "perftune_runstats.sh DATABASE SCHEMA [TABLES]
+The user invoking this script should have both connect and runstats abilities/permissions.
+DATABASE = database to run against 
+SCHEMA   = schema to run against
+TABLES   = list of tables to run against, if none are given, all tables are processed
+Note: DATABASE and SCHEMA are required and TABLES is an optional parameter."
+}
+
 # Detect arguments DATABASE and SCHEMA
-if [ $# -gt 1 ]; then
+if [ $# -lt 2 ]; then
+  func_usage
+  exit
+else
   DATABASE=$1
   SCHEMA=$2
   shift; shift
-elif [ $# -gt 0 ]; then
-  DATABASE=$1
-  SCHEMA=LDAPDB2
-  shift
-else
-  DATABASE=ldapdb2
-  SCHEMA=LDAPDB2
-fi
-
-# See if someone passed in DBAUTH as well
-#if [ $# -gt 0 ]; then
- # DBAUTH=$*
-#fi
-#If authentication is needed, then one can set DBAUTH using environment variable.
-
+  echo database is $DATABASE and schema name is $SCHEMA. 
+  fi
 
 # ensure that the schema is uppercase
 SCHEMA=`echo $SCHEMA | tr '[:lower:]' '[:upper:]'`
@@ -109,27 +113,29 @@ if [ $# -gt 0 ]; then
   TABLES=$*
 fi
 
-export DATABASE DBAUTH SCHEMA TABLES TABLE_SIZE_LIMIT TEMP_FILE
+export DATABASE SCHEMA TABLES TABLE_SIZE_LIMIT TEMP_FILE
 
 # Default options for runstats command
 OPTIONS="on all columns with distribution and detailed indexes all"
 
 # Find out DB2 version for runstats syntax
-if db2level | grep "DB2 v7" > /dev/null; then
-   echo Detected DB2 major version 7
-   ACCESS="shrlevel change"
-elif db2level | grep "DB2 v8" > /dev/null; then
-   echo Detected DB2 major version 8
-   ACCESS="allow write access"
-elif db2level | grep "DB2 v9" > /dev/null; then
+if db2level | grep "DB2 v9" > /dev/null; then
    echo Detected DB2 major version 9
    ACCESS="allow write access"
+elif db2level | grep "DB2 v10" > /dev/null; then
+   echo Detected DB2 major version 10
+   ACCESS="allow write access"
+elif db2level | grep "DB2 v11" > /dev/null; then
+   echo Detected DB2 major version 11
+   ACCESS="allow write access"
+else 
+   echo "Unsupported DB2 level detected, use at your own risk!"
 fi
 export ACCESS
 
 # Connect to the database
-echo Connecting to $DATABASE $DBAUTH
-db2 connect to $DATABASE $DBAUTH
+echo Connecting to $DATABASE 
+db2 connect to $DATABASE 
 
 # if we failed to connect to the database, bail
 if [ $? -ne 0 ]; then
@@ -142,85 +148,85 @@ if [ $? -ne 0 ]; then
 fi
 
 # Identify any special-case databases
-## IBM Tivoli Directory Server
-IS_ITDS=`db2 connect to $DATABASE $DBAUTH > /dev/null;
+## IBM security Directory Server
+IS_ISDS=`db2 connect to $DATABASE > /dev/null;
    db2 -x "select count(*) from SYSSTAT.TABLES where TABSCHEMA = '$SCHEMA' and TABNAME='LDAP_ENTRY'"`
-if [ $IS_ITDS -eq 1 ]; then
-   echo Detected IBM Tivoli Directory Server database
-   # Get ITDS version and environment variables to determine whether we'll inflate certain table cardinalities
+if [ $IS_ISDS -eq 1 ]; then
+   echo Detected IBM Security Directory Server database
+   # Get ISDS version and environment variables to determine whether we'll inflate certain table cardinalities
    if [ "$USER" = "" ]; then
        USER_SELECT=""
    else
        USER_SELECT="-u $USER"
    fi
-   ITDS_VERSION=`$SCRIPTPATH/get_ids_instance_info.pl -q -o "version" $USER_SELECT`
+   ISDS_VERSION=`$SCRIPTPATH/get_ids_instance_info.pl -q -o "version" $USER_SELECT`
    if [ $? -ne 0 ]; then
-       echo ERROR: Could not determine ITDS version >&2
+       echo ERROR: Could not determine ISDS version >&2
        exit
    fi
-   echo ITDS Version $ITDS_VERSION
+   echo ISDS Version $ISDS_VERSION
    echo "USER_SELECT=$USER_SELECT"
-   ITDS_ENV_LDAP_MAXCARD=`$SCRIPTPATH/get_ids_instance_info.pl -q -o "env:LDAP_MAXCARD" $USER_SELECT`
-   ITDS_ENV_IBMSLAPD_USE_SELECTIVITY=`$SCRIPTPATH/get_ids_instance_info.pl -q -o "env:IBMSLAPD_USE_SELECTIVITY" $USER_SELECT`
+   ISDS_ENV_LDAP_MAXCARD=`$SCRIPTPATH/get_ids_instance_info.pl -q -o "env:LDAP_MAXCARD" $USER_SELECT`
+   ISDS_ENV_IBMSLAPD_USE_SELECTIVITY=`$SCRIPTPATH/get_ids_instance_info.pl -q -o "env:IBMSLAPD_USE_SELECTIVITY" $USER_SELECT`
    if [ $? -ne 0 ]; then
-       echo ERROR: Could not read ITDS configuration environment variables >&2
+       echo ERROR: Could not read ISDS configuration environment variables >&2
        exit
    fi
-   echo "LDAP_MAXCARD=$ITDS_ENV_LDAP_MAXCARD"
-   echo "IBMSLAPD_USE_SELECTIVITY=$ITDS_ENV_IBMSLAPD_USE_SELECTIVITY"
-   if [ $ITDS_ENV_LDAP_MAXCARD = 'YES' ]; then
-       ITDS_INFLATE_LDAP_CARD=1
-   elif [ $ITDS_ENV_LDAP_MAXCARD = 'ONCE' ]; then
-       ITDS_INFLATE_LDAP_CARD=1
-   elif [ $ITDS_ENV_LDAP_MAXCARD = 'NO' ]; then
-       ITDS_INFLATE_LDAP_CARD=0
-   elif [ `$SCRIPTPATH/compare_versions.pl $ITDS_VERSION 6.3.1` -eq 1 ]; then
-       ITDS_INFLATE_LDAP_CARD=0
-   elif [ $ITDS_ENV_IBMSLAPD_USE_SELECTIVITY = 'YES' ]; then
-       ITDS_INFLATE_LDAP_CARD=0
+   echo "LDAP_MAXCARD=$ISDS_ENV_LDAP_MAXCARD"
+   echo "IBMSLAPD_USE_SELECTIVITY=$ISDS_ENV_IBMSLAPD_USE_SELECTIVITY"
+   if [ $ISDS_ENV_LDAP_MAXCARD = 'YES' ]; then
+       ISDS_INFLATE_LDAP_CARD=1
+   elif [ $ISDS_ENV_LDAP_MAXCARD = 'ONCE' ]; then
+       ISDS_INFLATE_LDAP_CARD=1
+   elif [ $ISDS_ENV_LDAP_MAXCARD = 'NO' ]; then
+       ISDS_INFLATE_LDAP_CARD=0
+   elif [ `$SCRIPTPATH/compare_versions.pl $ISDS_VERSION 6.3.1` -eq 1 ]; then
+       ISDS_INFLATE_LDAP_CARD=0
+   elif [ $ISDS_ENV_IBMSLAPD_USE_SELECTIVITY = 'YES' ]; then
+       ISDS_INFLATE_LDAP_CARD=0
    else
-       ITDS_INFLATE_LDAP_CARD=1
+       ISDS_INFLATE_LDAP_CARD=1
    fi
-   if [ $ITDS_INFLATE_LDAP_CARD -eq 1 ]; then
+   if [ $ISDS_INFLATE_LDAP_CARD -eq 1 ]; then
        echo "Will inflate LDAP_DESC and LDAP_ENTRY cardinality.."
    else
        echo "Will NOT inflate LDAP_DESC and LDAP_ENTRY cardinality.."
    fi
 
    # change the database tuning options
-   # Note: no need for "on all columns" or "detailed" indexes as ITDS uses
+   # Note: no need for "on all columns" or "detailed" indexes as ISDS uses
    # parameterized query markers.
-   OPTIONS="and indexes all"
+   OPTIONS="on all columns with distribution and detailed indexes all"
 
-   ## IBM Tivoli Access Manager
-   # TAM services within ITIM make use of the secAuthority attribute so we
+   ## IBM Security Access Manager
+   # ISAM services within ISIM make use of the secAuthority attribute so we
    # need to not only check for the attribute's existance, but also to
    # get a count of how many entries have this attribute before confirming
-   # that the product using ITDS is actually TAM
-   HAS_SECAUTHORITY=`db2 connect to $DATABASE $DBAUTH > /dev/null;
+   # that the product using ISDS is actually SAM
+   HAS_SECAUTHORITY=`db2 connect to $DATABASE  > /dev/null;
       db2 -x "select count(*) from SYSSTAT.TABLES where TABSCHEMA = '$SCHEMA' and TABNAME='SECAUTHORITY'"`
    if [ $HAS_SECAUTHORITY -eq 1 ]; then
-      IS_ITAM=`db2 connect to $DATABASE $DBAUTH > /dev/null;
+      IS_ISAM=`db2 connect to $DATABASE > /dev/null;
          db2 -x "select count(*) from $SCHEMA.SECAUTHORITY"`
-      if [ $IS_ITAM -gt 10 ]; then
-         echo Detected IBM Tivoli Access Manager product
-         PRODUCT="ITAM"
+      if [ $IS_ISAM -gt 10 ]; then
+         echo Detected IBM Security Access Manager product
+         PRODUCT="ISAM"
       fi
    fi
 fi
 ## Tivoli Identity Manager
-IS_ITIM=`db2 connect to $DATABASE $DBAUTH > /dev/null;
+IS_ISIM=`db2 connect to $DATABASE > /dev/null;
    db2 -x "select count(*) from SYSSTAT.TABLES where TABSCHEMA = '$SCHEMA' and (TABNAME='ERPARENT' or TABNAME='PROCESSLOG')"`
-if [ $IS_ITIM -eq 1 ]; then
-   echo Detected IBM Tivoli Identity Manager product
-   PRODUCT="ITIM"
+if [ $IS_ISIM -eq 1 ]; then
+   echo Detected IBM Security Identity Manager product
+   PRODUCT="ISIM"
 fi
 
 ## Role and Policy Modeler
-IS_RAPM=`db2 connect to $DATABASE $DBAUTH > /dev/null;
+IS_RAPM=`db2 connect to $DATABASE > /dev/null;
    db2 -x "select count(*) from SYSSTAT.TABLES where TABSCHEMA = '$SCHEMA' and (TABNAME='ROLE_HIERARCHY' or TABNAME='IMPORT_MESSAGES')"`
 if [ $IS_RAPM -eq 1 ]; then
-   echo Detected IBM Security Role and Policy Modeler product
+   echo Detected IBM Security Role and Policy Modeler product.  Consider installing IGI
    PRODUCT="RAPM"
 fi
 
@@ -268,35 +274,35 @@ do_card_tunings_for_table() {
    CUSTOM_CARD=
 
    # uses global variables:
-   #   PRODUCT, IS_ITDS, SCRIPTPATH, ITDS_VERSION, ITDS_INFLATE_LDAP_CARD
+   #   PRODUCT, IS_ISDS, SCRIPTPATH, ISDS_VERSION, ISDS_INFLATE_LDAP_CARD
 
-   # Generic ITDS tables
-   if [ $IS_ITDS -eq 1 ]; then
-       if [ $ITDS_INFLATE_LDAP_CARD -eq 1 ]; then
-	   if [ $TABLE = 'LDAP_DESC' ]; then
-	       CUSTOM_CARD=9E18
-	   elif [ $TABLE = 'LDAP_ENTRY' ]; then
-	       CUSTOM_CARD=9E18
-	   fi
+   # Generic ISDS tables
+   if [ $IS_ISDS -eq 1 ]; then
+       if [ $ISDS_INFLATE_LDAP_CARD -eq 1 ]; then
+      if [ $TABLE = 'LDAP_DESC' ]; then
+          CUSTOM_CARD=9E18
+      elif [ $TABLE = 'LDAP_ENTRY' ]; then
+          CUSTOM_CARD=9E18
+      fi
        fi
        if [ $TABLE = 'REPLCHANGE' ]; then
-	   CUSTOM_CARD=9E18
+      CUSTOM_CARD=9E18
        fi
 
-       # ITAM-specific ITDS tables
+       # ISAM-specific ISDS tables
        if [ $TABLE = 'SECAUTHORITY' ]; then
-	   CUSTOM_CARD=9E10
-       elif [ $TABLE = 'CN' -a "x$PRODUCT" = "xITAM" ]; then
-	   CUSTOM_CARD=9E10
+      CUSTOM_CARD=9E10
+       elif [ $TABLE = 'CN' -a "x$PRODUCT" = "xISAM" ]; then
+      CUSTOM_CARD=9E10
        fi
        
-       # ITIM-specific ITDS tables
+       # ISIM-specific ISDS tables
        if [ $TABLE = 'ERPARENT' ]; then
-	   CUSTOM_CARD=9E10
+      CUSTOM_CARD=9E10
        fi
    fi
 
-   # ITIM DB tables
+   # ISIM DB tables
    if [ $TABLE = 'SIBOWNER' ]; then
       CUSTOM_CARD=50000
    elif [ $TABLE = 'SCHEDULED_MESSAGE' ]; then
@@ -380,3 +386,4 @@ if [ "x$TABLES" = "x" ]; then
 fi
 
 # vim: sw=3 ts=3 expandtab
+
