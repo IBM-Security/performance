@@ -39,7 +39,7 @@ is, along with the types and allowable values.  On the right-hand side of the pa
 plus curl command line examples, along with examples of the possible successful and unsuccessful responses.  
 
 As you read through the example code functions, you can compare them to the Go example code.
-The oauth token is retrieved in [[doAuth.go]]  
+The oauth token is retrieved in [doAuth.go](doAuth.go)  
 ￼
 ###### Lookup users
 
