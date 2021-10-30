@@ -6,6 +6,6 @@
 
 #### User Management
 
-This directory contains example code for bulk management of users.
+This directory contains example code for bulk management of users using the Verify APIs.
 
-[go](go)
+[Go](go)
