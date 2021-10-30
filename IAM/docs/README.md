@@ -1,6 +1,6 @@
 # IBM Security Performance
 
-## Identity and Access Management
+## Verify - Identity and Access Management
 
 ### Tuning guides
 
