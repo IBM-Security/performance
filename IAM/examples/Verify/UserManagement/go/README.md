@@ -66,7 +66,7 @@ The grant deletion code is in [revokeTokens.go](revokeTokens.go)
 ###### Modify password
 
 The API documentation [Patch User](https://docs.verify.ibm.com/verify/reference/patchuser) page describes how to
-modify attributes for a specific user.
+modify attributes for a specific user.  
 ￼
 The user modify code is in [disableUser.go](disableUser.go)
 
@@ -108,14 +108,14 @@ The userManagement program accepts 5 commands:
 - disableUser	Revoke tokens and disable each user in the userFile
 - help		Display the full help text
 
-The userFile should contain a list of users, identified by username, email or any other searchable attribute.
+The userFile should contain a list of users, one per line, identified by username, email or any other searchable attribute.
 The userAttribute parameter tells userManagement what attribute to use when searching.
 The userManagement program will iterate through the list of users, looking up each user and applying the specified action.
 Disabling the user is done by setting their password to an invalid hash that cannot be matched.
 
 ##### Building the example
 
-Binaries have been built for [Linux](bin/linux/userManagement)/, [Mac](bin/darwin/userManagement) and 
+Binaries have been built for [Linux](bin/linux/userManagement), [Mac](bin/darwin/userManagement) and 
 [Windows](bin/windows/userManagement) which don't require any runtime and should just run.
 
 If go is installed you can build the examples on Linux using the make.sh script.  Mac and Windows developers should
