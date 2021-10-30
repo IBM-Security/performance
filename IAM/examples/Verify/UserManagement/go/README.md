@@ -8,38 +8,38 @@
 
 This directory contains Golang example code for bulk management of users.  The userManagement program performs
 actions on a set of users, including listing tokens, token revocation and disabling the user by setting the password
-to an unmatchable hash.  These are done by calling the Verify APIs.
+to an unmatchable hash.  These are done by calling the Verify APIs.  
 
 ##### Documentation
 
 The [IBM Security Verify Documentation Hub](https://docs.verify.ibm.com/verify/) provides
 comprehensive guides and documentation to help you start working with IBM Security Verify as quickly as possible, 
-as well as support if you get stuck.
+as well as support if you get stuck.  
 
 Of particular interest for these examples are the Getting Started guides and the 
 [API Documentation](https://docs.verify.ibm.com/verify/page/api-documentation) since the example code is calling a
-series of APIs.
+series of APIs.  
 ￼
 ###### Create an API client
 
-The Getting Started page for [Create an API client](https://docs.verify.ibm.com/verify/docs/create-api-client)describes
+The Getting Started page for [Create an API client](https://docs.verify.ibm.com/verify/docs/create-api-client) describes
 how to create an API client with the appropriate accesses.  The accesses that you need to call each API is described in
-the documentation for that API.
+the documentation for that API.  
 
 ###### Get an oauth token
 
 The first thing any program will need to do before calling the APIs is to get an oauth token, which it will pass on
 each subsequent API call.  The Getting Started page for [Client Credentials](https://docs.verify.ibm.com/verify/docs/get-an-access-token)
 describes getting the oauth token for making API calls, using the client ID and secret that were generated when you
-created the API client.
+created the API client.  
 ￼
 The API documentation [Get the access token](https://docs.verify.ibm.com/verify/reference/handletoken) page is the 
 API reference for that call.  Each page describes what the API does, what each of the input parameters and form data fields
 is, along with the types and allowable values.  On the right-hand side of the page is example code in 16 languages 
-plus curl command line examples, along with examples of the possible successful and unsuccessful responses.
+plus curl command line examples, along with examples of the possible successful and unsuccessful responses.  
 
 As you read through the example code functions, you can compare them to the Go example code.
-The oauth token is retrieved in [[doAuth.go]]
+The oauth token is retrieved in [[doAuth.go]]  
 ￼
 ###### Lookup users
 
