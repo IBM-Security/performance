@@ -4,4 +4,4 @@ This repository contains IBM Security Performance tools, tuning guides and other
 
 Please use the Issue tab to report problems, offer suggestions, etc.
 
-## [Identity and Access Management](IAM)
+## [Verify - Identity and Access Management](IAM)
