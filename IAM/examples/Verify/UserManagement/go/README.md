@@ -10,7 +10,7 @@ to an unmatchable hash.  These are done by calling the Verify APIs.
 
 ### TOC
 
-* [Documentation](#documentation-of-the-apis)
+* [Documentation of the APIs](#documentation-of-the-apis)
   * [Create an API client](#create-an-api-client)
   * [Get an oauth token](#get-an-oauth-token)
   * [Lookup users](#lookup-users)
