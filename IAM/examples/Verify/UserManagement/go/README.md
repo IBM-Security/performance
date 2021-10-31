@@ -146,3 +146,44 @@ Mac and Windows developers should be able to create a similar script.
 Note that you will need the [go install from golang.org](https://golang.org/doc/install) in order to be sure of creating static binaries.  The gccgo package that
 RedHat provides creates dynamically linked binaries that require a go runtime to be installed before they will run.
 
+### Descriptions of the example files
+
+#### [main.go](main.go)
+
+This is where main() lives.  main() first collects the command line arguments, and does some sanity checking. Then it reads the 
+userFile and authenticates with the client id, secret and tenant passed in the tenantURL command line argument.  If the command 
+was one of the actions listTokens, revokeTokens, or disableUser, the lookupUser function is called for each user in the userFile
+to find the corresponding user id.  Then listTokens, revokeTokens, or disableUser is called for each of the users that was 
+returned from lookupUser.
+
+#### [doAuth.go](doAuth.go)
+
+This contains the doAuth() function which calls the token API to get an access token.  This is saved by main() into the configInfo
+structure and all the other functions pass it as a Bearer token in an Authorization header on their API calls.
+This looks like
+```text
+req.Header.Add("Authorization", "Bearer "+configInfo.accessToken)
+```
+
+#### [lookupUser.go](lookupUser.go)
+
+This contains the lookupUser() function which calls the Users API to find a user matching each line from the userFile.  The
+userAttribute parameter determines which attribute is passed on the Users call with an equality search. It is intended that
+each line in the userFile matches a single user in the tenant, so only the first result is looked at.  If there is a result
+returned, the user id is returned to the caller.
+
+#### [listTokens.go](listTokens.go)
+
+This contains the listTokens() function which calls the grants API to find all the tokens corresponding to the userid that was
+returned by lookupUser.
+
+#### [revokeTokens.go](revokeTokens.go)
+
+This contains the revokeTokens() function which calls the grants API to delete each token that was returned by listTokens().
+
+#### [disableUser.go](disableUser.go)
+
+This contains the disableUser() function which calls the Users API to modify the user's password to an invalid hash.  This is done
+with the PATCH operation which takes a json structure describing the exact attribute to modify, the operation (add/delete/replace)
+and the value.
+
