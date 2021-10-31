@@ -29,7 +29,7 @@ as well as support if you get stuck.
 Of particular interest for these examples are the [Getting Started](https://docs.verify.ibm.com/verify/docs/guides)
 guides and the [API Documentation](https://docs.verify.ibm.com/verify/page/api-documentation) since the example code
 is calling a series of APIs.  
-￼
+
 #### Create an API client
 
 The Getting Started page for [Create an API client](https://docs.verify.ibm.com/verify/docs/create-api-client) describes
