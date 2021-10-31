@@ -49,7 +49,7 @@ is, along with the types and allowable values.  On the right-hand side of the pa
 plus curl command line examples, along with examples of the possible successful and unsuccessful responses.  
 
 As you read through the example code functions, you can compare them to the Go example code.
-The oauth token is retrieved in [doAuth.go](doAuth.go)
+The oauth token is retrieved in [doAuth.go](doAuth.go) in the doAuth() function.
 ￼
 #### Lookup users
 
@@ -57,28 +57,28 @@ The API documentation [Get Users](https://docs.verify.ibm.com/verify/reference/g
 for specific users.  The userManagement example uses this to lookup up the information provided, such as username or
 email, to get the user id for each user to pass in subsequent calls.
 
-The user lookup code is in [lookupUser.go](lookupUser.go)
+The user lookup code is in [lookupUser.go](lookupUser.go) in the lookupUser() function.
 
 #### Lookup grants
 
 The API documentation [Read Grants](https://docs.verify.ibm.com/verify/reference/readgrants_0) page describes how to
 retrieve a list of grants associated with a specific userid.
 
-The grant lookup code is in [listTokens.go](listTokens.go)
+The grant lookup code is in [listTokens.go](listTokens.go) in the listTokens() function.
 
 #### Delete grant
 
 The API documentation [Delete Grant](https://docs.verify.ibm.com/verify/reference/deletegrant) page describes how to
 delete a specific grant.
 
-The grant deletion code is in [revokeTokens.go](revokeTokens.go)
+The grant deletion code is in [revokeTokens.go](revokeTokens.go) in the revokeTokens() function.
 
 #### Modify password
 
 The API documentation [Patch User](https://docs.verify.ibm.com/verify/reference/patchuser) page describes how to
 modify attributes for a specific user. 
 ￼
-The user modify code is in [disableUser.go](disableUser.go)
+The user modify code is in [disableUser.go](disableUser.go) in the disableUser() function.
 
 
 
