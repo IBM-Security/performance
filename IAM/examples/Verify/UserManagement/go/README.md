@@ -49,7 +49,7 @@ is, along with the types and allowable values.  On the right-hand side of the pa
 plus curl command line examples, along with examples of the possible successful and unsuccessful responses.  
 
 As you read through the example code functions, you can compare them to the Go example code.
-The oauth token is retrieved in [doAuth.go](doAuth.go) 
+The oauth token is retrieved in [doAuth.go](doAuth.go)
 ￼
 #### Lookup users
 
@@ -76,7 +76,7 @@ The grant deletion code is in [revokeTokens.go](revokeTokens.go)
 #### Modify password
 
 The API documentation [Patch User](https://docs.verify.ibm.com/verify/reference/patchuser) page describes how to
-modify attributes for a specific user.  
+modify attributes for a specific user. 
 ￼
 The user modify code is in [disableUser.go](disableUser.go)
 
