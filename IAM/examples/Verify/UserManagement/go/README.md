@@ -152,9 +152,10 @@ RedHat provides creates dynamically linked binaries that require a go runtime to
 #### [main.go](main.go)
 
 This is where main() lives.  main() first collects the command line arguments, and does some sanity checking. Then it reads the 
-userFile and authenticates with the client id, secret and tenant passed in the tenantURL command line argument.  If the command 
-was one of the actions listTokens, revokeTokens, or disableUser, the lookupUser function is called for each user in the userFile
-to find the corresponding user id.  Then listTokens, revokeTokens, or disableUser is called for each of the users that was 
+userFile and builds a list of all the values found, one per line.  It then calls doAuth to authenticate with the client id, 
+secret and tenant passed in the tenantURL command line argument.  If the command was one of the actions listTokens, 
+revokeTokens, or disableUser, and a userAttribute was specified, the lookupUser function is called for each user in the userFile
+to find the corresponding user id. Then listTokens, revokeTokens, or disableUser is called for each of the users that was 
 returned from lookupUser.
 
 #### [doAuth.go](doAuth.go)
