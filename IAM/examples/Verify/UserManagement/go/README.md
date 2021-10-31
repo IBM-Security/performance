@@ -10,7 +10,7 @@ to an unmatchable hash.  These are done by calling the Verify APIs.
 
 ### TOC
 
-* [Documentation](#documentation)
+* [Documentation](#documentation-of-the-apis)
   * [Create an API client](#create-an-api-client)
   * [Get an oauth token](#get-an-oauth-token)
   * [Lookup users](#lookup-users)
@@ -20,7 +20,7 @@ to an unmatchable hash.  These are done by calling the Verify APIs.
 * [Usage of the example](#usage-of-the-example)
 * [Building the example](#building-the-example)
 
-### Documentation
+### Documentation of the APIs
 
 The [IBM Security Verify Documentation Hub](https://docs.verify.ibm.com/verify/) provides
 comprehensive guides and documentation to help you start working with IBM Security Verify as quickly as possible, 
