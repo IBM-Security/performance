@@ -8,15 +8,15 @@ This directory contains Golang example code for bulk management of users.  The u
 actions on a set of users, including listing tokens, revoking tokens and disabling the user by setting the password
 to an unmatchable hash.  These are done by calling the Verify APIs.  
 
-[Documentation](#documentation)
-[Create an API client](#create-an-api-client)
-[Get an oauth token](#get-an-oauth-token)
-[Lookup users](#lookup-users)
-[Lookup grants](#lookup-grant)
-[Delete grant](#delete-grant)
-[Modify password](#modify-password)
-[Usage of the example](#usage-of-the-example)
-[Building the example](#building-the-example)
+* [Documentation](#documentation)
+* [Create an API client](#create-an-api-client)
+* [Get an oauth token](#get-an-oauth-token)
+* [Lookup users](#lookup-users)
+* [Lookup grants](#lookup-grant)
+* [Delete grant](#delete-grant)
+* [Modify password](#modify-password)
+* [Usage of the example](#usage-of-the-example)
+* [Building the example](#building-the-example)
 
 #### Documentation
 
