@@ -144,5 +144,5 @@ These don't require any runtime and should just run.
 If go is installed you can build all three binaries on Linux using the make.sh script.  
 Mac and Windows developers should be able to create a similar script.  
 Note that you will need the [go install from golang.org](https://golang.org/doc/install) in order to be sure of creating static binaries.  The gccgo package that
-RedHat provides creates dynamically linked binaries that require a go runtime to be installed.
+RedHat provides creates dynamically linked binaries that require a go runtime to be installed before they will run.
 

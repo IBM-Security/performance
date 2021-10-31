@@ -23,6 +23,7 @@ type UserList struct {
 type UserInfo map[string]interface{}
 
 // lookupUser calls the getusers API to lookup the user
+// See https://docs.verify.ibm.com/verify/reference/getusers
 func lookupUser(configInfo ConfigInfo, user string) (userName string, err error) {
 	var userList UserList
 	userEndpoint := "/v2.0/Users"

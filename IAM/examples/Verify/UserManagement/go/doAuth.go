@@ -23,6 +23,7 @@ type TokenInfo struct {
 }
 
 // doAuth calls the tenant's token endpoint with client and secret to get an access token
+// See https://docs.verify.ibm.com/verify/reference/handletoken
 func doAuth(configInfo ConfigInfo) (accessToken string, err error) {
 	var tokenInfo TokenInfo
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}

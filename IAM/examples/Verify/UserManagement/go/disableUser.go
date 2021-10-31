@@ -25,6 +25,7 @@ type PatchOp struct {
 }
 
 // disableUser calls the users API to disable the password for the userName
+// See https://docs.verify.ibm.com/verify/reference/patchuser
 func disableUser(configInfo ConfigInfo, user string) (err error) {
 	patchRequest := PatchRequest{}
 	patchOp := PatchOp{

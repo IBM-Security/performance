@@ -23,6 +23,7 @@ type GrantList struct {
 type GrantInfo map[string]interface{}
 
 // listTokens calls the grants API for the username and returns all grant ids
+// See https://docs.verify.ibm.com/verify/reference/readgrants_0
 func listTokens(configInfo ConfigInfo, user string) (idList []string, err error) {
 	var grantList GrantList
 	grantEndpoint := "/v1.0/grants"

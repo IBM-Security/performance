@@ -11,6 +11,7 @@ import (
 )
 
 // revokeTokens calls the revokeToken for each grant ID belonging to the username
+// https://docs.verify.ibm.com/verify/reference/deletegrant_0
 func revokeTokens(configInfo ConfigInfo, user string) (err error) {
 	idList, err := listTokens(configInfo, user)
 	if err != nil {
