@@ -38,8 +38,8 @@ the documentation for that API.
 
 #### Get an oauth token
 
-The first thing any program will need to do before calling the APIs is to get an oauth token, which it will pass on
-each subsequent API call.  The Getting Started page for [Client Credentials](https://docs.verify.ibm.com/verify/docs/get-an-access-token)
+The first thing any program will need to do before calling the APIs is to get an oauth token, which it will later pass on
+each API it calls.  The Getting Started page for [Client Credentials](https://docs.verify.ibm.com/verify/docs/get-an-access-token)
 describes getting the oauth token for making API calls, using the client ID and secret that were generated when you
 created the API client. 
 
