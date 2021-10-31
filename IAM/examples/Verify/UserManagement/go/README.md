@@ -19,6 +19,7 @@ to an unmatchable hash.
   * [Modify password](#modify-password)
 * [Usage of the example](#usage-of-the-example)
 * [Building the example](#building-the-example)
+* [Descriptions of the example files](#descriptions-of-the-example-files)
 
 ### Documentation of the APIs
 
