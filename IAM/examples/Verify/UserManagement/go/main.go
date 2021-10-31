@@ -150,7 +150,7 @@ func getArguments() (configInfo ConfigInfo) {
 
 //printUsage prints out the usage statement
 func printUsage() {
-	fmt.Fprintf(os.Stderr, "Usage: userManagement [auth|listTokens|revokeTokens|disableUser] -tenantURL tenantURL -userFile filename\n")
+	fmt.Fprintf(os.Stderr, "Usage: userManagement [auth|listTokens|revokeTokens|disableUser|help] -tenantURL tenantURL [-userFile filename] [-userAttribute attributename]\n")
 	fmt.Fprintf(os.Stderr, "Usage of userManagement:\n")
 	fmt.Fprintf(os.Stderr, "        command is one of [ auth, listTokens, revokeTokens, disableUser, help ]\n")
 	fmt.Fprintf(os.Stderr, "        (default is 'help')\n")

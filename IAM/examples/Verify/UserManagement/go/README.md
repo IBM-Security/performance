@@ -84,7 +84,7 @@ The grant deletion code is in [revokeTokens.go](revokeTokens.go) in the revokeTo
 The API documentation [Patch User](https://docs.verify.ibm.com/verify/reference/patchuser) page describes how to
 modify attributes for a specific user. The userManagement example uses this to change the password for the user id that was
 returned by lookupUser(). Setting the password to an invalid hash ensures that the user will have to go through the password
-reset process before that user id can be authenticated.
+reset process before that user id can authenticate.
 
 The user modify code is in [disableUser.go](disableUser.go) in the disableUser() function.
 
@@ -92,7 +92,7 @@ The user modify code is in [disableUser.go](disableUser.go) in the disableUser()
 
 ### Usage of the example
 ```text
-Usage: userManagement [auth|listTokens|revokeTokens|disableUser] -tenantURL tenantURL -userFile filename
+Usage: userManagement [auth|listTokens|revokeTokens|disableUser|help] -tenantURL tenantURL -userFile filename -userAttribute attributename
 Usage of userManagement:
         command is one of [ auth, listTokens, revokeTokens, disableUser, help ]
         (default is 'help')
