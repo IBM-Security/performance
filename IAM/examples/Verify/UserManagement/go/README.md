@@ -4,9 +4,9 @@
 
 ### Verify examples - User Management
 
-This directory contains Golang example code for bulk management of users.  The userManagement program performs
+This directory contains Golang example code for bulk management of users using the Verify APIs.  The userManagement program performs
 actions on a set of users, including listing tokens, revoking tokens and disabling the user by setting the password
-to an unmatchable hash.  These are done by calling the Verify APIs.  
+to an unmatchable hash. 
 
 ### Table of Contents
 
