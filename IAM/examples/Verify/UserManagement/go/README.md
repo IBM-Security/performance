@@ -132,6 +132,8 @@ The userAttribute parameter tells userManagement what attribute to use when sear
 The userManagement program will iterate through the list of users, looking up each user and applying the specified action. 
 Disabling the user is done by setting their password to an invalid hash that cannot be matched. 
 
+Setting loglevel can be useful for better understanding what API calls are made, and for debugging.
+
 ### Building the example
 
 Binaries have been built for [Linux](bin/linux/userManagement), [Mac](bin/darwin/userManagement) and 
