@@ -126,10 +126,11 @@ The userManagement program accepts 5 commands:
 - disableUser	Disable each user in the userFile
 - help		Display the full help text
 
-The userFile should contain a list of users, one per line, identified by username, email or any other searchable attribute.
-The userAttribute parameter tells userManagement what attribute to use when searching.
-The userManagement program will iterate through the list of users, looking up each user and applying the specified action.
-Disabling the user is done by setting their password to an invalid hash that cannot be matched.
+The userFile should contain a list of users, one per line, identified by username, email or any other searchable attribute. 
+The userAttribute parameter tells userManagement what attribute to use when searching. 
+
+The userManagement program will iterate through the list of users, looking up each user and applying the specified action. 
+Disabling the user is done by setting their password to an invalid hash that cannot be matched. 
 
 ### Building the example
 
