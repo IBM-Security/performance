@@ -35,6 +35,11 @@ is calling a series of APIs.
 The Getting Started page for [Create an API client](https://docs.verify.ibm.com/verify/docs/create-api-client) describes
 how to create an API client with the appropriate accesses.  The set of accesses that you need to call each API is described in
 the documentation for that API. 
+For getUsers the entitlement required is readUserGroups (Read users and groups) or manageUserGroups (Manage users and groups) or manageAllUserGroups (Synchronize users and groups) or manageUserStandardGroups (Manage users and standard groups).
+Note: You only need one entitlement, but you can have more than one.
+For readGrants the entitlement required is readOidcGrants (Read OIDC and OAuth grants) or manageOidcGrants (Manage OIDC and OAuth grants)
+For deleteGrant the entitlement required is manageOidcGrants (Manage OIDC and OAuth grants)
+For patchUser the entitlement required is manageUserGroups (Manage users and groups) or manageAllUserGroups (Synchronize users and groups) or manageUserStandardGroups (Manage users and standard groups) or updateAnyUser (Update any user).
 
 #### Get an oauth token
 
