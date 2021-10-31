@@ -54,7 +54,7 @@ The oauth token is retrieved in [doAuth.go](doAuth.go) in the doAuth() function.
 #### Lookup users
 
 The API documentation [Get Users](https://docs.verify.ibm.com/verify/reference/getusers) page describes how to search
-for specific users.  The userManagement example uses this to lookup up the information provided, such as username or
+for specific users.  The userManagement example uses this to look up the information provided, such as username or
 email, to get the user id for each user to pass in subsequent calls.
 
 The user lookup code is in [lookupUser.go](lookupUser.go) in the lookupUser() function.
