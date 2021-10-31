@@ -159,7 +159,7 @@ returned from lookupUser.
 
 #### [doAuth.go](doAuth.go)
 
-This contains the doAuth() function which calls the token API to get an access token.  This is saved by main() into the configInfo
+This contains the doAuth() function, which calls the token API to get an access token.  This is saved by main() into the configInfo
 structure and all the other functions pass it as a Bearer token in an Authorization header on their API calls.
 This looks like
 ```text
@@ -168,23 +168,23 @@ req.Header.Add("Authorization", "Bearer "+configInfo.accessToken)
 
 #### [lookupUser.go](lookupUser.go)
 
-This contains the lookupUser() function which calls the Users API to find a user matching each line from the userFile.  The
+This contains the lookupUser() function, which calls the Users API to find a user matching each line from the userFile.  The
 userAttribute parameter determines which attribute is passed on the Users call with an equality search. It is intended that
 each line in the userFile matches a single user in the tenant, so only the first result is looked at.  If there is a result
 returned, the user id is returned to the caller.
 
 #### [listTokens.go](listTokens.go)
 
-This contains the listTokens() function which calls the grants API to find all the tokens corresponding to the userid that was
+This contains the listTokens() function, which calls the grants API to find all the tokens corresponding to the userid that was
 returned by lookupUser.
 
 #### [revokeTokens.go](revokeTokens.go)
 
-This contains the revokeTokens() function which calls the grants API to delete each token that was returned by listTokens().
+This contains the revokeTokens() function, which calls the grants API to delete each token that was returned by listTokens().
 
 #### [disableUser.go](disableUser.go)
 
-This contains the disableUser() function which calls the Users API to modify the user's password to an invalid hash.  This is done
+This contains the disableUser() function, which calls the Users API to modify the user's password to an invalid hash.  This is done
 with the PATCH operation which takes a json structure describing the exact attribute to modify, the operation (add/delete/replace)
 and the value.
 
