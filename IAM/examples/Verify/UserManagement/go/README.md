@@ -62,22 +62,25 @@ The user lookup code is in [lookupUser.go](lookupUser.go) in the lookupUser() fu
 #### Lookup grants
 
 The API documentation [Read Grants](https://docs.verify.ibm.com/verify/reference/readgrants_0) page describes how to
-retrieve a list of grants associated with a specific userid.
+retrieve a list of grants associated with a specific userid. The userManagement example uses this to look up the grants
+associated with the userid that was returned by lookupUser().
 
 The grant lookup code is in [listTokens.go](listTokens.go) in the listTokens() function.
 
 #### Delete grant
 
 The API documentation [Delete Grant](https://docs.verify.ibm.com/verify/reference/deletegrant) page describes how to
-delete a specific grant.
+delete a specific grant. The userManagement example uses this to delete each grant that was returned by listTokens(). 
 
 The grant deletion code is in [revokeTokens.go](revokeTokens.go) in the revokeTokens() function.
 
 #### Modify password
 
 The API documentation [Patch User](https://docs.verify.ibm.com/verify/reference/patchuser) page describes how to
-modify attributes for a specific user. 
-￼
+modify attributes for a specific user. The userManagement example uses this to change the password for the user id that was
+returned by lookupUser(). Setting the password to an invalid hash ensures that the user will have to go through the password
+reset process before that user id can be authenticated.
+
 The user modify code is in [disableUser.go](disableUser.go) in the disableUser() function.
 
 
