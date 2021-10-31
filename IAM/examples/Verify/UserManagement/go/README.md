@@ -48,7 +48,7 @@ API reference for that call.  Each page describes what the API does, what each o
 is, along with the types and allowable values.  On the right-hand side of the page is example code in 16 languages 
 plus curl command line examples, along with examples of successful and unsuccessful responses. 
 
-As you read through the example code functions, you can compare them to the Go example code.
+As you read through the key functions in the example code, you can compare them to the Go example code.
 The oauth token is retrieved in [doAuth.go](doAuth.go) in the doAuth() function.
 
 #### Lookup users
