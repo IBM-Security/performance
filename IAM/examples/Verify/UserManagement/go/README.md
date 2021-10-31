@@ -2,7 +2,7 @@
 
 ## Verify - Identity and Access Management
 
-### Verify examples - User Management
+### Verify example - User Management
 
 This directory contains Golang example code for bulk management of users using the Verify APIs.  The userManagement program performs
 actions on a set of users, including listing tokens, revoking tokens and disabling the users by setting the password
@@ -36,11 +36,13 @@ is calling a series of APIs.
 The Getting Started page for [Create an API client](https://docs.verify.ibm.com/verify/docs/create-api-client) describes
 how to create an API client with the appropriate accesses.  The set of accesses that you need to call each API is described in
 the documentation for that API. 
-* For getUsers the entitlement required is readUserGroups (Read users and groups) or manageUserGroups (Manage users and groups) or manageAllUserGroups (Synchronize users and groups) or manageUserStandardGroups (Manage users and standard groups).
+* For [Get Users](https://docs.verify.ibm.com/verify/reference/getusers) the entitlement required is readUserGroups (Read users and groups) or manageUserGroups (Manage users and groups) or manageAllUserGroups (Synchronize users and groups) or manageUserStandardGroups (Manage users and standard groups).
   Note: You only need one entitlement, but you can have more than one.
-* For readGrants the entitlement required is readOidcGrants (Read OIDC and OAuth grants) or manageOidcGrants (Manage OIDC and OAuth grants)
-* For deleteGrant the entitlement required is manageOidcGrants (Manage OIDC and OAuth grants)
-* For patchUser the entitlement required is manageUserGroups (Manage users and groups) or manageAllUserGroups (Synchronize users and groups) or manageUserStandardGroups (Manage users and standard groups) or updateAnyUser (Update any user).
+* For [Read Grants](https://docs.verify.ibm.com/verify/reference/readgrants_0) the entitlement required is readOidcGrants (Read OIDC and OAuth grants) or manageOidcGrants (Manage OIDC and OAuth grants)
+* For [Delete Grant](https://docs.verify.ibm.com/verify/reference/deletegrant) the entitlement required is manageOidcGrants (Manage OIDC and OAuth grants)
+* For [Patch User](https://docs.verify.ibm.com/verify/reference/patchuser) the entitlement required is manageUserGroups (Manage users and groups) or manageAllUserGroups (Synchronize users and groups) or manageUserStandardGroups (Manage users and standard groups) or updateAnyUser (Update any user).
+
+A minimal set that would be just enough for calling all four APIs would be readUserGroups, manageOidcGrants and updateAnyUser.
 
 #### Get an oauth token
 
