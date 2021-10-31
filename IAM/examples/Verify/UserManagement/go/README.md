@@ -50,7 +50,7 @@ plus curl command line examples, along with examples of the possible successful 
 
 As you read through the example code functions, you can compare them to the Go example code.
 The oauth token is retrieved in [doAuth.go](doAuth.go) in the doAuth() function.
-￼
+
 #### Lookup users
 
 The API documentation [Get Users](https://docs.verify.ibm.com/verify/reference/getusers) page describes how to search
