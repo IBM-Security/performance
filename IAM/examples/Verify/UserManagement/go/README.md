@@ -138,9 +138,10 @@ Setting loglevel can be useful for better understanding what API calls are made,
 
 The bin directory contains statically linked binaries for [Linux](bin/linux/userManagement), [Mac](bin/darwin/userManagement) and 
 [Windows](bin/windows/userManagement) 
+
 These don't require any runtime and should just run.
 
-If go is installed you can build all three binaries on Linux using the make.sh script. 
+If go is installed you can build all three binaries on Linux using the make.sh script.  
 Mac and Windows developers should be able to create a similar script. 
 Note that you will need the go install from golang.org in order to be sure of creating static binaries.  The gogcc package that
 RedHat provides creates dynamically linked binaries that require a go runtime to be installed.
