@@ -45,8 +45,8 @@ func main() {
 		os.Exit(1)
 	}
 	if configInfo.logLevel >= 1 {
-        fmt.Printf("Got accessToken %s\n", configInfo.accessToken)
-    }
+		fmt.Printf("Got accessToken %s\n", configInfo.accessToken)
+	}
 
 	if configInfo.userAttribute != "" {
 		var userList []string
@@ -71,9 +71,9 @@ func main() {
 					fmt.Fprintf(os.Stderr, "Received error %s from listTokens of user %s on server %s\n", err, user, configInfo.tenantHostname)
 					failures++
 				} else {
-	if configInfo.logLevel >= 1 {
-					fmt.Printf("Got %d ids back\n", len(idList))
-    }
+					if configInfo.logLevel >= 1 {
+						fmt.Printf("Got %d ids back\n", len(idList))
+					}
 				}
 			}
 

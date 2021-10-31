@@ -65,7 +65,6 @@ func listTokens(configInfo ConfigInfo, user string) (idList []string, err error)
 	if configInfo.logLevel > 1 {
 		fmt.Printf("%s\n", contents)
 	}
-	successes++
 
 	err = json.Unmarshal(contents, &grantList)
 	if err != nil {
@@ -79,5 +78,6 @@ func listTokens(configInfo ConfigInfo, user string) (idList []string, err error)
 		}
 		idList = append(idList, grant["id"].(string))
 	}
+	successes++
 	return
 }

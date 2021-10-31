@@ -65,7 +65,6 @@ func lookupUser(configInfo ConfigInfo, user string) (userName string, err error)
 	if configInfo.logLevel > 1 {
 		fmt.Printf("%s\n", contents)
 	}
-	successes++
 
 	err = json.Unmarshal(contents, &userList)
 	if err != nil {
@@ -74,7 +73,8 @@ func lookupUser(configInfo ConfigInfo, user string) (userName string, err error)
 		return
 	}
 	if len(userList.Resources) > 0 {
-	userName = userList.Resources[0]["id"].(string)
-    }
+		userName = userList.Resources[0]["id"].(string)
+	}
+	successes++
 	return
 }

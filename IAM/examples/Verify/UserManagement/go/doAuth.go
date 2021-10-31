@@ -62,8 +62,6 @@ func doAuth(configInfo ConfigInfo) (accessToken string, err error) {
 		fmt.Printf("%s\n", contents)
 	}
 
-	successes++
-
 	err = json.Unmarshal(contents, &tokenInfo)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error trying to unmarshal response: \n%s \n ", string(contents))
@@ -72,5 +70,6 @@ func doAuth(configInfo ConfigInfo) (accessToken string, err error) {
 	}
 
 	accessToken = tokenInfo.AccessToken
+	successes++
 	return
 }

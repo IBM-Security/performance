@@ -34,7 +34,7 @@ func disableUser(configInfo ConfigInfo, user string) (err error) {
 		Value: "{SHA256}passwordDisabled",
 	}
 	patchRequest.Operations = append(patchRequest.Operations, patchOp)
-	patchRequest.Schemas = append(patchRequest.Schemas,"urn:ietf:params:scim:api:messages:2.0:PatchOp")
+	patchRequest.Schemas = append(patchRequest.Schemas, "urn:ietf:params:scim:api:messages:2.0:PatchOp")
 	patchBody, err := json.Marshal(patchRequest)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Received error %s marshalling patchRequest\n%v\n", err, patchRequest)

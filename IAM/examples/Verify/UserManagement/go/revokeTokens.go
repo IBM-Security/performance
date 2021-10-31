@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-    "time"
+	"time"
 )
 
 // revokeTokens calls the revokeToken for each grant ID belonging to the username
@@ -23,15 +23,15 @@ func revokeTokens(configInfo ConfigInfo, user string) (err error) {
 		fmt.Printf("Got %d ids back\n", len(idList))
 	}
 	for i, id := range idList {
- 	if configInfo.logLevel > 0 {
-       fmt.Printf("Revoking grant %d with id %s\n", i, id)
-    }
+		if configInfo.logLevel > 0 {
+			fmt.Printf("Revoking grant %d with id %s\n", i, id)
+		}
 		err := revokeToken(configInfo, user, id)
 		if err != nil {
 		} else {
-	if configInfo.logLevel > 0 {
-			fmt.Printf("Revoked token %d for user %s\n", i, user)
-    }
+			if configInfo.logLevel > 0 {
+				fmt.Printf("Revoked token %d for user %s\n", i, user)
+			}
 		}
 	}
 	return
