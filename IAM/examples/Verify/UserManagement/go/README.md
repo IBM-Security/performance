@@ -123,14 +123,14 @@ help		Display the full help text
 ```
 
 The userManagement program accepts 5 commands:
-- auth		Authenticate to the tenant using the specified client and secret
-- listTokens	List tokens for each user in the userFile
-- revokeTokens	Revoke tokens for each user in the userFile
-- disableUser	Disable each user in the userFile
-- help		Display the full help text
+- auth - Authenticate to the tenant using the specified client and secret
+- listTokens - List tokens for each user in the userFile
+- revokeTokens - Revoke tokens for each user in the userFile
+- disableUser - Disable each user in the userFile
+- help - Display the full help text
 
-The userFile should contain a list of users, one per line, identified by username, email or any other searchable attribute. 
-The userAttribute parameter tells userManagement what attribute to use when searching. 
+The userFile should contain a list of users, one per line, identified by username, email or any other searchable attribute,
+that the action will be perfomed on. The userAttribute parameter tells userManagement what attribute to use when searching. 
 
 The userManagement program will iterate through the list of users, looking up each user and applying the specified action. 
 Disabling the user is done by setting their password to an invalid hash that cannot be matched. 
@@ -142,12 +142,13 @@ Setting loglevel can be useful for better understanding what API calls are made,
 The bin directory contains statically linked binaries for [Linux](bin/linux/userManagement), [Mac](bin/darwin/userManagement) and 
 [Windows](bin/windows/userManagement) 
 
-These don't require any runtime and should just run.
+These don't require any runtime and should just run on the corresponding OS.
 
 If go is installed you can build all three binaries on Linux using the make.sh script.  
 Mac and Windows developers should be able to create a similar script.  
-Note that you will need the [go install from golang.org](https://golang.org/doc/install) in order to be sure of creating static binaries.  The gccgo package that
-RedHat provides creates dynamically linked binaries that require a go runtime to be installed before they will run.
+Note that you will need the [go install from golang.org](https://golang.org/doc/install) in order to be sure of creating static 
+binaries.  The gccgo package that RedHat provides creates dynamically linked binaries that require a go runtime to be installed 
+before they will run.
 
 ### Descriptions of the example files
 

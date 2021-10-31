@@ -70,7 +70,8 @@ func lookupUser(configInfo ConfigInfo, user string) (userName string, err error)
 	err = json.Unmarshal(contents, &userList)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error trying to unmarshal response: \n%s \n ", string(contents))
-		panic(err)
+		failures++
+		return
 	}
 	if len(userList.Resources) > 0 {
 	userName = userList.Resources[0]["id"].(string)

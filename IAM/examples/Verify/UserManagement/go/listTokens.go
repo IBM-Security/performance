@@ -70,7 +70,8 @@ func listTokens(configInfo ConfigInfo, user string) (idList []string, err error)
 	err = json.Unmarshal(contents, &grantList)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error trying to unmarshal response: \n%s \n ", string(contents))
-		panic(err)
+		failures++
+		return
 	}
 	for _, grant := range grantList.Grants {
 		if configInfo.logLevel > 0 {
