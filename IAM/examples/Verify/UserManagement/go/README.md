@@ -114,7 +114,7 @@ Usage of userManagement:
 auth		Authenticate to the tenant using the specified client and secret
 listTokens	List tokens for each user in the userFile
 revokeTokens	Revoke tokens for each user in the userFile
-disableUser	Revoke tokens and disable each user in the userFile
+disableUser	Disable each user in the userFile
 help		Display the full help text
 
 ```
@@ -123,7 +123,7 @@ The userManagement program accepts 5 commands:
 - auth		Authenticate to the tenant using the specified client and secret
 - listTokens	List tokens for each user in the userFile
 - revokeTokens	Revoke tokens for each user in the userFile
-- disableUser	Revoke tokens and disable each user in the userFile
+- disableUser	Disable each user in the userFile
 - help		Display the full help text
 
 The userFile should contain a list of users, one per line, identified by username, email or any other searchable attribute.

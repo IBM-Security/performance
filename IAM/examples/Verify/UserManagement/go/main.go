@@ -172,7 +172,7 @@ func printUsage() {
 	fmt.Fprintf(os.Stderr, "auth\t\tAuthenticate to the tenant using the specified client and secret\n")
 	fmt.Fprintf(os.Stderr, "listTokens\tList tokens for each user in the userFile\n")
 	fmt.Fprintf(os.Stderr, "revokeTokens\tRevoke tokens for each user in the userFile\n")
-	fmt.Fprintf(os.Stderr, "disableUser\tRevoke tokens and disable each user in the userFile\n")
+	fmt.Fprintf(os.Stderr, "disableUser\tDisable each user in the userFile\n")
 	fmt.Fprintf(os.Stderr, "help\t\tDisplay the full help text\n")
 }
 
