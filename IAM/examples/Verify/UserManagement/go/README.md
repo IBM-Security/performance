@@ -12,7 +12,7 @@ to an unmatchable hash.
 
 * [Documentation of the APIs](#documentation-of-the-apis)
   * [Create an API client](#create-an-api-client)
-  * [Get an oauth token](#get-an-oauth-token)
+  * [Get an access token](#get-an-access-token)
   * [Lookup users](#lookup-users)
   * [Lookup grants](#lookup-grant)
   * [Delete grant](#delete-grant)
@@ -44,12 +44,13 @@ the documentation for that API.
 
 A minimal set that would be just enough for calling all four APIs would be readUserGroups, manageOidcGrants and updateAnyUser.
 
-#### Get an oauth token
+#### Get an access token
 
-The first thing any program will need to do before calling the APIs is to get an oauth token, which it will later pass on
+The first thing any program will need to do before calling the APIs is to get an access token, which it will later pass on
 each API it calls.  The Getting Started page for [Client Credentials](https://docs.verify.ibm.com/verify/docs/get-an-access-token)
-describes getting the oauth token for making API calls, using the client ID and secret that were generated when you
-created the API client. 
+describes getting the access token for making API calls, using the client ID and secret that were generated when you
+created the API client. Access tokens have a limited lifetime so it is important for a long-running program to ensure it does not 
+use an expired access token.
 
 The API documentation [Get the access token](https://docs.verify.ibm.com/verify/reference/handletoken) page is the 
 API reference for that call.  Each page describes what the API does, what each of the input parameters and form data fields
@@ -57,7 +58,8 @@ is, along with the types and allowable values.  On the right-hand side of the pa
 plus curl command line examples, along with examples of successful and unsuccessful responses. 
 
 As you read through the key functions in the example code, you can compare them to the Go example code in the API documentation.
-The oauth token is retrieved in [doAuth.go](doAuth.go) in the doAuth() function.
+The access token is retrieved in [doAuth.go](doAuth.go) in the doAuth() function.  It is checked for expiration and refreshed in
+the checkAuth() function.
 
 #### Lookup users
 
