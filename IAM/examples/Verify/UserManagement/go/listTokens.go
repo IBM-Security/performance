@@ -24,8 +24,12 @@ type GrantInfo map[string]interface{}
 
 // listTokens calls the grants API for the username and returns all grant ids
 // See https://docs.verify.ibm.com/verify/reference/readgrants_0
-func listTokens(configInfo ConfigInfo, user string) (idList []string, err error) {
+func listTokens(configInfo *ConfigInfo, user string) (idList []string, err error) {
 	var grantList GrantList
+	err = checkAuth(configInfo)
+    if err != nil {
+		return
+    }
 	grantEndpoint := "/v1.0/grants"
 	userQuery := "?search=username%3D%22" + user + "%22"
 	completeURL := "https://" + configInfo.tenantHostname + grantEndpoint + userQuery

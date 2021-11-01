@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+    "time"
 )
 
 // Model for token information
@@ -24,7 +25,7 @@ type TokenInfo struct {
 
 // doAuth calls the tenant's token endpoint with client and secret to get an access token
 // See https://docs.verify.ibm.com/verify/reference/handletoken
-func doAuth(configInfo ConfigInfo) (accessToken string, err error) {
+func doAuth(configInfo *ConfigInfo) (err error) {
 	var tokenInfo TokenInfo
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	tokenEndpoint := "/v1.0/endpoint/default/token"
@@ -69,7 +70,16 @@ func doAuth(configInfo ConfigInfo) (accessToken string, err error) {
 		return
 	}
 
-	accessToken = tokenInfo.AccessToken
+	configInfo.accessToken = tokenInfo.AccessToken
+	configInfo.accessExpires = time.Now().Add(time.Second * time.Duration(tokenInfo.ExpiresIn))
 	successes++
 	return
+}
+
+// checkAuth refreshes the access token if it has expired
+func checkAuth(configInfo *ConfigInfo) (err error) {
+    if time.Now().After(configInfo.accessExpires) {
+        err = doAuth(configInfo)
+    }
+    return
 }

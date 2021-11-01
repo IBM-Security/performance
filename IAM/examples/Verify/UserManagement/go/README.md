@@ -169,6 +169,8 @@ This looks like
 ```text
 req.Header.Add("Authorization", "Bearer "+configInfo.accessToken)
 ```
+This file also contains the checkAuth() function which calls doAuth() if the token has expired.  All of the other functions call
+checkAuth() before calling their API.
 
 #### [lookupUser.go](lookupUser.go)
 

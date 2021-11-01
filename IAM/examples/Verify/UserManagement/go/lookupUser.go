@@ -24,8 +24,12 @@ type UserInfo map[string]interface{}
 
 // lookupUser calls the getusers API to lookup the user
 // See https://docs.verify.ibm.com/verify/reference/getusers
-func lookupUser(configInfo ConfigInfo, user string) (userName string, err error) {
+func lookupUser(configInfo *ConfigInfo, user string) (userName string, err error) {
 	var userList UserList
+	err = checkAuth(configInfo)
+    if err != nil {
+		return
+    }
 	userEndpoint := "/v2.0/Users"
 	userQuery := "?filter=" + configInfo.userAttribute + "%20eq%20%22" + user + "%22"
 	completeURL := "https://" + configInfo.tenantHostname + userEndpoint + userQuery

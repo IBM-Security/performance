@@ -12,7 +12,7 @@ import (
 
 // revokeTokens calls the revokeToken for each grant ID belonging to the username
 // https://docs.verify.ibm.com/verify/reference/deletegrant_0
-func revokeTokens(configInfo ConfigInfo, user string) (err error) {
+func revokeTokens(configInfo *ConfigInfo, user string) (err error) {
 	idList, err := listTokens(configInfo, user)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Received error %s from listTokens of user %s on server %s\n", err, user, configInfo.tenantHostname)
@@ -38,7 +38,7 @@ func revokeTokens(configInfo ConfigInfo, user string) (err error) {
 }
 
 // revokeToken revokes the specified token for the specified user
-func revokeToken(configInfo ConfigInfo, user string, id string) (err error) {
+func revokeToken(configInfo *ConfigInfo, user string, id string) (err error) {
 	completeURL := "https://" + configInfo.tenantHostname + "/v1.0/grants/" + id
 	if configInfo.logLevel > 0 {
 		fmt.Printf("Calling %s\n", completeURL)

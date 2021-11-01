@@ -9,10 +9,12 @@ import (
 	"os"
 	"regexp"
 	"strings"
+    "time"
 )
 
 type ConfigInfo struct {
 	accessToken    string
+	accessExpires  time.Time
 	command        string
 	logLevel       int
 	tenantURL      string
@@ -34,12 +36,12 @@ func main() {
 		fmt.Printf("Host: %s\nClient: %s\nSecret: %s\n", configInfo.tenantHostname, configInfo.tenantClient, configInfo.tenantSecret)
 	}
 	if configInfo.userFile != "" {
-		configInfo.userList = getUsers(configInfo)
+		configInfo.userList = getUsers(&configInfo)
 	}
 	if configInfo.logLevel >= 1 {
 		fmt.Printf("Total users: %d\n", len(configInfo.userList))
 	}
-	configInfo.accessToken, err = doAuth(configInfo)
+	err = doAuth(&configInfo)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error authenticating to %s: %v \n ", configInfo.tenantURL, err)
 		os.Exit(1)
@@ -51,7 +53,7 @@ func main() {
 	if configInfo.userAttribute != "" {
 		var userList []string
 		for _, user := range configInfo.userList {
-			username, err := lookupUser(configInfo, user)
+			username, err := lookupUser(&configInfo, user)
 			if err == nil {
 				userList = append(userList, username)
 			}
@@ -66,7 +68,7 @@ func main() {
 
 		case "listTokens":
 			for _, user := range configInfo.userList {
-				idList, err := listTokens(configInfo, user)
+				idList, err := listTokens(&configInfo, user)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "Received error %s from listTokens of user %s on server %s\n", err, user, configInfo.tenantHostname)
 					failures++
@@ -79,12 +81,12 @@ func main() {
 
 		case "revokeTokens":
 			for _, user := range configInfo.userList {
-				revokeTokens(configInfo, user)
+				revokeTokens(&configInfo, user)
 			}
 
 		case "disableUser":
 			for _, user := range configInfo.userList {
-				disableUser(configInfo, user)
+				disableUser(&configInfo, user)
 			}
 
 		default:
@@ -177,7 +179,7 @@ func printUsage() {
 }
 
 //getUsers opens userFile
-func getUsers(configInfo ConfigInfo) (userList []string) {
+func getUsers(configInfo *ConfigInfo) (userList []string) {
 	var err error
 	var userline string
 	r := os.Stdin
