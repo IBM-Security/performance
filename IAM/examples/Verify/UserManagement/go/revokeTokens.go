@@ -67,7 +67,7 @@ func revokeToken(configInfo *ConfigInfo, user string, id string) (err error) {
 		return
 	}
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != 204 {
 		fmt.Fprintf(os.Stderr, "Received response code %d from server %s\n%s\n", resp.StatusCode, configInfo.tenantHostname, contents)
 		failures++
 		return
