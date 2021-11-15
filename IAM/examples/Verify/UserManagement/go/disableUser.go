@@ -53,6 +53,11 @@ func disableUser(configInfo *ConfigInfo, user string) (err error) {
 		Timeout: time.Second * 200,
 	}
 	req, err := http.NewRequest("PATCH", completeURL, bytes.NewBuffer([]byte(patchBody)))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Received error %s creating new request from URL %s\n", err, completeURL)
+		failures++
+		return
+	}
 	req.Header.Add("Authorization", "Bearer "+configInfo.accessToken)
 	req.Header.Add("Accept", "application/scim+json")
 	req.Header.Add("Content-Type", "application/scim+json")

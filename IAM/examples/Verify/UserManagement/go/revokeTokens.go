@@ -47,6 +47,11 @@ func revokeToken(configInfo *ConfigInfo, user string, id string) (err error) {
 		Timeout: time.Second * 200,
 	}
 	req, err := http.NewRequest("DELETE", completeURL, nil)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Received error %s creating new request from URL %s\n", err, completeURL)
+		failures++
+		return
+	}
 	req.Header.Add("Authorization", "Bearer "+configInfo.accessToken)
 	resp, err := client.Do(req)
 	if err != nil {

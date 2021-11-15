@@ -193,7 +193,7 @@ func getUsers(configInfo *ConfigInfo) (userList []string) {
 	userReader := bufio.NewReader(r)
 	userline, err = userReader.ReadString('\n')
 	for err == nil {
-		userList = append(userList, strings.TrimRight(userline, "\n"))
+		userList = append(userList, strings.TrimRight(userline, "\r\n"))
 		userline, err = userReader.ReadString('\n')
 	}
 	return
