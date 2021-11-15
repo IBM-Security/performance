@@ -83,7 +83,12 @@ func lookupUser(configInfo *ConfigInfo, user string) (userName string, err error
 	}
 	if len(userList.Resources) > 0 {
 		userName = userList.Resources[0]["id"].(string)
+	} else {
+        fmt.Fprintf(os.Stderr, "User with %s=%s not found\n", configInfo.userAttribute, user)
+		failures++
+		return
 	}
+        
 	successes++
 	return
 }

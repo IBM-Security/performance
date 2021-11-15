@@ -54,7 +54,7 @@ func main() {
 		var userList []string
 		for _, user := range configInfo.userList {
 			username, err := lookupUser(&configInfo, user)
-			if err == nil {
+			if err == nil && username != ""{
 				userList = append(userList, username)
 			}
 		}
