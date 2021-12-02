@@ -6,7 +6,7 @@
 
 #### CSV Hasher
 
-This directory contains example code for pre-hashing passwords in a CSV before creating users using the Verify APIs.
+This directory contains example code for pre-hashing passwords in a CSV file before creating users using the Verify APIs.
 This allows you to hash passwords as soon as they are extracted from an existing user registry,
 
 ### Table of Contents
@@ -25,7 +25,7 @@ Usage csvHasher -input_file csv_file -output_file csv_file -hash_column column_n
 The csvHasher utility accepts 3 required parameters:
 - input_file - A CSV file that contains user records
 - output_file - The name of a CSV file to create with the processed user records
-- hash_column - The column number (starting at 1) that should be replaced by the ldap-formatted SHA256 value of the data
+- hash_column - The number (starting at 1) of the column that should be replaced by the ldap-formatted SHA256 value of the data
 - help - Display the full help text
 
 The format generated is consistent with https://docs.ldap.com/specs/draft-stroeder-hashed-userpassword-values-01.txt and is
