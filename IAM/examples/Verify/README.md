@@ -6,4 +6,5 @@
 
 This directory contains example code for calling Verify APIs.
 
+#### [CSV Hasher](csvHasher)
 #### [User Management](UserManagement)
