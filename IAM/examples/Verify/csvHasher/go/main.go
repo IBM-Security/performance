@@ -18,7 +18,8 @@ type ConfigInfo struct {
 	inputFileName  string
 	outputFileName string
 	logLevel       string
-	hashColumn     int
+	ColumnName string
+	ColumnNumber     int
 }
 
 func main() {
@@ -35,8 +36,12 @@ func main() {
 			log.Fatalln("error reading record from csv:", err)
 		}
 		recordCount++
-		if recordCount > 1 {
-		hashSpecifiedColumn(record, configInfo.hashColumn)
+		if recordCount == 1 {
+            if configInfo.ColumnName != "" {
+                getColumnNumber(&configInfo, record)
+            }
+        } else {
+            hashSpecifiedColumn(record, configInfo.ColumnNumber)
         }
 		err = outputCsvWriter.Write(record)
 		if err != nil {
@@ -57,10 +62,11 @@ func getArguments() (configInfo ConfigInfo) {
 	outputFileName := fs.String("output_file", "", "Name of database analysis output files (defaults to stdout)")
 	helpArg := fs.Bool("help", false, "Display the full help text")
 	loglevelArg := fs.String("loglevel", "CRITICAL", "Logging Level (defaults to CRITICAL).")
-	hashColumn := fs.Int("hash_column", 0, "column to hash")
+    ColumnName := fs.String("column_name", "", "column to hash")
+	ColumnNumber := fs.Int("column_number", 0, "column to hash")
 
 	if err := fs.Parse(os.Args[1:]); err != nil {
-		fmt.Fprintf(os.Stderr, "Usage csvHasher -input_file csv_file -output_file csv_file -hash_column column_number\n")
+		fmt.Fprintf(os.Stderr, "Usage csvHasher -input_file csv_file -output_file csv_file [-column_name column_name | -column_number column_number]\n")
 		os.Exit(1)
 	}
 
@@ -70,23 +76,26 @@ func getArguments() (configInfo ConfigInfo) {
 
 	if *inputFileName == "" {
 		fmt.Fprintf(os.Stderr, "Error: missing input_file\n")
-		fmt.Fprintf(os.Stderr, "Usage csvHasher -input_file csv_file -output_file csv_file -hash_column column_number\n")
+		fmt.Fprintf(os.Stderr, "Usage csvHasher -input_file csv_file -output_file csv_file [-column_name column_name | -column_number column_number]\n")
 		os.Exit(1)
 	}
 	if *outputFileName == "" {
 		fmt.Fprintf(os.Stderr, "Error: missing output_file\n")
-		fmt.Fprintf(os.Stderr, "Usage csvHasher -input_file csv_file -output_file csv_file -hash_column column_number\n")
+		fmt.Fprintf(os.Stderr, "Usage csvHasher -input_file csv_file -output_file csv_file [-column_name column_name | -column_number column_number]\n")
 		os.Exit(1)
 	}
-	if *hashColumn == 0 {
-		fmt.Fprintf(os.Stderr, "Error: missing hash_column\n")
-		fmt.Fprintf(os.Stderr, "Usage csvHasher -input_file csv_file -output_file csv_file -hash_column column_number\n")
+	if *ColumnNumber == 0 && *ColumnName == "" {
+		fmt.Fprintf(os.Stderr, "Error: missing hash column name and number\n")
+		fmt.Fprintf(os.Stderr, "Usage csvHasher -input_file csv_file -output_file csv_file [-column_name column_name | -column_number column_number]\n")
 		os.Exit(1)
 	}
 
 	configInfo.inputFileName = *inputFileName
 	configInfo.outputFileName = *outputFileName
-	configInfo.hashColumn = *hashColumn-1
+	if *ColumnNumber != 0 {
+	configInfo.ColumnNumber = *ColumnNumber-1
+    }
+    configInfo.ColumnName = *ColumnName
 	configInfo.logLevel = *loglevelArg
 
 	return
@@ -94,7 +103,7 @@ func getArguments() (configInfo ConfigInfo) {
 
 // doHelp outputs detailed help message
 func doHelp() {
-	fmt.Printf("Usage csvHasher -input_file csv_file -output_file csv_file -hash_column column_number\n")
+	fmt.Printf("Usage csvHasher -input_file csv_file -output_file csv_file [-column_name column_name | -column_number column_number]\n")
     fmt.Printf("   csvHasher converts the specified column of a CSV file to SHA256 format usable as an ldap password\n")
     fmt.Printf("   The format generated is consistent with https://docs.ldap.com/specs/draft-stroeder-hashed-userpassword-values-01.txt\n")
 
@@ -123,12 +132,23 @@ func openOutputFile(outputFileName string) (outputCsvWriter *csv.Writer) {
 	return
 }
 
-func hashSpecifiedColumn(record []string, hashColumn int) {
-	if len(record) <= hashColumn {
-		fmt.Fprintf(os.Stderr, "Record does not contain at least %d columns: %v \n ", hashColumn, record)
+// getColumnNumber looks for ColumnName in the header record
+func getColumnNumber(configInfo *ConfigInfo, record []string) {
+    for i, name := range record {
+        if name == configInfo.ColumnName {
+            configInfo.ColumnNumber = i
+        }
+    }
+    return
+}
+
+// hashSpecifiedColumn replaces the specified column with the SHA256 hash
+func hashSpecifiedColumn(record []string, ColumnNumber int) {
+	if len(record) <= ColumnNumber {
+		fmt.Fprintf(os.Stderr, "Record does not contain at least %d columns: %v \n ", ColumnNumber, record)
 		os.Exit(1)
 	}
-	sum := sha256.Sum256([]byte(record[hashColumn]))
-	record[hashColumn] = "{SHA256}"+base64.StdEncoding.EncodeToString(sum[:])
+	sum := sha256.Sum256([]byte(record[ColumnNumber]))
+	record[ColumnNumber] = "{SHA256}"+base64.StdEncoding.EncodeToString(sum[:])
 	return
 }

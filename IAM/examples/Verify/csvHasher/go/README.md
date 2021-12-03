@@ -16,16 +16,17 @@ This allows you to hash passwords as soon as they are extracted from an existing
 
 ### Usage of the example
 ```text
-Usage csvHasher -input_file csv_file -output_file csv_file -hash_column column_number
+Usage csvHasher -input_file csv_file -output_file csv_file [-column_name column_name | -column_number column_number]
    csvHasher converts the specified column of a CSV file to SHA256 format usable as an ldap password
    The format generated is consistent with https://docs.ldap.com/specs/draft-stroeder-hashed-userpassword-values-01.txt
 
 ```
 
-The csvHasher utility accepts 3 required parameters:
+The csvHasher utility accepts 3 required parameters (either column_name or column_number can be specified):
 - input_file - A CSV file that contains user records
 - output_file - The name of a CSV file to create with the processed user records
-- hash_column - The number (starting at 1) of the column that should be replaced by the ldap-formatted SHA256 value of the data
+- column_name - The name of the column that should be replaced by the ldap-formatted SHA256 value of the data
+- column_number - The number (starting at 1) of the column that should be replaced by the ldap-formatted SHA256 value of the data
 - help - Display the full help text
 
 The format generated is consistent with https://docs.ldap.com/specs/draft-stroeder-hashed-userpassword-values-01.txt and is
