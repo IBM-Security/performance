@@ -7,7 +7,7 @@
 #### CSV Hasher
 
 This directory contains example code for pre-hashing passwords in a CSV file before creating users using the Verify APIs.
-This allows you to hash passwords as soon as they are extracted from an existing user registry,
+This allows you to hash passwords at the point that they are extracted from an existing user registry,
 
 ### Table of Contents
 
