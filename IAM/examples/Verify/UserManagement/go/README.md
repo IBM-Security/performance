@@ -17,6 +17,7 @@ to an unmatchable hash.
   * [Lookup grants](#lookup-grant)
   * [Delete grant](#delete-grant)
   * [Modify password](#modify-password)
+  * [List users](#list-users)
 * [Usage of the example](#usage-of-the-example)
 * [Building the example](#building-the-example)
 * [Descriptions of the example files](#descriptions-of-the-example-files)
