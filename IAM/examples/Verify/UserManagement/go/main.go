@@ -79,6 +79,9 @@ func main() {
 				}
 			}
 
+        case "listUsers":
+            listUsers(&configInfo)
+            
 		case "revokeTokens":
 			for _, user := range configInfo.userList {
 				revokeTokens(&configInfo, user)
@@ -152,9 +155,9 @@ func getArguments() (configInfo ConfigInfo) {
 
 //printUsage prints out the usage statement
 func printUsage() {
-	fmt.Fprintf(os.Stderr, "Usage: userManagement [auth|listTokens|revokeTokens|disableUser|help] -tenantURL tenantURL [-userFile filename] [-userAttribute attributename]\n")
+	fmt.Fprintf(os.Stderr, "Usage: userManagement [auth|listTokens|listUsers|revokeTokens|disableUser|help] -tenantURL tenantURL [-userFile filename] [-userAttribute attributename]\n")
 	fmt.Fprintf(os.Stderr, "Usage of userManagement:\n")
-	fmt.Fprintf(os.Stderr, "        command is one of [ auth, listTokens, revokeTokens, disableUser, help ]\n")
+	fmt.Fprintf(os.Stderr, "        command is one of [ auth, listTokens, listUsers, revokeTokens, disableUser, help ]\n")
 	fmt.Fprintf(os.Stderr, "        (default is 'help')\n")
 	fmt.Fprintf(os.Stderr, "  -help\n")
 	fmt.Fprintf(os.Stderr, "        Display the full help text\n")
@@ -173,6 +176,7 @@ func printUsage() {
 	fmt.Fprintf(os.Stderr, "\n")
 	fmt.Fprintf(os.Stderr, "auth\t\tAuthenticate to the tenant using the specified client and secret\n")
 	fmt.Fprintf(os.Stderr, "listTokens\tList tokens for each user in the userFile\n")
+	fmt.Fprintf(os.Stderr, "listUsers\tLookup all users in the tenant and list any that have never logged in\n")
 	fmt.Fprintf(os.Stderr, "revokeTokens\tRevoke tokens for each user in the userFile\n")
 	fmt.Fprintf(os.Stderr, "disableUser\tDisable each user in the userFile\n")
 	fmt.Fprintf(os.Stderr, "help\t\tDisplay the full help text\n")

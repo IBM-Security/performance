@@ -93,13 +93,19 @@ reset process before that user id can authenticate. Changing the user's password
 
 The user modify code is in [disableUser.go](disableUser.go) in the disableUser() function.
 
+#### List users
 
+The API documentation [Get Users](https://docs.verify.ibm.com/verify/reference/getusers) page describes how to search
+for a set of users.  The userManagement example uses this to look up all users in the tenant, in order of id, to look for any
+users without a lastLogin attribute, meaning the user has not logged in since the account was created.
+
+The user list code is in [listUsers.go](listUsers.go) in the listUsers() function.
 
 ### Usage of the example
 ```text
-Usage: userManagement [auth|listTokens|revokeTokens|disableUser|help] -tenantURL tenantURL -userFile filename -userAttribute attributename
+Usage: userManagement [auth|listTokens|listUsers|revokeTokens|disableUser|help] -tenantURL tenantURL -userFile filename -userAttribute attributename
 Usage of userManagement:
-        command is one of [ auth, listTokens, revokeTokens, disableUser, help ]
+        command is one of [ auth, listTokens, listUsers, revokeTokens, disableUser, help ]
         (default is 'help')
   -help
         Display the full help text
@@ -118,15 +124,17 @@ Usage of userManagement:
 
 auth		Authenticate to the tenant using the specified client and secret
 listTokens	List tokens for each user in the userFile
+listUsers	Lookup all users in the tenant and list any that have never logged in
 revokeTokens	Revoke tokens for each user in the userFile
 disableUser	Disable each user in the userFile
 help		Display the full help text
 
 ```
 
-The userManagement program accepts 5 commands:
+The userManagement program accepts 6 commands:
 - auth - Authenticate to the tenant using the specified client and secret
 - listTokens - List tokens for each user in the userFile
+- listUsers - Lookup all users in the tenant and list any that have never logged in
 - revokeTokens - Revoke tokens for each user in the userFile
 - disableUser - Disable each user in the userFile
 - help - Display the full help text
@@ -196,3 +204,10 @@ This contains the disableUser() function, which calls the Users API to modify th
 with the PATCH operation which takes a json structure describing the exact attribute to modify, the operation (add/delete/replace)
 and the value.
 
+#### [listUsers.go](listUsers.go)
+
+This contains the listUsers() function, which calls the Users API to get a list of users in the tenant, then reports on any users
+that have not logged in.  It does this by repeatedly calling getUserList() with the next userId to start with, and the list of
+attributes to return.  The Users API will return up to 2500 users per call.  For each set of users returned, the filterUserList()
+function is called to look for any users without the lastLogin attribute, and print out the userid, email and create time.  This
+function can be modified to do any other desired processing of the user information.
