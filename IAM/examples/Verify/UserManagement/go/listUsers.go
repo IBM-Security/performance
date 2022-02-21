@@ -14,21 +14,21 @@ import (
 // listUsers calls the getusers API to iterate through the users
 // See https://docs.verify.ibm.com/verify/reference/getusers
 func listUsers(configInfo *ConfigInfo) (err error) {
-    usersReturned := 0
- 	err, userList := getUserList(configInfo, "id", "", "id,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:realm,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:lastLogin")
-        if err != nil {
-            fmt.Printf("Error %s from getUserList\n", err)
-        }
-   for len(userList.Resources) > 0 {
-        usersReturned += len(userList.Resources)
+	usersReturned := 0
+	err, userList := getUserList(configInfo, "id", "", "id,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:realm,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:lastLogin")
+	if err != nil {
+		fmt.Printf("Error %s from getUserList\n", err)
+	}
+	for len(userList.Resources) > 0 {
+		usersReturned += len(userList.Resources)
 		err, userId := filterUserList(configInfo, userList)
-        if err != nil {
-            fmt.Printf("Error %s from filterUserList\n", err)
-        }
+		if err != nil {
+			fmt.Printf("Error %s from filterUserList\n", err)
+		}
 		err, userList = getUserList(configInfo, "id", userId, "id,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:realm,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:lastLogin")
-        if err != nil {
-            fmt.Printf("Error %s from getUserList\n", err)
-        }
+		if err != nil {
+			fmt.Printf("Error %s from getUserList\n", err)
+		}
 	}
 	fmt.Printf("%d users returned and filtered\n", usersReturned)
 	return
@@ -110,7 +110,10 @@ func filterUserList(configInfo *ConfigInfo, userList UserList) (err error, userI
 		}
 		userId = user["id"].(string)
 		if user["urn:ietf:params:scim:schemas:extension:ibm:2.0:User"] == nil {
-			email := user["emails"].([]interface{})[0].(map[string]interface{})["value"]
+			email := ""
+			if user["emails"] != nil {
+				email = user["emails"].([]interface{})[0].(map[string]interface{})["value"].(string)
+			}
 			created := user["meta"].(map[string]interface{})["created"]
 			fmt.Printf("user %s, %s created on %s has no lastLogin or realm\n", userId, email, created)
 			continue
@@ -118,7 +121,10 @@ func filterUserList(configInfo *ConfigInfo, userList UserList) (err error, userI
 		lastLogin := user["urn:ietf:params:scim:schemas:extension:ibm:2.0:User"].(map[string]interface{})["lastLogin"]
 		realm := user["urn:ietf:params:scim:schemas:extension:ibm:2.0:User"].(map[string]interface{})["realm"]
 		if lastLogin == nil && realm == "cloudIdentityRealm" {
-			email := user["emails"].([]interface{})[0].(map[string]interface{})["value"]
+			email := ""
+			if user["emails"] != nil {
+				email = user["emails"].([]interface{})[0].(map[string]interface{})["value"].(string)
+			}
 			created := user["meta"].(map[string]interface{})["created"]
 			fmt.Printf("user %s, %s created on %s has no lastLogin\n", userId, email, created)
 		}
