@@ -21,11 +21,13 @@ func listUsers(configInfo *ConfigInfo) (err error) {
 	}
 	for len(userList.Resources) > 0 {
 		usersReturned += len(userList.Resources)
+        fmt.Printf("Got %d users back\n", len(userList.Resources))
 		err, userId := filterUserList(configInfo, userList)
 		if err != nil {
 			fmt.Printf("Error %s from filterUserList\n", err)
 		}
-		err, userList = getUserList(configInfo, "id", userId, "id,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:realm,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:lastLogin")
+		nextUserId := userId + "0"
+		err, userList = getUserList(configInfo, "id", nextUserId, "id,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:realm,meta.created,emails,urn:ietf:params:scim:schemas:extension:ibm:2.0:User:lastLogin")
 		if err != nil {
 			fmt.Printf("Error %s from getUserList\n", err)
 		}
@@ -41,13 +43,14 @@ func getUserList(configInfo *ConfigInfo, userAttribute, userStartingValue, attri
 		return
 	}
 	userEndpoint := "/v2.0/Users"
-	userQuery := "?filter=" + userAttribute + "%20gt%20%22" + userStartingValue + "%22"
+	userQuery := "?filter=" + userAttribute + "%20ge%20%22" + userStartingValue + "%22"
 	sortBy := "&sortBy=" + userAttribute
 	attributes := ""
 	if attributeList != "" {
 		attributes = "&attributes=" + attributeList
 	}
-	completeURL := "https://" + configInfo.tenantHostname + userEndpoint + userQuery + sortBy + attributes
+	countLimit := "&count=2500"
+	completeURL := "https://" + configInfo.tenantHostname + userEndpoint + userQuery + sortBy + attributes + countLimit
 	if configInfo.logLevel > 0 {
 		fmt.Printf("Calling %s\n", completeURL)
 	}
