@@ -142,6 +142,10 @@ func getChanges(db *sql.DB, tablename string, schema string, successful bool, co
 		consumerComponents := strings.SplitN(consumerDN, ",", 2)
 		rdnComponents := strings.SplitN(consumerComponents[0], "=", 2)
 		consumer := rdnComponents[1]
+		if configInfo.replica != "" && consumer != configInfo.replica {
+            log.Debug("Skipping replica %s\n", consumer)
+            continue
+        }
 		controlComponents := strings.SplitN(controls, "control: 1.3.18.0.2.10.19 false:: ", 2)
 		if len(controlComponents) < 2 {
 			log.Info("No data found!")
@@ -161,20 +165,51 @@ func getChanges(db *sql.DB, tablename string, schema string, successful bool, co
 	return nil
 }
 
+// getReplContexts finds the eids of all the replica contexts
+func getReplContexts(db *sql.DB, configInfo ConfigInfo) (err error, eids []string) {
+	schema := configInfo.databases[0].schema
+	listReplContexts := []string{
+		"select peid ",
+		"from %s.ldap_entry, %s.OBJECTCLASS ",
+		"where ldap_entry.eid=objectclass.eid ",
+		"and OBJECTCLASS='IBM-REPLICAGROUP'"}
+	listReplContextsSQL := fmt.Sprintf(strings.Join(listReplContexts, ""), schema, schema)
+	log.Debug(fmt.Sprintf("Executing SQL: %s", listReplContextsSQL))
+	st, err := db.Prepare(listReplContextsSQL)
+	if err != nil {
+		return 
+	}
+	rows, err := st.Query()
+	if err != nil {
+		return 
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var eid string
+		err = rows.Scan(&eid)
+		if err != nil {
+			return 
+		}
+		eids = append(eids, eid)
+	}
+	return
+}
+
 // reportChangesForContexts finds all the replication contexts and reports the last successful and oldest pending changes for all consumers in each.
 func reportChangesForContexts(db *sql.DB, configInfo ConfigInfo) error {
-        configInfo.consumerWriter.writeHeader()
+    configInfo.consumerWriter.writeHeader()
+    err, eids := getReplContexts(db, configInfo)
+	if err != nil {
+		return err
+	}
+	eidList := strings.Join(eids, ",")
 	schema := configInfo.databases[0].schema
 	listReplContexts := []string{
 		"select eid, dn_trunc ",
 		"from %s.ldap_entry ",
-		"where eid in ",
-		"(select peid ",
-		"from %s.ldap_entry, %s.OBJECTCLASS ",
-		"where ldap_entry.eid=objectclass.eid ",
-		"and OBJECTCLASS='IBM-REPLICAGROUP')"}
+		"where eid in (%s)"}
 	listReplContextsTemplate := strings.Join(listReplContexts, "")
-	listReplContextsSQL := fmt.Sprintf(listReplContextsTemplate, schema, schema, schema)
+	listReplContextsSQL := fmt.Sprintf(listReplContextsTemplate, schema, eidList)
 	log.Debug(fmt.Sprintf("Executing SQL: %s", listReplContextsSQL))
 	st, err := db.Prepare(listReplContextsSQL)
 	if err != nil {
@@ -225,6 +260,7 @@ type OutputInfo struct {
 
 type ConfigInfo struct {
 	databases  []DatabaseInfo
+	replica    string
 	logLevel   string
 	outputInfo OutputInfo
 	consumerWriter ConsumerWriter
@@ -326,6 +362,7 @@ func getArguments() ConfigInfo {
 	schemaArg := fs.String("schema", "", "DB2 Table name schema (defaults to userid).")
 	useridArg := fs.String("userid", "", "Userid to connect to DB2 (defaults to dbname).")
 	passwordArg := fs.String("password", "", "Password to connect to DB2.")
+	replicaArg := fs.String("replica", "", "Optional replica to limit report to.")
 	loglevelArg := fs.String("loglevel", "CRITICAL", "Logging Level (defaults to CRITICAL).")
 	outputcsvArg := fs.Bool("outputcsv", false, "Text output or CSV format (defaults to False).")
 	output_fileArg := fs.String("output_file", "", "Output CSV of differences (defaults to stdout).")
@@ -357,9 +394,11 @@ func getArguments() ConfigInfo {
 	}
 	schema := *schemaArg
 	if schema == "" {
-		schema = *useridArg
+		schema = userid
 	}
 
+	replica := *replicaArg
+	
 	switch strings.Title(*loglevelArg) {
 	case "Trace":
 		log.SetLevel(log.TraceLevel)
@@ -412,6 +451,7 @@ func getArguments() ConfigInfo {
         
 	return ConfigInfo{
 		databases:  []DatabaseInfo{databaseInfo},
+        replica:    replica,
 		logLevel:   *loglevelArg,
 		outputInfo: outputInfo,
                 consumerWriter: consumerWriter,
