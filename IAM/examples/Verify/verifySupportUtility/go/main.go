@@ -181,7 +181,7 @@ func getArguments() (configInfo ConfigInfo) {
 
 //printUsage prints out the usage statement
 func printUsage() {
-	fmt.Fprintf(os.Stderr, "Usage: verifySupportUtility [auth|upload|list|help] -tenantURL tenantURL [-uploadFile filename] [-uploadComment comment] [-resultsFile filename]\n")
+	fmt.Fprintf(os.Stderr, "Usage: verifySupportUtility [auth|status|upload|list|results|help] -tenantURL tenantURL [-uploadFile filename] [-uploadComment comment] [-resultsFile filename]\n")
 	fmt.Fprintf(os.Stderr, "Usage of verifySupportUtility:\n")
 	fmt.Fprintf(os.Stderr, "        command is one of [ auth, status, upload, list, results, help ]\n")
 	fmt.Fprintf(os.Stderr, "        (default is 'help')\n")

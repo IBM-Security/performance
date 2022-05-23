@@ -16,7 +16,7 @@ This directory contains example code for uploading and listing files for use by 
 
 ### Usage of the example
 ```text
-Usage: verifySupportUtility [auth|upload|list|help] -tenantURL tenantURL [-uploadFile filename] [-uploadComment comment] [-resultsFile filename]
+Usage: verifySupportUtility [auth|status|upload|list|results|help] -tenantURL tenantURL [-uploadFile filename] [-uploadComment comment] [-resultsFile filename]
 Usage of verifySupportUtility:
         command is one of [ auth, status, upload, list, results, help ]
         (default is 'help')
