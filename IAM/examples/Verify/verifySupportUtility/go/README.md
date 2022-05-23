@@ -11,7 +11,7 @@ This directory contains example code for uploading and listing files for use by 
 ### Table of Contents
 
 * [Usage of the example](#usage-of-the-example)
-* [Scenarios/User Stories](#scenarios/user-stories)
+* [Scenarios/User Stories](#scenariosuser-stories)
 * [Building the example](#building-the-example)
 
 ### Usage of the example
