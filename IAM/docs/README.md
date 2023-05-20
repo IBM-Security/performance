@@ -4,16 +4,17 @@
 
 ### Tuning guides
 
-#### IBM Security Access Manager
+#### IBM Security Verify Access
 
 [IBM Security Access Manager 9.0 Performance Tuning Guide](https://github.com/IBM-Security/performance/raw/master/IAM/docs/ISAM_PerfTuning_guide_90_v1.pdf) is also published at http://www-01.ibm.com/support/docview.wss?uid=swg27044054
 
-#### IBM Security Directory Server
+#### IBM Security Verify Directory
 
 [Performance Tuning for IBM Security Directory Server Redpaper](https://github.com/IBM-Security/performance/raw/master/IAM/docs/redp4258.pdf) is also published at http://www.redbooks.ibm.com/redpieces/abstracts/redp4258.html
 
-#### IBM Security Identity Governance and Intelligence
+#### IBM Security Verify Governance 
 
+[IBM Security Verify Governance v10.0.1 Performance Tuning Guide](https://github.com/IBM-Security/performance/raw/master/IAM/docs/ISVG10.0.1_Performance_Tuning_Guide_20230519.pdf) is also published at https://www.ibm.com/support/pages/node/6996587  
 [IBM Security Identity Governance and Intelligence v5.2.6 Performance Tuning Guide](https://github.com/IBM-Security/performance/raw/master/IAM/docs/IGIv526FP1PTG_2020-06-08.pdf) is also published at https://www.ibm.com/support/pages/node/6220302  
 [IBM Security Identity Governance and Intelligence v5.2.5 Performance Tuning Guide](https://github.com/IBM-Security/performance/raw/master/IAM/docs/IGIv525PTG_2019-04-08.pdf) is also published at http://www-01.ibm.com/support/docview.wss?uid=ibm10880283  
 [IBM Security Identity Governance and Intelligence v5.2.3 Performance Tuning Guide](https://github.com/IBM-Security/performance/raw/master/IAM/docs/IGIv523FP1PTG_2017-11-01.pdf) is also published at http://www-01.ibm.com/support/docview.wss?uid=swg27050278
