@@ -106,8 +106,8 @@ $ verifySupportUtility results -tenantURL XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX:Y
 
 ### Building the example
 
-The bin directory contains statically linked binaries for [Linux](bin/linux/csvHasher), [Mac](bin/darwin/csvHasher) and 
-[Windows](bin/windows/csvHasher) 
+The bin directory contains statically linked binaries for [Linux](bin/linux/verifySupportUtility), [Mac](bin/darwin/verifySupportUtility) and 
+[Windows](bin/windows/verifySupportUtility.exe) 
 
 These don't require any runtime and should just run on the corresponding OS.
 
